@@ -10,6 +10,7 @@ buildscript {
 
 plugins {
     id 'nebula.provided-base' version '3.0.3'
+    id 'net.researchgate.release' version '2.4.0'
 }
 
 group 'com.dimafeng'
@@ -103,3 +104,5 @@ uploadArchives {
         }
     }
 }
+
+afterReleaseBuild.dependsOn uploadArchives
