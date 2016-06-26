@@ -53,13 +53,13 @@ task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-task scaladocJar(type: Jar) {
-    classifier = 'scaladoc'
+task javadocJar(type: Jar) {
+    classifier = 'javaadoc'
     from scaladoc
 }
 
 artifacts {
-    archives scaladocJar, sourcesJar
+    archives javadocJar, sourcesJar
 }
 
 uploadArchives {
@@ -76,14 +76,15 @@ uploadArchives {
             }
 
             pom.project {
-                name 'Testcontainers-scala'
+                name 'testcontainers-scala'
                 packaging 'jar'
                 description 'Scala wrapper for testcontainers-java'
                 url 'https://github.com/dimafeng/testcontainers-scala'
 
                 scm {
-                    connection 'https://github.com/dimafeng/testcontainers-scala'
-                    url 'https://github.com/dimafeng/testcontainers-scala'
+                    connection 'scm:git:git@github.com:dimafeng/testcontainers-scala.git'
+                    developerConnection 'scm:git:git@github.com:dimafeng/testcontainers-scala.git'
+                    url 'git@github.com:dimafeng/testcontainers-scala.git'
                 }
 
                 licenses {
@@ -95,7 +96,6 @@ uploadArchives {
 
                 developers {
                     developer {
-                        id 'dimafeng'
                         name 'Dmitry Fedosov'
                         email 'dimafeng@gmail.com'
                     }
