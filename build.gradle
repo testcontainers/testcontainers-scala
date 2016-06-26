@@ -17,6 +17,8 @@ group 'com.dimafeng'
 apply plugin: 'scala'
 apply plugin: 'nebula.provided-base'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 
 sourceCompatibility = 1.8
@@ -43,4 +45,61 @@ dependencies {
             "org.mockito:mockito-all:$mockitoVersion"
 
     )
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task scaladocJar(type: Jar) {
+    classifier = 'scaladoc'
+    from scaladoc
+}
+
+artifacts {
+    archives scaladocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Testcontainers-scala'
+                packaging 'jar'
+                description 'Scala wrapper for testcontainers-java'
+                url 'https://github.com/dimafeng/testcontainers-scala'
+
+                scm {
+                    connection 'https://github.com/dimafeng/testcontainers-scala'
+                    url 'https://github.com/dimafeng/testcontainers-scala'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'dimafeng'
+                        name 'Dmitry Fedosov'
+                        email 'dimafeng@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
