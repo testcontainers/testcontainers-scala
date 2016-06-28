@@ -49,9 +49,11 @@ dependencies {
 }
 
 test {
-    if (!project.hasProperty("integration")) {
-        exclude 'com/dimafeng/testcontainers/integration/**'
-    }
+    exclude 'com/dimafeng/testcontainers/integration/**'
+}
+
+task integrationTest(type: Test) {
+    include 'com/dimafeng/testcontainers/integration/**'
 }
 
 task sourcesJar(type: Jar) {
@@ -127,4 +129,5 @@ uploadArchives {
     }
 }
 
+uploadArchives.dependsOn integrationTest
 afterReleaseBuild.dependsOn uploadArchives
