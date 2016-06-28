@@ -54,12 +54,16 @@ task sourcesJar(type: Jar) {
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javaadoc'
+    classifier = 'javadoc'
     from scaladoc
 }
 
 artifacts {
     archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 uploadArchives {

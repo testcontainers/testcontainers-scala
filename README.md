@@ -6,7 +6,29 @@ allows to start and work with docker containers during testing.
 Setup
 -----
 
-TODO
+*Maven*
+
+```
+<dependency>
+    <groupId>com.dimafeng</groupId>
+    <artifactId>testcontainers-scala</artifactId>
+    <version>0.1.0</version>
+    <scope>test</scope>
+</dependency>
+
+```
+
+*Gradle*
+
+```
+testCompile("com.dimafeng:testcontainers-scala:0.1.0")
+```
+
+*SBT*
+
+```
+libraryDependencies += "com.dimafeng" % "testcontainers-scala" % "0.1.0" % "test"
+```
 
 Requirements
 ------------
