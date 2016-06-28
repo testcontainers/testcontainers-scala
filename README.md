@@ -109,6 +109,9 @@ There are several predefined containers in the *testcontainers-java* library:
 Selenium
 --------
 
+First of all, you need to add [this dependency](http://mvnrepository.com/artifact/org.testcontainers/selenium/1.0.5) to your build script.
+
+
 ```
 class SeleniumSpec extends FlatSpec with SeleniumTestContainer with WebBrowser {
   withDesiredCapabilities(DesiredCapabilities.chrome())
