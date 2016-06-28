@@ -48,6 +48,12 @@ dependencies {
     )
 }
 
+test {
+    if (!project.hasProperty("integration")) {
+        exclude 'com/dimafeng/testcontainers/integration/**'
+    }
+}
+
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
