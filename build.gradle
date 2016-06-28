@@ -69,6 +69,15 @@ signing {
 ext.ossrhUsernameValue = project.hasProperty("ossrhUsername") ? project.getProperty("ossrhUsername") : ""
 ext.ossrhPasswordValue = project.hasProperty("ossrhPassword") ? project.getProperty("ossrhPassword") : ""
 
+/**
+ * Skip signArchives for travis-ci
+ */
+tasks.each { task ->
+    if (!project.hasProperty("ossrhPassword") && "signArchives".equals(task.name)) {
+        task.enabled = false
+    }
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
