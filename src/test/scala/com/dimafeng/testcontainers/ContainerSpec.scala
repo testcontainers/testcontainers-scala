@@ -15,11 +15,11 @@ class ContainerSpec extends FlatSpec {
   behavior of "ForEachTestContainer"
 
   it should "call all appropriate methods of the container" in {
-    val container = Mockito.mock(classOf[SampleContainer])
+    val container = Mockito.mock(classOf[SampleOTCContainer])
 
     new TestSpec({
       assert(1 == 1)
-    }, container).run(None, Args(mock[Reporter]))
+    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container, times(0)).failed(any(), any())
@@ -28,11 +28,11 @@ class ContainerSpec extends FlatSpec {
   }
 
   it should "call all appropriate methods of the container if assertion fails" in {
-    val container = Mockito.mock(classOf[SampleContainer])
+    val container = Mockito.mock(classOf[SampleOTCContainer])
 
     new TestSpec({
       assert(1 == 2)
-    }, container).run(None, Args(mock[Reporter]))
+    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container).failed(any(), any())
@@ -41,12 +41,14 @@ class ContainerSpec extends FlatSpec {
   }
 
   it should "call all appropriate methods of the multiple containers" in {
-    val container1 = Mockito.mock(classOf[SampleContainer])
-    val container2 = Mockito.mock(classOf[SampleContainer])
+    val container1 = Mockito.mock(classOf[SampleOTCContainer])
+    val container2 = Mockito.mock(classOf[SampleOTCContainer])
+
+    val containers = MultipleContainers(new SampleContainer(container1), new SampleContainer(container2))
 
     new TestSpec({
       assert(1 == 1)
-    }, container1, container2).run(None, Args(mock[Reporter]))
+    }, containers).run(None, Args(mock[Reporter]))
 
     verify(container1).starting(any())
     verify(container1, times(0)).failed(any(), any())
@@ -59,11 +61,11 @@ class ContainerSpec extends FlatSpec {
   }
 
   it should "start and stop container only once" in {
-    val container = Mockito.mock(classOf[SampleContainer])
+    val container = Mockito.mock(classOf[SampleOTCContainer])
 
     new MultipleTestsSpec({
       assert(1 == 1)
-    }, container).run(None, Args(mock[Reporter]))
+    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container, times(0)).failed(any(), any())
@@ -74,16 +76,16 @@ class ContainerSpec extends FlatSpec {
 
 object ContainerSpec {
 
-  private class TestSpec(testBody: => Unit, genericContainers: GenericContainer[_]*) extends FlatSpec with ForEachTestContainer {
-    override val container = Container(genericContainers: _*)
+  private class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+    override val container = _container
 
     it should "test" in {
       testBody
     }
   }
 
-  private class MultipleTestsSpec(testBody: => Unit, genericContainers: GenericContainer[_]*) extends FlatSpec with ForAllTestContainer {
-    override val container = Container(genericContainers: _*)
+  private class MultipleTestsSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+    override val container = _container
 
     it should "test1" in {
       testBody
@@ -94,7 +96,7 @@ object ContainerSpec {
     }
   }
 
-  private class SampleContainer extends GenericContainer {
+  private class SampleOTCContainer extends GenericContainer {
     override def starting(description: Description): Unit = {}
 
     override def failed(e: Throwable, description: Description): Unit = {}
@@ -104,4 +106,7 @@ object ContainerSpec {
     override def succeeded(description: Description): Unit = {}
   }
 
+  private class SampleContainer(sampleOTCContainer: SampleOTCContainer) extends SingleContainer[SampleOTCContainer] {
+    override implicit def container: SampleOTCContainer = sampleOTCContainer
+  }
 }

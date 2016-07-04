@@ -3,15 +3,15 @@ package org.testcontainers.containers
 import org.junit.runner.Description
 
 object TestContainerAccessor {
-  def finished(description: Description)(implicit container: GenericContainer[_]): Unit =
+  def finished[T <:GenericContainer[_]](description: Description)(implicit container: T): Unit =
     container.finished(description)
 
-  def failed(e: Throwable, description: Description)(implicit container: GenericContainer[_]): Unit =
+  def failed[T <:GenericContainer[_]](e: Throwable, description: Description)(implicit container: T): Unit =
     container.failed(e, description)
 
-  def starting(description: Description)(implicit container: GenericContainer[_]): Unit =
+  def starting[T <:GenericContainer[_]](description: Description)(implicit container: T): Unit =
     container.starting(description)
 
-  def succeeded(description: Description)(implicit container: GenericContainer[_]): Unit =
+  def succeeded[T <:GenericContainer[_]](description: Description)(implicit container: T): Unit =
     container.succeeded(description)
 }

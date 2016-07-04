@@ -1,8 +1,11 @@
 package com.dimafeng.testcontainers
 
+import java.io.File
 import org.junit.runner.Description
 import org.scalatest._
-import org.testcontainers.containers.{GenericContainer, TestContainerAccessor}
+import org.testcontainers.containers.{
+GenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
+}
 
 trait ForEachTestContainer extends SuiteMixin {
   self: Suite =>
@@ -47,7 +50,6 @@ trait ForAllTestContainer extends SuiteMixin {
       container.finished()
     }
   }
-
 }
 
 sealed trait Container {
@@ -60,18 +62,24 @@ sealed trait Container {
   def succeeded()(implicit description: Description): Unit
 }
 
-object Container {
-  def apply(genericContainers: GenericContainer[_]*): Container = {
-    if (genericContainers.length == 1) {
-      new SingleContainer(genericContainers.head)
-    } else {
-      new MultipleContainers(genericContainers.toSeq.map(apply(_)))
-    }
-  }
+class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int] = Map()) extends SingleContainer[OTCDockerComposeContainer[_]] {
+
+  private val c = new OTCDockerComposeContainer(composeFile)
+  exposedService.foreach { v => c.withExposedService(v._1, v._2); Unit }
+
+  override def container = c
+
+  def getServiceHost = c.getServiceHost _
+
+  def getServicePort = c.getServicePort _
 }
 
-class SingleContainer(genericContainer: GenericContainer[_]) extends Container {
-  implicit val _genericContainer = genericContainer
+object DockerComposeContainer {
+  def apply(composeFile: File, exposedService: Map[String, Int] = Map()) = new DockerComposeContainer(composeFile, exposedService)
+}
+
+abstract class SingleContainer[T <: GenericContainer[_]] extends Container {
+  implicit def container: T
 
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 
@@ -82,12 +90,34 @@ class SingleContainer(genericContainer: GenericContainer[_]) extends Container {
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
-class MultipleContainers(containers: Seq[Container]) extends Container {
-  override def finished()(implicit description: Description): Unit = containers.foreach(_.finished()(description))
+class MultipleContainers[T <: Product] private(val _containers: T) extends Container {
 
-  override def succeeded()(implicit description: Description): Unit = containers.foreach(_.succeeded()(description))
+  private def containersAsIterator = containers.productIterator.map(_.asInstanceOf[Container])
 
-  override def starting()(implicit description: Description): Unit = containers.foreach(_.starting()(description))
+  def containers = _containers
 
-  override def failed(e: Throwable)(implicit description: Description): Unit = containers.foreach(_.failed(e)(description))
+  override def finished()(implicit description: Description): Unit = containersAsIterator.foreach(_.finished()(description))
+
+  override def succeeded()(implicit description: Description): Unit = containersAsIterator.foreach(_.succeeded()(description))
+
+  override def starting()(implicit description: Description): Unit = containersAsIterator.foreach(_.starting()(description))
+
+  override def failed(e: Throwable)(implicit description: Description): Unit = containersAsIterator.foreach(_.failed(e)(description))
+}
+
+object MultipleContainers {
+  def apply[T <: Container](t: T) =
+    new MultipleContainers(new Tuple1(t))
+
+  def apply[T1 <: Container, T2 <: Container](t1: T1, t2: T2) =
+    new MultipleContainers((t1, t2))
+
+  def apply[T1 <: Container, T2 <: Container, T3 <: Container](t1: T1, t2: T2, t3: T3) =
+    new MultipleContainers((t1, t2, t3))
+
+  def apply[T1 <: Container, T2 <: Container, T3 <: Container, T4 <: Container](t1: T1, t2: T2, t3: T3, t4: T4) =
+    new MultipleContainers((t1, t2, t3, t4))
+
+  def apply[T1 <: Container, T2 <: Container, T3 <: Container, T4 <: Container, T5 <: Container](t1: T1, t2: T2, t3: T3, t4: T4, t5: T5) =
+    new MultipleContainers((t1, t2, t3, t4, t5))
 }
