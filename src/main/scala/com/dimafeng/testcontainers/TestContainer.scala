@@ -4,7 +4,7 @@ import java.io.File
 import org.junit.runner.Description
 import org.scalatest._
 import org.testcontainers.containers.{
-GenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
+GenericContainer=> OTCGenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
 }
 
 trait ForEachTestContainer extends SuiteMixin {
@@ -64,22 +64,20 @@ sealed trait Container {
 
 class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int] = Map()) extends SingleContainer[OTCDockerComposeContainer[_]] {
 
-  private val c = new OTCDockerComposeContainer(composeFile)
-  exposedService.foreach { v => c.withExposedService(v._1, v._2); Unit }
+  override val container = new OTCDockerComposeContainer(composeFile)
+  exposedService.foreach { v => container.withExposedService(v._1, v._2); Unit }
 
-  override def container = c
+  def getServiceHost = container.getServiceHost _
 
-  def getServiceHost = c.getServiceHost _
-
-  def getServicePort = c.getServicePort _
+  def getServicePort = container.getServicePort _
 }
 
 object DockerComposeContainer {
   def apply(composeFile: File, exposedService: Map[String, Int] = Map()) = new DockerComposeContainer(composeFile, exposedService)
 }
 
-abstract class SingleContainer[T <: GenericContainer[_]] extends Container {
-  implicit def container: T
+abstract class SingleContainer[T <: OTCGenericContainer[_]] extends Container {
+  implicit val container: T
 
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 

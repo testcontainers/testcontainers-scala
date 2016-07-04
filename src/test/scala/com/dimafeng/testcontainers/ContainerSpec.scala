@@ -107,6 +107,6 @@ object ContainerSpec {
   }
 
   private class SampleContainer(sampleOTCContainer: SampleOTCContainer) extends SingleContainer[SampleOTCContainer] {
-    override implicit def container: SampleOTCContainer = sampleOTCContainer
+    override implicit val container: SampleOTCContainer = sampleOTCContainer
   }
 }

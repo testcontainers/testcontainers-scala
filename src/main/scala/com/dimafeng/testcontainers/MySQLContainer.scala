@@ -4,20 +4,18 @@ import org.testcontainers.containers.{MySQLContainer => OTCMySQLContainer}
 
 class MySQLContainer(configurationOverride: Option[String] = None) extends SingleContainer[OTCMySQLContainer[_]] {
 
-  private val c = new OTCMySQLContainer()
-  configurationOverride.foreach { v => c.withConfigurationOverride(v); Unit }
+  override  val container = new OTCMySQLContainer()
+  configurationOverride.foreach { v => container.withConfigurationOverride(v); Unit }
 
-  override def container = c
+  def driverClassName = container.getDriverClassName
 
-  def driverClassName = c.getDriverClassName
+  def jdbcUrl = container.getJdbcUrl
 
-  def jdbcUrl = c.getJdbcUrl
+  def password = container.getPassword
 
-  def password = c.getPassword
+  def testQueryString = container.getTestQueryString
 
-  def testQueryString = c.getTestQueryString
-
-  def username = c.getUsername
+  def username = container.getUsername
 }
 
 object MySQLContainer {

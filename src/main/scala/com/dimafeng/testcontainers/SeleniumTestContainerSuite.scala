@@ -21,21 +21,19 @@ trait SeleniumTestContainerSuite extends ForEachTestContainer {
 
 class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
                         recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None) extends SingleContainer[BrowserWebDriverContainer[_]] {
-  private val c = new BrowserWebDriverContainer()
-  desiredCapabilities.foreach { v => c.withDesiredCapabilities(v); Unit }
-  recordingMode.foreach { v => c.withRecordingMode(v._1, v._2); Unit }
+  override  val container = new BrowserWebDriverContainer()
+  desiredCapabilities.foreach { v => container.withDesiredCapabilities(v); Unit }
+  recordingMode.foreach { v => container.withRecordingMode(v._1, v._2); Unit }
 
-  override def container = c
+  def password = container.getPassword
 
-  def password = c.getPassword
+  def port = container.getPort
 
-  def port = c.getPort
+  def seleniumAddress = container.getSeleniumAddress
 
-  def seleniumAddress = c.getSeleniumAddress
+  def vncAddress = container.getVncAddress
 
-  def vncAddress = c.getVncAddress
-
-  def webDriver = c.getWebDriver
+  def webDriver = container.getWebDriver
 }
 
 object SeleniumContainer {
