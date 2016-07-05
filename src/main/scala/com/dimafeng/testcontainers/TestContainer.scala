@@ -3,9 +3,14 @@ package com.dimafeng.testcontainers
 import java.io.File
 import org.junit.runner.Description
 import org.scalatest._
+import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{
-GenericContainer=> OTCGenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
+GenericContainer => OTCGenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
 }
+import org.testcontainers.shaded.com.github.dockerjava.api.command.InspectContainerResponse
+import org.testcontainers.shaded.com.github.dockerjava.api.model.Bind
+import scala.collection.JavaConverters._
+import scala.concurrent.Future
 
 trait ForEachTestContainer extends SuiteMixin {
   self: Suite =>
@@ -86,6 +91,35 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends Container {
   override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
 
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
+
+  def binds: Seq[Bind] = container.getBinds.asScala
+
+  def command: Seq[String] = container.getCommandParts
+
+  def containerId: String = container.getContainerId
+
+  def containerInfo: InspectContainerResponse = container.getContainerInfo
+
+  def containerIpAddress: String = container.getContainerIpAddress
+
+  def containerName: String = container.getContainerName
+
+  def env: Seq[String] = container.getEnv.asScala
+
+  def exposedPorts: Seq[Int] = container.getExposedPorts.asScala.map(_.intValue())
+
+  def extraHosts: Seq[String] = container.getExtraHosts.asScala
+
+  import scala.concurrent.ExecutionContext.Implicits.global
+  def image: Future[String] = Future {
+    container.getImage.get()
+  }
+
+  def linkedContainers: Map[String, LinkableContainer] = container.getLinkedContainers.asScala.toMap
+
+  def mappedPort(port: Int): Int = container.getMappedPort(port)
+
+  def portBindings: Seq[String] = container.getPortBindings.asScala
 }
 
 class MultipleContainers[T <: Product] private(val _containers: T) extends Container {

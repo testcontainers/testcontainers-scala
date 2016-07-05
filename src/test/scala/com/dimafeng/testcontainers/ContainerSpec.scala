@@ -7,7 +7,7 @@ import org.mockito.Mockito.{times, verify}
 import org.scalatest.mock.MockitoSugar._
 import org.scalatest.{Reporter, Args, FlatSpec}
 import org.scalatest.junit.JUnitRunner
-import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
 import com.dimafeng.testcontainers.ContainerSpec._
 
 @RunWith(classOf[JUnitRunner])
@@ -96,7 +96,7 @@ object ContainerSpec {
     }
   }
 
-  private class SampleOTCContainer extends GenericContainer {
+  private class SampleOTCContainer extends OTCGenericContainer {
     override def starting(description: Description): Unit = {}
 
     override def failed(e: Throwable, description: Description): Unit = {}
