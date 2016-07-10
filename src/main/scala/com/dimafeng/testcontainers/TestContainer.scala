@@ -4,9 +4,7 @@ import java.io.File
 import org.junit.runner.Description
 import org.scalatest._
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{
-GenericContainer => OTCGenericContainer, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer
-}
+import org.testcontainers.containers.{GenericContainer => OTCGenericContainer, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer, FailureDetectingExternalResource, BrowserWebDriverContainer, TestContainerAccessor}
 import org.testcontainers.shaded.com.github.dockerjava.api.command.InspectContainerResponse
 import org.testcontainers.shaded.com.github.dockerjava.api.model.Bind
 import scala.collection.JavaConverters._
@@ -67,10 +65,11 @@ sealed trait Container {
   def succeeded()(implicit description: Description): Unit
 }
 
-class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int] = Map()) extends SingleContainer[OTCDockerComposeContainer[_]] {
+class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int] = Map()) extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
-  override val container = new OTCDockerComposeContainer(composeFile)
-  exposedService.foreach { v => container.withExposedService(v._1, v._2); Unit }
+  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
+  override val container: OTCContainer = new OTCDockerComposeContainer(composeFile)
+  exposedService.foreach(Function.tupled(container.withExposedService))
 
   def getServiceHost = container.getServiceHost _
 
@@ -81,7 +80,7 @@ object DockerComposeContainer {
   def apply(composeFile: File, exposedService: Map[String, Int] = Map()) = new DockerComposeContainer(composeFile, exposedService)
 }
 
-abstract class SingleContainer[T <: OTCGenericContainer[_]] extends Container {
+trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
   implicit val container: T
 
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
@@ -91,6 +90,9 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends Container {
   override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
 
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
+}
+
+abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
 
   def binds: Seq[Bind] = container.getBinds.asScala
 

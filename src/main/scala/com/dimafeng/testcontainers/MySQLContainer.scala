@@ -4,8 +4,9 @@ import org.testcontainers.containers.{MySQLContainer => OTCMySQLContainer}
 
 class MySQLContainer(configurationOverride: Option[String] = None) extends SingleContainer[OTCMySQLContainer[_]] {
 
-  override  val container = new OTCMySQLContainer()
-  configurationOverride.foreach { v => container.withConfigurationOverride(v); Unit }
+  type OTCContainer = OTCMySQLContainer[T] forSome {type T <: OTCMySQLContainer[T]}
+  override val container: OTCContainer = new OTCMySQLContainer()
+  configurationOverride.foreach(container.withConfigurationOverride)
 
   def driverClassName = container.getDriverClassName
 

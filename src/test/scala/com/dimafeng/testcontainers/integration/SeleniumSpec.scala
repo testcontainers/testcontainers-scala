@@ -9,7 +9,7 @@ import org.scalatest.selenium.WebBrowser
 
 @RunWith(classOf[JUnitRunner])
 class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrowser {
-  override val desiredCapabilities = DesiredCapabilities.chrome()
+  override def desiredCapabilities = DesiredCapabilities.chrome()
 
   "Browser" should "show google" in {
     go to "http://google.com"

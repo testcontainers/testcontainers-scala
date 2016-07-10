@@ -1,7 +1,7 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.wait.WaitStrategy
-import org.testcontainers.containers.{GenericContainer => OTCGenericContainer, BindMode}
+import org.testcontainers.containers.{BindMode, GenericContainer => OTCGenericContainer}
 
 class GenericContainer(imageName: String,
                        exposedPorts: Seq[Int] = Seq(),
@@ -10,19 +10,19 @@ class GenericContainer(imageName: String,
                        classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
                        waitStrategy: Option[WaitStrategy] = None
                       ) extends SingleContainer[OTCGenericContainer[_]] {
-  override implicit val container = new OTCGenericContainer(imageName)
+
+  type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCGenericContainer[T]}
+  override implicit val container: OTCContainer = new OTCGenericContainer(imageName)
+
   if (exposedPorts.nonEmpty) {
     container.withExposedPorts(exposedPorts.map(int2Integer): _*)
   }
-  env.foreach { case (key, value) => container.withEnv(key, value); Unit }
+  env.foreach(Function.tupled(container.withEnv))
   if (command.nonEmpty) {
     container.withCommand(command: _*)
   }
-  classpathResourceMapping.foreach { case (resource, containerPath, mode) =>
-    container.withClasspathResourceMapping(resource, containerPath, mode)
-    Unit
-  }
-  waitStrategy.foreach { v => container.waitingFor(v); Unit }
+  classpathResourceMapping.foreach(Function.tupled(container.withClasspathResourceMapping))
+  waitStrategy.foreach(container.waitingFor)
 }
 
 object GenericContainer {
