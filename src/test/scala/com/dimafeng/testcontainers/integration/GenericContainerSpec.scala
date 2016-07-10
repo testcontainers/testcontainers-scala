@@ -2,7 +2,7 @@ package com.dimafeng.testcontainers.integration
 
 import java.net.URL
 
-import com.dimafeng.testcontainers.{SingleContainer, GenericContainer, Container, ForAllTestContainer}
+import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer}
 import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
