@@ -54,7 +54,7 @@ libraryDependencies += "com.dimafeng" % "testcontainers-scala" % "0.2.0" % "test
 
 ## Quick Start
 
-There are two modes of container lunching: `ForEachTestContainer` and `ForAllTestContainer`.
+There are two modes of container launching: `ForEachTestContainer` and `ForAllTestContainer`.
 The first one starts a new container before each test case and then stops and removes it. The second one
  starts and stops a container only once.
 
