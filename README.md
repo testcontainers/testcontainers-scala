@@ -137,8 +137,8 @@ Requires you to add [this dependency](http://mvnrepository.com/artifact/org.test
 
 
 ```
-class SeleniumSpec extends FlatSpec with SeleniumTestContainer with WebBrowser {
-  withDesiredCapabilities(DesiredCapabilities.chrome())
+class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrowser {
+  override def desiredCapabilities = DesiredCapabilities.chrome()
 
   "Browser" should "show google" in {
       go to "http://google.com"
