@@ -133,8 +133,17 @@ class ComposeSpec extends FlatSpec with ForAllTestContainer {
 
 ### Selenium
 
-Requires you to add [this dependency](http://mvnrepository.com/artifact/org.testcontainers/selenium) to your build script.
+Before you can use this type of containers, you need to add the following dependencies to your project:
 
+```
+"org.seleniumhq.selenium" % "selenium-java" % "2.53.1"
+```
+and
+```
+"org.testcontainers" % "selenium" % "1.1.0"
+```
+
+Now you can write a test in this way:
 
 ```
 class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrowser {
