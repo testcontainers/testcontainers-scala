@@ -1,3 +1,5 @@
+![Logo](logo.png)
+
 [![Build Status](https://travis-ci.org/dimafeng/testcontainers-scala.svg?branch=master)](https://travis-ci.org/dimafeng/testcontainers-scala)
 
 # Testcontainers-scala
