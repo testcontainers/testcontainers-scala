@@ -72,6 +72,25 @@ class ContainerSpec extends FlatSpec {
     verify(container).finished(any())
     verify(container, times(0)).succeeded(any())
   }
+
+  it should "call afterStart() and beforeStop()" in {
+    val container = Mockito.mock(classOf[SampleOTCContainer])
+
+    // ForEach
+    val specForEach = Mockito.spy(new TestSpec({}, new SampleContainer(container)))
+    specForEach.run(None, Args(mock[Reporter]))
+
+    verify(specForEach).afterStart()
+    verify(specForEach).beforeStop()
+
+    // ForAll
+
+    val specForAll = Mockito.spy(new MultipleTestsSpec({}, new SampleContainer(container)))
+    specForAll.run(None, Args(mock[Reporter]))
+
+    verify(specForAll).afterStart()
+    verify(specForAll).beforeStop()
+  }
 }
 
 object ContainerSpec {

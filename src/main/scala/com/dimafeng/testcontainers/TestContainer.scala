@@ -21,6 +21,7 @@ trait ForEachTestContainer extends SuiteMixin {
     container.starting()
     try {
       val status = super.runTest(testName, args)
+      afterStart()
       status match {
         case FailedStatus => container.failed(new RuntimeException(status.toString))
         case _ => container.succeeded()
@@ -33,9 +34,18 @@ trait ForEachTestContainer extends SuiteMixin {
         throw e
     }
     finally {
-      container.finished()
+      try {
+        beforeStop()
+      }
+      finally {
+        container.finished()
+      }
     }
   }
+
+  def afterStart(): Unit = {}
+
+  def beforeStop(): Unit = {}
 }
 
 trait ForAllTestContainer extends SuiteMixin {
@@ -47,12 +57,22 @@ trait ForAllTestContainer extends SuiteMixin {
 
   abstract override def run(testName: Option[String], args: Args): Status = {
     container.starting()
+    afterStart()
     try {
       super.run(testName, args)
     } finally {
-      container.finished()
+      try {
+        beforeStop()
+      }
+      finally {
+        container.finished()
+      }
     }
   }
+
+  def afterStart(): Unit = {}
+
+  def beforeStop(): Unit = {}
 }
 
 sealed trait Container {
@@ -113,6 +133,7 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
   def extraHosts: Seq[String] = container.getExtraHosts.asScala
 
   import scala.concurrent.ExecutionContext.Implicits.global
+
   def image: Future[String] = Future {
     container.getImage.get()
   }

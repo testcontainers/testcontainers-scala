@@ -191,6 +191,25 @@ containers.containers._1.containerId // container id of the first container
 
 ```
 
+### Start/Stop hooks
+
+If you want to execute your code after container start or before container stop you can override `afterStart()` and `beforeStop()` methods.
+
+```scala
+class MysqlSpec extends FlatSpec with ForAllTestContainer {
+
+  ...
+
+  override def beforeStop(): Unit = {
+    // your code
+  }
+
+  override def afterStart(): Unit = {
+    // your code
+  }
+}
+```
+
 ## Release notes
 
 * **0.2.0**
