@@ -31,7 +31,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -40,13 +40,13 @@ Plus
 *Gradle*
 
 ```groovy
-testCompile("com.dimafeng:testcontainers-scala:0.2.0")
+testCompile("com.dimafeng:testcontainers-scala:0.3.0")
 ```
 
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" % "testcontainers-scala" % "0.2.0" % "test"
+libraryDependencies += "com.dimafeng" % "testcontainers-scala" % "0.3.0" % "test"
 ```
 
 ## Requirements
