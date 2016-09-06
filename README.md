@@ -10,6 +10,8 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 > TestContainers is a Java 8 library that supports JUnit tests, providing lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.
 
+Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-selenium/
+
 ## Why can't I use testcontainers-java in my scala project?
 
 *testcontainers-java* is awesome and yes, you can use it in scala project but:
