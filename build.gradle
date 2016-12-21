@@ -37,7 +37,7 @@ dependencies {
             "org.scalatest:scalatest_2.11:$scalaTestVersion",
             "org.testcontainers:mysql:$testcontainersVersion")
 
-    testCompile("junit:junit:4.11",
+    testCompile("junit:junit:4.12",
             "org.testcontainers:selenium:$testcontainersVersion",
             "mysql:mysql-connector-java:$mysqlConnectorVersion",
             "org.mockito:mockito-all:$mockitoVersion")
