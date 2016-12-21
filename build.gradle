@@ -34,10 +34,11 @@ dependencies {
             "org.seleniumhq.selenium:selenium-java:$seleniumVersion",
             "org.testcontainers:selenium:$testcontainersVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
-            "org.scalatest:scalatest_2.11:$scalaTestVersion",
+            "org.scalatest:scalatest_2.12:$scalaTestVersion",
             "org.testcontainers:mysql:$testcontainersVersion")
 
-    testCompile("junit:junit:4.11",
+    testCompile("junit:junit:4.12",
+            "org.scala-lang:scala-library:$scalaVersion",
             "org.testcontainers:selenium:$testcontainersVersion",
             "mysql:mysql-connector-java:$mysqlConnectorVersion",
             "org.mockito:mockito-all:$mockitoVersion")

@@ -4,7 +4,7 @@ import org.junit.runner.{Description, RunWith}
 import org.mockito.Matchers.any
 import org.mockito.{Matchers, Mockito}
 import org.mockito.Mockito.{times, verify}
-import org.scalatest.mock.MockitoSugar._
+import org.scalatest.mockito.MockitoSugar._
 import org.scalatest.{Reporter, Args, FlatSpec}
 import org.scalatest.junit.JUnitRunner
 import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
