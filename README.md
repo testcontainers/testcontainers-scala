@@ -224,6 +224,10 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.4.0**
+    * TestContainers `1.1.5` -> `1.1.7`
+    * Scala cross-building (2.11.* + 2.12.*)
+    
 * **0.3.0**
     * TestContainers `1.1.0` -> `1.1.5`
     * Start/Stop hooks
