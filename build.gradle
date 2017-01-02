@@ -24,21 +24,26 @@ apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 
+def scala = project.hasProperty("scala") ? project.getProperty("scala") : scalaVersion
+println("Run with scala: $scala")
+def scalaPostfix = scala.substring(0, scala.lastIndexOf("."))
+
+archivesBaseName = "testcontainers-scala_$scalaPostfix"
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     compile("org.testcontainers:testcontainers:$testcontainersVersion")
-    provided("org.scala-lang:scala-library:$scalaVersion",
+    provided("org.scala-lang:scala-library:$scala",
             "org.seleniumhq.selenium:selenium-java:$seleniumVersion",
             "org.testcontainers:selenium:$testcontainersVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
-            "org.scalatest:scalatest_2.12:$scalaTestVersion",
+            "org.scalatest:scalatest_$scalaPostfix:$scalaTestVersion",
             "org.testcontainers:mysql:$testcontainersVersion")
 
     testCompile("junit:junit:4.12",
-            "org.scala-lang:scala-library:$scalaVersion",
             "org.testcontainers:selenium:$testcontainersVersion",
             "mysql:mysql-connector-java:$mysqlConnectorVersion",
             "org.mockito:mockito-all:$mockitoVersion")
@@ -124,6 +129,3 @@ uploadArchives {
         }
     }
 }
-
-uploadArchives.dependsOn integrationTest
-afterReleaseBuild.dependsOn uploadArchives

@@ -30,25 +30,35 @@ Plus
 *Maven*
 
 ```xml
+<!-- Scala 2.11.* -->
 <dependency>
     <groupId>com.dimafeng</groupId>
-    <artifactId>testcontainers-scala</artifactId>
-    <version>0.3.0</version>
+    <artifactId>testcontainers-scala_2.11</artifactId>
+    <version>0.4.0</version>
     <scope>test</scope>
 </dependency>
 
+<!-- Scala 2.12.* -->
+<dependency>
+    <groupId>com.dimafeng</groupId>
+    <artifactId>testcontainers-scala_2.12</artifactId>
+    <version>0.4.0</version>
+    <scope>test</scope>
+</dependency>
 ```
 
 *Gradle*
 
 ```groovy
-testCompile("com.dimafeng:testcontainers-scala:0.3.0")
+testCompile("com.dimafeng:testcontainers-scala_2.11:0.4.0") // Scala 2.11.*
+testCompile("com.dimafeng:testcontainers-scala_2.12:0.4.0") // Scala 2.12.*
 ```
 
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" % "testcontainers-scala" % "0.3.0" % "test"
+libraryDependencies += "com.dimafeng" % "testcontainers-scala_2.11" % "0.4.0" % "test" // Scala 2.11.*
+libraryDependencies += "com.dimafeng" % "testcontainers-scala_2.12" % "0.4.0" % "test" // Scala 2.12.*
 ```
 
 ## Requirements
@@ -223,6 +233,10 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
     * Code refactoring
     * Scala wrappers for major container types
 
+## Publishing
+
+1. Check that `./publish.sh` contains all scala versions for publishing
+2. Run script `./publish.sh`
 
 ## License
 

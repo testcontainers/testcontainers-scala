@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+scalaVersions="2.11.8 2.12.1"
+
+for version in $scalaVersions
+do
+    printf "\n========Run tests for scala $version==========\n"
+    ./gradlew clean -Pscala=$version test integrationTest
+done
+
+./gradlew release
+
+for version in $scalaVersions
+do
+    printf "\n========Upload archives for scala $version==========\n"
+    ./gradlew clean -Pscala=$version uploadArchivers
+done
