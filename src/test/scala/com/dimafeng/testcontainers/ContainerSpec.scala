@@ -1,14 +1,16 @@
 package com.dimafeng.testcontainers
 
-import com.dimafeng.testcontainers.ContainerSpec._
-import org.junit.runner.Description
+import org.junit.runner.{Description, RunWith}
 import org.mockito.Matchers.any
-import org.mockito.Mockito
+import org.mockito.{Matchers, Mockito}
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.mockito.MockitoSugar._
-import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatest.{Reporter, Args, FlatSpec}
+import org.scalatest.junit.JUnitRunner
 import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
+import com.dimafeng.testcontainers.ContainerSpec._
 
+@RunWith(classOf[JUnitRunner])
 class ContainerSpec extends FlatSpec {
   behavior of "ForEachTestContainer"
 
