@@ -28,7 +28,7 @@ def scala = project.hasProperty("scala") ? project.getProperty("scala") : scalaV
 println("Run with scala: $scala")
 def scalaPostfix = scala.substring(0, scala.lastIndexOf("."))
 
-archivesBaseName = "testcontainers-scala_$scalaPostfix"
+def artifactId = "testcontainers-scala_$scalaPostfix"
 
 repositories {
     mavenCentral()
@@ -100,8 +100,10 @@ uploadArchives {
                 authentication(userName: ossrhUsernameValue, password: ossrhPasswordValue)
             }
 
+            pom.artifactId = artifactId
+
             pom.project {
-                name 'testcontainers-scala'
+                name artifactId
                 packaging 'jar'
                 description 'Scala wrapper for testcontainers-java'
                 url 'https://github.com/dimafeng/testcontainers-scala'
