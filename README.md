@@ -64,7 +64,7 @@ libraryDependencies += "com.dimafeng" % "testcontainers-scala_2.12" % "0.4.0" % 
 ## Requirements
 
 * JDK >= 1.8
-* [See 'Compatibility' section](http://testcontainers.viewdocs.io/testcontainers-java/)
+* [See 'Compatibility' section](https://www.testcontainers.org/compatibility.html)
 
 ## Quick Start
 
@@ -171,7 +171,7 @@ class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrow
 ```
 
 In this case, you'll obtain a clean instance of browser (firefox/chrome) within container to which
-a test will connect via remote-driver. See [Webdriver Containers](http://testcontainers.viewdocs.io/testcontainers-java/usage/webdriver_containers/)
+a test will connect via remote-driver. See [Webdriver Containers](https://www.testcontainers.org/usage/webdriver_containers.html)
 for more details.
 
 ### Mysql
