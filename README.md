@@ -57,8 +57,7 @@ testCompile("com.dimafeng:testcontainers-scala_2.12:0.4.0") // Scala 2.12.*
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" % "testcontainers-scala_2.11" % "0.4.0" % "test" // Scala 2.11.*
-libraryDependencies += "com.dimafeng" % "testcontainers-scala_2.12" % "0.4.0" % "test" // Scala 2.12.*
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.4.0" % "test"
 ```
 
 ## Requirements
