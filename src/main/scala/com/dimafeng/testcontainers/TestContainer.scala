@@ -149,7 +149,7 @@ class MultipleContainers[T <: Product] private(val _containers: T) extends Conta
 
   private def containersAsIterator = containers.productIterator.map(_.asInstanceOf[Container])
 
-  def containers = _containers
+  def containers: T = _containers
 
   override def finished()(implicit description: Description): Unit = containersAsIterator.foreach(_.finished()(description))
 
@@ -162,7 +162,7 @@ class MultipleContainers[T <: Product] private(val _containers: T) extends Conta
 
 object MultipleContainers {
   def apply[T <: Container](t: T) =
-    new MultipleContainers(new Tuple1(t))
+    new MultipleContainers(Tuple1(t))
 
   def apply[T1 <: Container, T2 <: Container](t1: T1, t2: T2) =
     new MultipleContainers((t1, t2))

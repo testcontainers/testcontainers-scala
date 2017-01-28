@@ -8,15 +8,15 @@ class MySQLContainer(configurationOverride: Option[String] = None) extends Singl
   override val container: OTCContainer = new OTCMySQLContainer()
   configurationOverride.foreach(container.withConfigurationOverride)
 
-  def driverClassName = container.getDriverClassName
+  def driverClassName: String = container.getDriverClassName
 
-  def jdbcUrl = container.getJdbcUrl
+  def jdbcUrl: String = container.getJdbcUrl
 
-  def password = container.getPassword
+  def password: String = container.getPassword
 
-  def testQueryString = container.getTestQueryString
+  def testQueryString: String = container.getTestQueryString
 
-  def username = container.getUsername
+  def username: String = container.getUsername
 }
 
 object MySQLContainer {

@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import java.io.File
+import java.net.URL
 
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.Suite
 import org.testcontainers.containers.BrowserWebDriverContainer
 
@@ -28,15 +29,15 @@ class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
   desiredCapabilities.foreach(container.withDesiredCapabilities)
   recordingMode.foreach(Function.tupled(container.withRecordingMode))
 
-  def password = container.getPassword
+  def password: String = container.getPassword
 
-  def port = container.getPort
+  def port: Int = container.getPort
 
-  def seleniumAddress = container.getSeleniumAddress
+  def seleniumAddress: URL = container.getSeleniumAddress
 
-  def vncAddress = container.getVncAddress
+  def vncAddress: String = container.getVncAddress
 
-  def webDriver = container.getWebDriver
+  def webDriver: RemoteWebDriver = container.getWebDriver
 }
 
 object SeleniumContainer {
