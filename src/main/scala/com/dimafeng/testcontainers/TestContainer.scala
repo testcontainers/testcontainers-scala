@@ -20,8 +20,8 @@ trait ForEachTestContainer extends SuiteMixin {
   abstract protected override def runTest(testName: String, args: Args): Status = {
     container.starting()
     try {
-      val status = super.runTest(testName, args)
       afterStart()
+      val status = super.runTest(testName, args)
       status match {
         case FailedStatus => container.failed(new RuntimeException(status.toString))
         case _ => container.succeeded()
