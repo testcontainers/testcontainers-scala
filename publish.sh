@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-scalaVersions="2.11.8 2.12.1"
+scalaVersions="2.11.8 2.12.3"
 
 for version in $scalaVersions
 do
