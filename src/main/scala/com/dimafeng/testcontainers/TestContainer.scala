@@ -5,8 +5,8 @@ import org.junit.runner.Description
 import org.scalatest._
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{GenericContainer => OTCGenericContainer, DockerComposeContainer => OTCDockerComposeContainer, MySQLContainer => OTCMySQLContainer, FailureDetectingExternalResource, BrowserWebDriverContainer, TestContainerAccessor}
-import org.testcontainers.shaded.com.github.dockerjava.api.command.InspectContainerResponse
-import org.testcontainers.shaded.com.github.dockerjava.api.model.Bind
+import com.github.dockerjava.api.command.InspectContainerResponse
+import com.github.dockerjava.api.model.Bind
 import scala.collection.JavaConverters._
 import scala.concurrent.Future
 
