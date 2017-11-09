@@ -41,11 +41,13 @@ dependencies {
             "org.testcontainers:selenium:$testcontainersVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
             "org.scalatest:scalatest_$scalaPostfix:$scalaTestVersion",
-            "org.testcontainers:mysql:$testcontainersVersion")
+            "org.testcontainers:mysql:$testcontainersVersion",
+            "org.testcontainers:postgresql:$testcontainersVersion")
 
     testCompile("junit:junit:4.12",
             "org.testcontainers:selenium:$testcontainersVersion",
             "mysql:mysql-connector-java:$mysqlConnectorVersion",
+            "org.postgresql:postgresql:$postgresqlDriverVersion",
             "org.mockito:mockito-all:$mockitoVersion")
 }
 

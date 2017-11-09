@@ -190,6 +190,23 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 }
 ```
 
+### PostgreSQL
+
+Requires you to add [this dependency](https://mvnrepository.com/artifact/org.testcontainers/postgresql)
+
+```scala
+class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
+
+  override val container = PostgreSQLContainer()
+
+  "PostgreSQL container" should "be started" in {
+    Class.forName(container.driverClassName)
+    val connection = DriverManager.getConnection(container.jdbcUrl, container.username, container.password)
+      ...
+  }
+}
+```
+
 ### Multiple Containers
 
 ```scala
