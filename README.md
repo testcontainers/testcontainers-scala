@@ -240,6 +240,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.8.0**
+    * PostgreSQL container
+
 * **0.7.0**
     * TestContainers `1.2.1` -> `1.4.2`
 
