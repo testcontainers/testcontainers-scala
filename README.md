@@ -34,7 +34,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.11</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -42,7 +42,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.12</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -50,14 +50,14 @@ Plus
 *Gradle*
 
 ```groovy
-testCompile("com.dimafeng:testcontainers-scala_2.11:0.7.0") // Scala 2.11.*
-testCompile("com.dimafeng:testcontainers-scala_2.12:0.7.0") // Scala 2.12.*
+testCompile("com.dimafeng:testcontainers-scala_2.11:0.8.0") // Scala 2.11.*
+testCompile("com.dimafeng:testcontainers-scala_2.12:0.8.0") // Scala 2.12.*
 ```
 
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.7.0" % "test"
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.8.0" % "test"
 ```
 
 ## Requirements
