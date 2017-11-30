@@ -97,11 +97,11 @@ class DockerComposeContainer(composeFiles: Seq[File], exposedService: Map[String
 }
 
 object DockerComposeContainer {
-  def apply(composeFile: File, exposedService: Map[String, Int] = Map()): DockerComposeContainer =
-    apply(Seq(composeFile), exposedService)
-
-  def apply(composeFiles: Seq[File], exposedService: Map[String, Int] = Map()): DockerComposeContainer =
+  def apply(exposedService: Map[String, Int], composeFiles: File*): DockerComposeContainer =
     new DockerComposeContainer(composeFiles, exposedService)
+
+  def apply(composeFile: File, exposedService: Map[String, Int] = Map()): DockerComposeContainer =
+    apply(exposedService, composeFile)
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
