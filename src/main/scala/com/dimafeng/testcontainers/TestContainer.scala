@@ -85,10 +85,10 @@ sealed trait Container {
   def succeeded()(implicit description: Description): Unit
 }
 
-class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int] = Map()) extends TestContainerProxy[OTCDockerComposeContainer[_]] {
+class DockerComposeContainer(composeFiles: Seq[File], exposedService: Map[String, Int] = Map()) extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
   type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
-  override val container: OTCContainer = new OTCDockerComposeContainer(composeFile)
+  override val container: OTCContainer = new OTCDockerComposeContainer(composeFiles.asJava)
   exposedService.foreach(Function.tupled(container.withExposedService))
 
   def getServiceHost = container.getServiceHost _
@@ -97,7 +97,11 @@ class DockerComposeContainer(composeFile: File, exposedService: Map[String, Int]
 }
 
 object DockerComposeContainer {
-  def apply(composeFile: File, exposedService: Map[String, Int] = Map()) = new DockerComposeContainer(composeFile, exposedService)
+  def apply(composeFile: File, exposedService: Map[String, Int] = Map()): DockerComposeContainer =
+    apply(Seq(composeFile), exposedService)
+
+  def apply(composeFiles: Seq[File], exposedService: Map[String, Int] = Map()): DockerComposeContainer =
+    new DockerComposeContainer(composeFiles, exposedService)
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
