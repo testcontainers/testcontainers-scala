@@ -59,16 +59,20 @@ trait ForAllTestContainer extends SuiteMixin {
   implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
 
   abstract override def run(testName: Option[String], args: Args): Status = {
-    container.starting()
-    afterStart()
-    try {
-      super.run(testName, args)
-    } finally {
+    if (expectedTestCount(args.filter) == 0) {
+      new CompositeStatus(Set.empty)
+    } else {
+      container.starting()
+      afterStart()
       try {
-        beforeStop()
-      }
-      finally {
-        container.finished()
+        super.run(testName, args)
+      } finally {
+        try {
+          beforeStop()
+        }
+        finally {
+          container.finished()
+        }
       }
     }
   }
