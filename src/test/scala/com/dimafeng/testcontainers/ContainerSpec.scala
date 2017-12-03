@@ -91,6 +91,14 @@ class ContainerSpec extends FlatSpec {
     verify(specForAll).afterStart()
     verify(specForAll).beforeStop()
   }
+
+  it should "not start container if all tests are ignored" in {
+    val container = Mockito.mock(classOf[SampleOTCContainer])
+    val specForAll = Mockito.spy(new TestSpecWithAllIgnored({}, new SampleContainer(container)))
+    specForAll.run(None, Args(mock[Reporter]))
+
+    verify(container, Mockito.never()).starting(any())
+  }
 }
 
 object ContainerSpec {
@@ -111,6 +119,14 @@ object ContainerSpec {
     }
 
     it should "test2" in {
+      testBody
+    }
+  }
+
+  private class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+    override val container = _container
+
+    it should "test" ignore {
       testBody
     }
   }
