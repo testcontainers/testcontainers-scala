@@ -63,8 +63,8 @@ trait ForAllTestContainer extends SuiteMixin {
       new CompositeStatus(Set.empty)
     } else {
       container.starting()
-      afterStart()
       try {
+        afterStart()
         super.run(testName, args)
       } finally {
         try {
