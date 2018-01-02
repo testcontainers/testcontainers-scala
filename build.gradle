@@ -10,7 +10,7 @@ buildscript {
 
 plugins {
     id 'nebula.provided-base' version '3.0.3'
-    id 'net.researchgate.release' version '2.4.0'
+    id 'net.researchgate.release' version '2.6.0'
 }
 
 group 'com.dimafeng'
@@ -108,12 +108,12 @@ uploadArchives {
                 name artifactId
                 packaging 'jar'
                 description 'Scala wrapper for testcontainers-java'
-                url 'https://github.com/dimafeng/testcontainers-scala'
+                url 'https://github.com/testcontainers/testcontainers-scala'
 
                 scm {
-                    connection 'scm:git:git@github.com:dimafeng/testcontainers-scala.git'
-                    developerConnection 'scm:git:git@github.com:dimafeng/testcontainers-scala.git'
-                    url 'git@github.com:dimafeng/testcontainers-scala.git'
+                    connection 'scm:git:git@github.com:testcontainers/testcontainers-scala.git'
+                    developerConnection 'scm:git:git@github.com:testcontainers/testcontainers-scala.git'
+                    url 'git@github.com:testcontainers/testcontainers-scala.git'
                 }
 
                 licenses {
