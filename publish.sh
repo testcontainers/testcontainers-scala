@@ -6,6 +6,9 @@ if [ version != "y" ]; then
    fileTail=$(tail -n +2 gradle.properties)
    echo "version = $version" > gradle.properties
    echo "${fileTail}" >> gradle.properties
+   git add gradle.properties
+   git commit -m "Publish script: Version update"
+   git push
 fi
 
 scalaVersions="2.11.8 2.12.3"
