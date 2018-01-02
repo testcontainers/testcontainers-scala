@@ -34,7 +34,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.11</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -42,7 +42,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.12</artifactId>
-    <version>0.12.0</version>
+    <version>0.13.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -50,14 +50,14 @@ Plus
 *Gradle*
 
 ```groovy
-testCompile("com.dimafeng:testcontainers-scala_2.11:0.12.0") // Scala 2.11.*
-testCompile("com.dimafeng:testcontainers-scala_2.12:0.12.0") // Scala 2.12.*
+testCompile("com.dimafeng:testcontainers-scala_2.11:0.13.0") // Scala 2.11.*
+testCompile("com.dimafeng:testcontainers-scala_2.12:0.13.0") // Scala 2.12.*
 ```
 
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.12.0" % "test"
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.13.0" % "test"
 ```
 
 ## Requirements
@@ -239,6 +239,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 ```
 
 ## Release notes
+
+* **0.13.0**
+    * TestContainers `1.4.3` -> `1.5.1`
 
 * **0.12.0**
     * Improvement: `afterStart` hook now handles exceptions correctly
