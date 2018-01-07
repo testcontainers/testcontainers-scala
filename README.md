@@ -242,6 +242,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 * **0.13.0**
     * TestContainers `1.4.3` -> `1.5.1`
+    * Scala 2.10 support
 
 * **0.12.0**
     * Improvement: `afterStart` hook now handles exceptions correctly
