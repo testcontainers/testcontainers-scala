@@ -36,6 +36,7 @@ repositories {
 
 dependencies {
     compile("org.testcontainers:testcontainers:$testcontainersVersion")
+    compile("com.chuusai:shapeless_$scalaPostfix:$shapelessVersion")
     provided("org.scala-lang:scala-library:$scala",
             "org.seleniumhq.selenium:selenium-java:$seleniumVersion",
             "org.testcontainers:selenium:$testcontainersVersion",

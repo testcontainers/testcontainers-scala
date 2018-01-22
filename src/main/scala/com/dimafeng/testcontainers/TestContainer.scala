@@ -82,7 +82,7 @@ trait ForAllTestContainer extends SuiteMixin {
   def beforeStop(): Unit = {}
 }
 
-sealed trait Container {
+trait Container {
   def finished()(implicit description: Description): Unit
 
   def failed(e: Throwable)(implicit description: Description): Unit
@@ -156,36 +156,4 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
   def mappedPort(port: Int): Int = container.getMappedPort(port)
 
   def portBindings: Seq[String] = container.getPortBindings.asScala
-}
-
-class MultipleContainers[T <: Product] private(val _containers: T) extends Container {
-
-  private def containersAsIterator = containers.productIterator.map(_.asInstanceOf[Container])
-
-  def containers: T = _containers
-
-  override def finished()(implicit description: Description): Unit = containersAsIterator.foreach(_.finished()(description))
-
-  override def succeeded()(implicit description: Description): Unit = containersAsIterator.foreach(_.succeeded()(description))
-
-  override def starting()(implicit description: Description): Unit = containersAsIterator.foreach(_.starting()(description))
-
-  override def failed(e: Throwable)(implicit description: Description): Unit = containersAsIterator.foreach(_.failed(e)(description))
-}
-
-object MultipleContainers {
-  def apply[T <: Container](t: T) =
-    new MultipleContainers(Tuple1(t))
-
-  def apply[T1 <: Container, T2 <: Container](t1: T1, t2: T2) =
-    new MultipleContainers((t1, t2))
-
-  def apply[T1 <: Container, T2 <: Container, T3 <: Container](t1: T1, t2: T2, t3: T3) =
-    new MultipleContainers((t1, t2, t3))
-
-  def apply[T1 <: Container, T2 <: Container, T3 <: Container, T4 <: Container](t1: T1, t2: T2, t3: T3, t4: T4) =
-    new MultipleContainers((t1, t2, t3, t4))
-
-  def apply[T1 <: Container, T2 <: Container, T3 <: Container, T4 <: Container, T5 <: Container](t1: T1, t2: T2, t3: T3, t4: T4, t5: T5) =
-    new MultipleContainers((t1, t2, t3, t4, t5))
 }
