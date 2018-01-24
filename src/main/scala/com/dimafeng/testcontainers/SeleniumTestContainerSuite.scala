@@ -21,7 +21,9 @@ trait SeleniumTestContainerSuite extends ForEachTestContainer {
 }
 
 class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
-                        recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None) extends SingleContainer[BrowserWebDriverContainer[_]] {
+                        recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None)(
+  implicit testContainersContext: TestContainersContext
+) extends SingleContainer[BrowserWebDriverContainer[_]]() {
   require(desiredCapabilities.isDefined, "'desiredCapabilities' is required parameter")
 
   type OTCContainer = BrowserWebDriverContainer[T] forSome {type T <: BrowserWebDriverContainer[T]}
@@ -41,6 +43,9 @@ class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
 }
 
 object SeleniumContainer {
-  def apply(desiredCapabilities: DesiredCapabilities = null, recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null) =
+  def apply(
+    desiredCapabilities: DesiredCapabilities = null,
+    recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null
+  )(implicit testContainersContext: TestContainersContext) =
     new SeleniumContainer(Option(desiredCapabilities), Option(recordingMode))
 }

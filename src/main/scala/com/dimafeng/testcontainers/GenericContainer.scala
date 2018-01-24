@@ -9,7 +9,8 @@ class GenericContainer(imageName: String,
                        command: Seq[String] = Seq(),
                        classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
                        waitStrategy: Option[WaitStrategy] = None
-                      ) extends SingleContainer[OTCGenericContainer[_]] {
+                      )(implicit testContainersContext: TestContainersContext)
+  extends SingleContainer[OTCGenericContainer[_]]() {
 
   type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCGenericContainer[T]}
   override implicit val container: OTCContainer = new OTCGenericContainer(imageName)
@@ -31,6 +32,6 @@ object GenericContainer {
             env: Map[String, String] = Map(),
             command: Seq[String] = Seq(),
             classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-            waitStrategy: WaitStrategy = null) =
+            waitStrategy: WaitStrategy = null)(implicit testContainersContext: TestContainersContext) =
     new GenericContainer(imageName, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy))
 }

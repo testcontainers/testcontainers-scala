@@ -2,7 +2,9 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PostgreSQLContainer => OTCPostgreSQLContainer}
 
-class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None) extends SingleContainer[OTCPostgreSQLContainer[_]] {
+class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None)(
+  implicit testContainersContext: TestContainersContext
+) extends SingleContainer[OTCPostgreSQLContainer[_]]() {
 
   type OTCContainer = OTCPostgreSQLContainer[T] forSome {type T <: OTCPostgreSQLContainer[T]}
 
@@ -27,5 +29,6 @@ class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None) extend
 }
 
 object PostgreSQLContainer {
-  def apply(dockerImageNameOverride: String = null): PostgreSQLContainer = new PostgreSQLContainer(Option(dockerImageNameOverride))
+  def apply(dockerImageNameOverride: String = null)(implicit testContainersContext: TestContainersContext): PostgreSQLContainer =
+    new PostgreSQLContainer(Option(dockerImageNameOverride))
 }

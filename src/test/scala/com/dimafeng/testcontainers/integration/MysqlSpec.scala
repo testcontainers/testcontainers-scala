@@ -10,7 +10,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer()
+  val container = MySQLContainer()
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)
