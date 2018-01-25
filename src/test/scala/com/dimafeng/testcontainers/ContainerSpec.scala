@@ -10,12 +10,16 @@ import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
 
 class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
+  behavior of "Single Container inside suite"
+
   it should "call all appropriate methods of the container" in {
-    val container = mock[SampleOTCContainer]
+    val container= mock[SampleOTCContainer]
 
     new TestSpec({
       assert(1 == 1)
-    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
+    }) {
+      new SampleContainer(container)
+    }.run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container, times(0)).failed(any(), any())
@@ -28,7 +32,9 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
     new TestSpec({
       assert(1 == 2)
-    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
+    }) {
+      new SampleContainer(container)
+    }.run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container).failed(any(), any())
@@ -41,7 +47,9 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
     new MultipleTestsSpec({
       assert(1 == 1)
-    }, new SampleContainer(container)).run(None, Args(mock[Reporter]))
+    }) {
+      new SampleContainer(container)
+    }.run(None, Args(mock[Reporter]))
 
     verify(container).starting(any())
     verify(container, times(0)).failed(any(), any())
@@ -49,30 +57,42 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
     verify(container, times(0)).succeeded(any())
   }
 
-  it should "call afterStart() and beforeStop()" in {
+  it should "call afterStart() and beforeStop() in ForEachTestContainer" in {
     val container = mock[SampleOTCContainer]
 
-    // ForEach
-    val specForEach = Mockito.spy(new TestSpec({}, new SampleContainer(container)))
+    class TestSpecForMock extends TestSpec({}) {
+      new SampleContainer(container)
+    }
+
+    val specForEach = Mockito.spy(new TestSpecForMock)
     specForEach.run(None, Args(mock[Reporter]))
 
     verify(specForEach).afterStart()
     verify(specForEach).beforeStop()
+  }
 
-    // ForAll
+  it should "call afterStart() and beforeStop() in ForAllTestContainer" in {
+    val container = mock[SampleOTCContainer]
 
-    val specForAll = Mockito.spy(new MultipleTestsSpec({}, new SampleContainer(container)))
+    class MultipleTestsSpecForMock extends MultipleTestsSpec({}) {
+      new SampleContainer(container)
+    }
+
+    val specForAll = Mockito.spy(new MultipleTestsSpecForMock)
     specForAll.run(None, Args(mock[Reporter]))
 
     verify(specForAll).afterStart()
     verify(specForAll).beforeStop()
   }
 
-  it should "call beforeStop() and stop container if error thrown in afterStart()" in {
+  it should "call beforeStop() and stop container if error thrown in afterStart() in ForEachTestContainer" in {
     val container = mock[SampleOTCContainer]
 
-    // ForEach
-    val specForEach = Mockito.spy(new TestSpecWithFailedAfterStart({}, new SampleContainer(container)))
+    class TestSpecWithFailedAfterStartForMock extends TestSpecWithFailedAfterStart({}) {
+      new SampleContainer(container)
+    }
+
+    val specForEach = Mockito.spy(new TestSpecWithFailedAfterStartForMock)
     intercept[RuntimeException] {
       specForEach.run(None, Args(mock[Reporter]))
     }
@@ -82,22 +102,34 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
     verify(specForEach).beforeStop()
     verify(container).finished(any())
     verify(container, times(0)).succeeded(any())
+  }
 
-    // ForAll
-    val specForAll = Mockito.spy(new MultipleTestsSpecWithFailedAfterStart({}, new SampleContainer(container)))
+  it should "call beforeStop() and stop container if error thrown in afterStart() in ForAllTestContainer" in {
+    val container = mock[SampleOTCContainer]
+
+    class MultipleTestsSpecWithFailedAfterStartForMock extends MultipleTestsSpecWithFailedAfterStart({println("TEST!")}) {
+      new SampleContainer(container)
+    }
+
+    val specForAll = Mockito.spy(new MultipleTestsSpecWithFailedAfterStartForMock)
     intercept[RuntimeException] {
       specForAll.run(None, Args(mock[Reporter]))
     }
-    verify(container, times(2)).starting(any())
+    verify(container, times(1)).starting(any())
     verify(specForAll).afterStart()
     verify(specForAll).beforeStop()
-    verify(container, times(2)).finished(any())
+    verify(container, times(1)).finished(any())
     verify(container, times(0)).succeeded(any())
   }
 
   it should "not start container if all tests are ignored" in {
     val container = mock[SampleOTCContainer]
-    val specForAll = Mockito.spy(new TestSpecWithAllIgnored({}, new SampleContainer(container)))
+
+    class TestSpecWithAllIgnoredForMock extends TestSpecWithAllIgnored({}) {
+      new SampleContainer(container)
+    }
+
+    val specForAll = Mockito.spy(new TestSpecWithAllIgnoredForMock)
     specForAll.run(None, Args(mock[Reporter]))
 
     verify(container, Mockito.never()).starting(any())
@@ -106,16 +138,13 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
 object ContainerSpec {
 
-  class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
-    override val container = _container
-
+  class TestSpec(testBody: => Unit) extends FlatSpec with ForEachTestContainer {
     it should "test" in {
       testBody
     }
   }
 
-  class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
-    override val container = _container
+  class TestSpecWithFailedAfterStart(testBody: => Unit) extends FlatSpec with ForEachTestContainer {
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
     it should "test" in {
@@ -123,8 +152,7 @@ object ContainerSpec {
     }
   }
 
-  class MultipleTestsSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
-    override val container = _container
+  class MultipleTestsSpec(testBody: => Unit) extends FlatSpec with ForAllTestContainer {
 
     it should "test1" in {
       testBody
@@ -135,8 +163,7 @@ object ContainerSpec {
     }
   }
 
-  class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
-    override val container = _container
+  class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit) extends FlatSpec with ForAllTestContainer {
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
     it should "test1" in {
@@ -148,9 +175,7 @@ object ContainerSpec {
     }
   }
 
-  class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
-    override val container = _container
-
+  class TestSpecWithAllIgnored(testBody: => Unit) extends FlatSpec with ForAllTestContainer {
     it should "test" ignore {
       testBody
     }
@@ -166,7 +191,8 @@ object ContainerSpec {
     override def succeeded(description: Description): Unit = { println("succeeded") }
   }
 
-  class SampleContainer(sampleOTCContainer: SampleOTCContainer) extends SingleContainer[SampleOTCContainer] {
+  class SampleContainer(sampleOTCContainer: SampleOTCContainer)(implicit testContainersContext: TestContainersContext)
+    extends SingleContainer[SampleOTCContainer] {
     override implicit val container: SampleOTCContainer = sampleOTCContainer
   }
 }

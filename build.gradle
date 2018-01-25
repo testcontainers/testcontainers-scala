@@ -36,7 +36,6 @@ repositories {
 
 dependencies {
     compile("org.testcontainers:testcontainers:$testcontainersVersion")
-    compile("com.chuusai:shapeless_$scalaPostfix:$shapelessVersion")
     provided("org.scala-lang:scala-library:$scala",
             "org.seleniumhq.selenium:selenium-java:$seleniumVersion",
             "org.testcontainers:selenium:$testcontainersVersion",
@@ -59,6 +58,8 @@ test {
 task integrationTest(type: Test) {
     include 'com/dimafeng/testcontainers/integration/**'
 }
+
+check.dependsOn(integrationTest)
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'

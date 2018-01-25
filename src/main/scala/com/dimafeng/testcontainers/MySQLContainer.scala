@@ -2,7 +2,9 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MySQLContainer => OTCMySQLContainer}
 
-class MySQLContainer(configurationOverride: Option[String] = None) extends SingleContainer[OTCMySQLContainer[_]] {
+class MySQLContainer(configurationOverride: Option[String] = None)(
+  implicit testContainersContext: TestContainersContext
+) extends SingleContainer[OTCMySQLContainer[_]]() {
 
   type OTCContainer = OTCMySQLContainer[T] forSome {type T <: OTCMySQLContainer[T]}
   override val container: OTCContainer = new OTCMySQLContainer()
@@ -20,5 +22,6 @@ class MySQLContainer(configurationOverride: Option[String] = None) extends Singl
 }
 
 object MySQLContainer {
-  def apply(configurationOverride: String = null) = new MySQLContainer(Option(configurationOverride))
+  def apply(configurationOverride: String = null)(implicit testContainersContext: TestContainersContext) =
+    new MySQLContainer(Option(configurationOverride))
 }
