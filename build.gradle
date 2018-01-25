@@ -59,6 +59,8 @@ task integrationTest(type: Test) {
     include 'com/dimafeng/testcontainers/integration/**'
 }
 
+check.dependsOn(integrationTest)
+
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource

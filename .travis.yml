@@ -13,5 +13,3 @@ branches:
 cache:
   directories:
   - $HOME/.gradle
-
-# TODO: where is the tests?
