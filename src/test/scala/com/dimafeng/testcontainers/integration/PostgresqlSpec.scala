@@ -7,7 +7,6 @@ import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.junit.JUnitRunner
 
-@RunWith(classOf[JUnitRunner])
 class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
 
   override val container = PostgreSQLContainer()

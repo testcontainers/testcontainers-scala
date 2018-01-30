@@ -10,7 +10,6 @@ import org.testcontainers.containers.wait.Wait
 
 import scala.io.Source
 
-@RunWith(classOf[JUnitRunner])
 class GenericContainerSpec extends FlatSpec with ForAllTestContainer {
   override val container = GenericContainer("nginx:latest",
     exposedPorts = Seq(80),

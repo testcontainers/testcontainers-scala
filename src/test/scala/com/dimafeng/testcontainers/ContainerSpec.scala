@@ -106,7 +106,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
 object ContainerSpec {
 
-  class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+  protected class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
     override val container = _container
 
     it should "test" in {
@@ -114,7 +114,7 @@ object ContainerSpec {
     }
   }
 
-  class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+  protected class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
     override val container = _container
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
@@ -123,7 +123,7 @@ object ContainerSpec {
     }
   }
 
-  class MultipleTestsSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class MultipleTestsSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
     override val container = _container
 
     it should "test1" in {
@@ -135,7 +135,7 @@ object ContainerSpec {
     }
   }
 
-  class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
     override val container = _container
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
@@ -148,7 +148,7 @@ object ContainerSpec {
     }
   }
 
-  class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
     override val container = _container
 
     it should "test" ignore {

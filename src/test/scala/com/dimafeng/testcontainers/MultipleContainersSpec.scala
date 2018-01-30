@@ -1,12 +1,12 @@
 package com.dimafeng.testcontainers
 
-import com.dimafeng.testcontainers.ContainerSpec.{SampleContainer, SampleOTCContainer, TestSpec}
-import com.dimafeng.testcontainers.MultipleContainersSpec.{ExampleContainerWithVariable, InitializableContainer}
+import com.dimafeng.testcontainers.ContainerSpec.{SampleContainer, SampleOTCContainer}
+import com.dimafeng.testcontainers.MultipleContainersSpec.{ExampleContainerWithVariable, InitializableContainer, TestSpec}
 import org.junit.runner.Description
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.mockito.MockitoSugar
-import org.scalatest.{Args, Reporter}
+import org.scalatest.{Args, FlatSpec, Reporter}
 
 class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
   it should "call all expected methods of the multiple containers" in {
@@ -95,4 +95,13 @@ object MultipleContainersSpec {
   class ExampleContainerWithVariable(val variable: String) extends SingleContainer[SampleOTCContainer] with MockitoSugar {
     override implicit val container: SampleOTCContainer = mock[SampleOTCContainer]
   }
+
+  protected class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+    override val container = _container
+
+    it should "test" in {
+      testBody
+    }
+  }
+
 }
