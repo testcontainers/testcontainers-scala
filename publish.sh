@@ -11,7 +11,7 @@ if [ version != "y" ]; then
    git push
 fi
 
-scalaVersions="2.11.8 2.12.3"
+scalaVersions="2.10.7 2.11.8 2.12.3"
 
 for version in $scalaVersions
 do
