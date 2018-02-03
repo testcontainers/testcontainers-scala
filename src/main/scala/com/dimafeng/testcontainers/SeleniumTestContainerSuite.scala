@@ -13,15 +13,17 @@ trait SeleniumTestContainerSuite extends ForEachTestContainer {
   self: Suite =>
 
   def desiredCapabilities: DesiredCapabilities
+
   def recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null
 
-  val container  = SeleniumContainer(desiredCapabilities, recordingMode)
+  val container = SeleniumContainer(desiredCapabilities, recordingMode)
 
   implicit def webDriver: WebDriver = container.webDriver
 }
 
 class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
-                        recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None) extends SingleContainer[BrowserWebDriverContainer[_]] {
+                        recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None)
+  extends SingleContainer[BrowserWebDriverContainer[_]] {
   require(desiredCapabilities.isDefined, "'desiredCapabilities' is required parameter")
 
   type OTCContainer = BrowserWebDriverContainer[T] forSome {type T <: BrowserWebDriverContainer[T]}
@@ -41,6 +43,6 @@ class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
 }
 
 object SeleniumContainer {
-  def apply(desiredCapabilities: DesiredCapabilities = null, recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null) =
+  def apply(desiredCapabilities: DesiredCapabilities = null, recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null): SeleniumContainer =
     new SeleniumContainer(Option(desiredCapabilities), Option(recordingMode))
 }

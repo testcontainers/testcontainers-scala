@@ -31,6 +31,6 @@ object GenericContainer {
             env: Map[String, String] = Map(),
             command: Seq[String] = Seq(),
             classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-            waitStrategy: WaitStrategy = null) =
+            waitStrategy: WaitStrategy = null): GenericContainer =
     new GenericContainer(imageName, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy))
 }

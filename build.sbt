@@ -9,6 +9,8 @@ val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "1.10.19"
 val shapelessVersion = "2.3.3"
 
+lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
+
 lazy val root = (project in file("."))
   .settings(
     organization in ThisBuild := "com.dimafeng",
@@ -16,6 +18,8 @@ lazy val root = (project in file("."))
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
     name := "testcontainers-scala",
     releaseCrossBuild := true,
+    compileScalastyle := scalastyle.in(Compile).toTask("").value,
+    test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
     /**
       * Dependencies
       */

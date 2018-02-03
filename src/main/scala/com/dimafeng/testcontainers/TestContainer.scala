@@ -7,7 +7,9 @@ import com.github.dockerjava.api.model.Bind
 import org.junit.runner.Description
 import org.scalatest._
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{FailureDetectingExternalResource, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer, MySQLContainer => OTCMySQLContainer}
+import org.testcontainers.containers.{
+FailureDetectingExternalResource, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer
+}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
@@ -92,25 +94,28 @@ trait Container {
   def succeeded()(implicit description: Description): Unit
 }
 
-class DockerComposeContainer(composeFiles: Seq[File], exposedService: Map[String, Int] = Map(), identifier: String) extends TestContainerProxy[OTCDockerComposeContainer[_]] {
+class DockerComposeContainer(composeFiles: Seq[File], exposedService: Map[String, Int] = Map(), identifier: String)
+  extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
   type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
   override val container: OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles.asJava)
   exposedService.foreach(Function.tupled(container.withExposedService))
 
-  def getServiceHost = container.getServiceHost _
+  def getServiceHost(serviceName: String, servicePort: Int): String = container.getServiceHost(serviceName, servicePort)
 
-  def getServicePort = container.getServicePort _
+  def getServicePort(serviceName: String, servicePort: Int): Int = container.getServicePort(serviceName, servicePort)
 }
 
 object DockerComposeContainer {
+  val ID_LENGTH = 6
+
   def apply(composeFiles: Seq[File],
             exposedService: Map[String, Int],
             identifier: String): DockerComposeContainer =
     new DockerComposeContainer(composeFiles, exposedService, identifier)
 
   def apply(composeFile: File, exposedService: Map[String, Int] = Map()): DockerComposeContainer =
-    apply(Seq(composeFile), exposedService, Base58.randomString(6).toLowerCase())
+    apply(Seq(composeFile), exposedService, Base58.randomString(ID_LENGTH).toLowerCase())
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {

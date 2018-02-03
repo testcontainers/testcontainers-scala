@@ -35,7 +35,7 @@ object MultipleContainers {
     *      val containers = MultipleContainers(LazyContainer(pgContainer), LazyContainer(appContainer))
     *  }}}
     */
-  def apply[P <: Product, L <: HList](p: P)(implicit gen: Generic.Aux[P, L], ev: ToTraversable.Aux[L, List, Any]) =
+  def apply[P <: Product, L <: HList](p: P)(implicit gen: Generic.Aux[P, L], ev: ToTraversable.Aux[L, List, Any]): MultipleContainers[L] =
     new MultipleContainers[L](gen.to(p))
 }
 

@@ -20,5 +20,5 @@ class MySQLContainer(configurationOverride: Option[String] = None) extends Singl
 }
 
 object MySQLContainer {
-  def apply(configurationOverride: String = null) = new MySQLContainer(Option(configurationOverride))
+  def apply(configurationOverride: String = null): MySQLContainer = new MySQLContainer(Option(configurationOverride))
 }
