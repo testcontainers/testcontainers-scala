@@ -1,6 +1,6 @@
 import Dependencies._
 
-val testcontainersVersion = "1.5.1"
+val testcontainersVersion = "1.6.0"
 val seleniumVersion = "2.53.0"
 val slf4jVersion = "1.7.21"
 val scalaTestVersion = "3.0.1"
