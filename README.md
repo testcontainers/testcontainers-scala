@@ -190,6 +190,23 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 }
 ```
 
+The container can also be customized using the constructor parameters, this snippet will initialize a docker container from a specific docker image, with a specific schema name and specific username/password
+```scala
+class MysqlSpec extends FlatSpec with ForAllTestContainer {
+
+  override val container = MySQLContainer(mysqlImageVersion = "mysql:5.7.18",
+                                          databaseName = "testcontainer-scala",
+                                          username = "scala",
+                                          password = "scala")
+
+  "Mysql container" should "be started" in {
+    Class.forName(container.driverClassName)
+    val connection = DriverManager.getConnection(container.jdbcUrl, container.username, container.password)
+      ...
+  }
+}
+```
+
 ### PostgreSQL
 
 Requires you to add [this dependency](https://mvnrepository.com/artifact/org.testcontainers/postgresql)
