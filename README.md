@@ -190,7 +190,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 }
 ```
 
-Can also be customized using the constructor parameters, this snippet will initialize a docker container from a specific docker image, with a specific schema name and specific username/password
+The container can also be customized using the constructor parameters, this snippet will initialize a docker container from a specific docker image, with a specific schema name and specific username/password
 ```scala
 class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
