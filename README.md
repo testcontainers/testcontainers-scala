@@ -305,8 +305,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Publishing
 
-1. Check that `./publish.sh` contains all scala versions for publishing
-2. Run script `./publish.sh`
+`$ sbt release cross`
 
 ## License
 
