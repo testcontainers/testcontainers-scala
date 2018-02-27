@@ -63,7 +63,7 @@ lazy val root = (project in file("."))
       "dimafeng",
       None,
       Some(ScmInfo(url("https://github.com/testcontainers/testcontainers-scala"), "git@github.com:testcontainers/testcontainers-scala.git")),
-      Vector()
+      Vector(Developer("", "Dmitry Fedosov", "dimafeng@gmail.com", url("http://dimafeng.com")))
     ),
     developers := List(
       Developer("dimafeng", "Dmitry Fedosov", "dimafeng@gmail.com", url("https://github.com/dimafeng"))
