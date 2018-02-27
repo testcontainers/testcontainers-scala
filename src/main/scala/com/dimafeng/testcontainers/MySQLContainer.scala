@@ -8,10 +8,6 @@ class MySQLContainer(configurationOverride: Option[String] = None,
                      mysqlUsername: Option[String] = None,
                      mysqlPassword: Option[String] = None)
     extends SingleContainer[OTCMySQLContainer[_]] {
-  /*
-  def this(configurationOverride: Option[String] = None) {
-    this(configurationOverride, None, None)
-  }*/
 
   type OTCContainer = OTCMySQLContainer[T] forSome {
     type T <: OTCMySQLContainer[T]
