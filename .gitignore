@@ -2,5 +2,5 @@
 build/
 *.iml
 out
-project/target/
+target/
 project/project/
