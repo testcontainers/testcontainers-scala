@@ -54,7 +54,17 @@ lazy val root = (project in file("."))
       else
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
-    scmInfo := Some(ScmInfo(url("https://github.com/testcontainers/testcontainers-scala"), "git@github.com:testcontainers/testcontainers-scala.git")),
+    projectInfo := ModuleInfo(
+      "testcontainers-scala",
+      "Docker containers for testing in scala ",
+      Some(url("https://github.com/testcontainers/testcontainers-scala")),
+      Some(2016),
+      Vector(("MIT", url("https://github.com/testcontainers/testcontainers-scala/blob/master/LICENSE"))),
+      "dimafeng",
+      None,
+      Some(ScmInfo(url("https://github.com/testcontainers/testcontainers-scala"), "git@github.com:testcontainers/testcontainers-scala.git")),
+      Vector()
+    ),
     developers := List(
       Developer("dimafeng", "Dmitry Fedosov", "dimafeng@gmail.com", url("https://github.com/dimafeng"))
     ),
