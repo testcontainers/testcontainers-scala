@@ -3,3 +3,4 @@ build/
 *.iml
 out
 project/target/
+project/project/
