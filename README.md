@@ -34,7 +34,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.11</artifactId>
-    <version>0.14.0</version>
+    <version>0.15.0</version>
     <scope>test</scope>
 </dependency>
 
@@ -42,7 +42,7 @@ Plus
 <dependency>
     <groupId>com.dimafeng</groupId>
     <artifactId>testcontainers-scala_2.12</artifactId>
-    <version>0.14.0</version>
+    <version>0.15.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -50,14 +50,14 @@ Plus
 *Gradle*
 
 ```groovy
-testCompile("com.dimafeng:testcontainers-scala_2.11:0.14.0") // Scala 2.11.*
-testCompile("com.dimafeng:testcontainers-scala_2.12:0.14.0") // Scala 2.12.*
+testCompile("com.dimafeng:testcontainers-scala_2.11:0.15.0") // Scala 2.11.*
+testCompile("com.dimafeng:testcontainers-scala_2.12:0.15.0") // Scala 2.12.*
 ```
 
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.14.0" % "test"
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.15.0" % "test"
 ```
 
 ## Requirements
@@ -236,6 +236,17 @@ containers.containers._1.containerId // container id of the first container
 
 ```
 
+#### Dependent containers
+
+If configuration of one container depends on runtime state of another one, you can use `LazyContainer` wrapper as follows:
+
+```scala
+lazy val container1 = Container1()
+lazy val container2 = Container2(container1.port)
+
+val containers = MultipleContainers(LazyContainer(pgContainer), LazyContainer(appContainer))
+```
+
 ### Start/Stop hooks
 
 If you want to execute your code after container start or before container stop you can override `afterStart()` and `beforeStop()` methods.
@@ -256,6 +267,10 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 ```
 
 ## Release notes
+
+* **0.15.0**
+    * Additional configuration parameters for `MySQLContainer`
+    * Improvements to `MultipleContainers` - container lazy creation for dependent containers
 
 * **0.14.0**
     * TestContainers `1.5.1` -> `1.6.0`

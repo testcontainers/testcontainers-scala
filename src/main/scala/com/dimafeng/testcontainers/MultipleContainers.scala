@@ -29,8 +29,8 @@ object MultipleContainers {
     *
     *  Allows container dependencies using `LazyContainer`
     *  {{{
-    *      val pgContainer = PostgreSQLContainer()
-    *      val appContainer = AppContainer(pgContainer.jdbcUrl, pgContainer.username, pgContainer.password)
+    *      lazy val pgContainer = PostgreSQLContainer()
+    *      lazy val appContainer = AppContainer(pgContainer.jdbcUrl, pgContainer.username, pgContainer.password)
     *
     *      val containers = MultipleContainers(LazyContainer(pgContainer), LazyContainer(appContainer))
     *  }}}
