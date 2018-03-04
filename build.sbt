@@ -1,4 +1,6 @@
 import Dependencies._
+import xerial.sbt.Sonatype._
+import ReleaseTransformations._
 
 val testcontainersVersion = "1.6.0"
 val seleniumVersion = "2.53.0"
@@ -17,9 +19,9 @@ lazy val root = (project in file("."))
     scalaVersion in ThisBuild := "2.12.2",
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
     name := "testcontainers-scala",
-    releaseCrossBuild := true,
     compileScalastyle := scalastyle.in(Compile).toTask("").value,
     test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
+
     /**
       * Dependencies
       */
@@ -48,27 +50,25 @@ lazy val root = (project in file("."))
       * Publishing
       */
     useGpg := true,
-    publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    },
-    projectInfo := ModuleInfo(
-      "testcontainers-scala",
-      "Docker containers for testing in scala ",
-      Some(url("https://github.com/testcontainers/testcontainers-scala")),
-      Some(2016),
-      Vector(("MIT", url("https://github.com/testcontainers/testcontainers-scala/blob/master/LICENSE"))),
-      "dimafeng",
-      None,
-      Some(ScmInfo(url("https://github.com/testcontainers/testcontainers-scala"), "git@github.com:testcontainers/testcontainers-scala.git")),
-      Vector(Developer("", "Dmitry Fedosov", "dimafeng@gmail.com", url("http://dimafeng.com")))
-    ),
-    developers := List(
-      Developer("dimafeng", "Dmitry Fedosov", "dimafeng@gmail.com", url("https://github.com/dimafeng"))
-    ),
-    description := "Docker containers for testing in scala ",
-    licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT"))
+    publishTo := sonatypePublishTo.value,
+    publishMavenStyle := true,
+    sonatypeProfileName := "testcontainers-scala",
+    sonatypeProjectHosting := Some(GitLabHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
+    licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT")),
+
+    releaseCrossBuild := true,
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runClean,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      releaseStepCommandAndRemaining("+publishSigned"),
+      setNextVersion,
+      commitNextVersion,
+      releaseStepCommand("sonatypeReleaseAll"),
+      pushChanges
+    )
   )
