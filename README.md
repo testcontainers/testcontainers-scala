@@ -247,6 +247,19 @@ lazy val container2 = Container2(container1.port)
 val containers = MultipleContainers(LazyContainer(pgContainer), LazyContainer(appContainer))
 ```
 
+### Fixed Host Port Containers
+
+This container will allow you to map container ports to statically defined ports on the docker host.
+
+```scala
+...
+val container = FixedHostPortGenericGenericContainer("nginx:latest",
+    waitStrategy = Wait.forHttp("/"),
+    exposedHostPort = 8090,
+    exposedContainerPort = 80
+  )
+```
+
 ### Start/Stop hooks
 
 If you want to execute your code after container start or before container stop you can override `afterStart()` and `beforeStop()` methods.
