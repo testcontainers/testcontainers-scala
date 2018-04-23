@@ -226,25 +226,23 @@ class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
 
 ### Multiple Containers
 
+If you need to test more than one container in your test, you could use `MultipleContainers` for that. Just define your containers and pass them to the `MultipleContainers` constructor:
 ```scala
-...
-val container = MultipleContainers(MySQLContainer(), GenericContainer(...))
+val mySqlContainer = MySQLContainer()
+val genericContainer = GenericContainer(...)
 
-// access to containers
-containers.containers._1.containerId // container id of the first container
-...
-
+override val container = MultipleContainers(mySqlContainer, genericContainer)
 ```
 
 #### Dependent containers
 
-If configuration of one container depends on runtime state of another one, you can use `LazyContainer` wrapper as follows:
+If configuration of one container depends on runtime state of another one, you should define your containers as `lazy`:
 
 ```scala
 lazy val container1 = Container1()
 lazy val container2 = Container2(container1.port)
 
-val containers = MultipleContainers(LazyContainer(pgContainer), LazyContainer(appContainer))
+override val containers = MultipleContainers(pgContainer, appContainer)
 ```
 
 ### Fixed Host Port Containers
@@ -281,6 +279,11 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.17.0**
+    * Removed `shapeless` dependency
+    * Added implicit conversion to `LazyContainer`. This gives you a possibility to not wrap your containers into the `LazyContainer` manually.
+    * `MultipleContainers.apply` now receives `LazyContainer[_]*` type. Together with the previous point, it makes usage experience of `MultipleContainers` more smooth.
+
 * **0.16.0**
     * `FixedHostPortGenericContainer` added
 
@@ -313,7 +316,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 * **0.6.0**
     * TestContainers `1.2.0` -> `1.2.1`
-    * Fix of the `afterStart` hook 
+    * Fix of the `afterStart` hook
 
 * **0.5.0**
     * TestContainers `1.1.8` -> `1.2.0`
@@ -324,7 +327,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 * **0.4.0**
     * TestContainers `1.1.5` -> `1.1.7`
     * Scala cross-building (2.11.* + 2.12.*)
-    
+
 * **0.3.0**
     * TestContainers `1.1.0` -> `1.1.5`
     * Start/Stop hooks

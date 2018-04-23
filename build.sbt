@@ -9,7 +9,6 @@ val scalaTestVersion = "3.0.1"
 val mysqlConnectorVersion = "5.1.39"
 val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "1.10.19"
-val shapelessVersion = "2.3.3"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -27,8 +26,7 @@ lazy val root = (project in file("."))
       */
     libraryDependencies ++=
       COMPILE(
-        "org.testcontainers" % "testcontainers" % testcontainersVersion,
-        "com.chuusai" %% "shapeless" % shapelessVersion
+        "org.testcontainers" % "testcontainers" % testcontainersVersion
       )
         ++ PROVIDED(
         "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion,
