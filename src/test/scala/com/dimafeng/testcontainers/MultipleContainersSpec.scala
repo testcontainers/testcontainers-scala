@@ -36,7 +36,7 @@ class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
     lazy val container1 = new InitializableContainer("after start value")
     lazy val container2 = new InitializableContainer(container1.value)
 
-    val containers = MultipleContainers(LazyContainer(container1), LazyContainer(container2))
+    val containers = MultipleContainers(container1, container2)
 
     new TestSpec({
       assert(1 == 1)
@@ -44,34 +44,6 @@ class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
 
     assert(container1.value == "after start value")
     assert(container2.value == "after start value")
-  }
-
-  it should "not initialize containers lazily if they are not defined as lazy" in {
-    lazy val container1 = new InitializableContainer("after start value")
-    lazy val container2 = new InitializableContainer(container1.value)
-
-    val containers = MultipleContainers(container1, container2)
-
-    new TestSpec({
-      assert(1 == 1)
-    }, containers).run(None, Args(mock[Reporter]))
-
-    assert(container1.value == "after start value")
-    assert(container2.value == null)
-  }
-
-  it should "compile HList type inference" in {
-    import shapeless._
-
-    val container1 = new InitializableContainer("after start value")
-    val container2 = new ExampleContainerWithVariable("test")
-
-    val containers = MultipleContainers(container1, container2)
-
-    val c1 :: c2 :: HNil = containers.containers
-
-    assert(c1.value == null)
-    assert(c2.variable == "test")
   }
 }
 
