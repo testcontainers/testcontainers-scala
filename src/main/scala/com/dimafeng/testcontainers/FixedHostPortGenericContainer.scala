@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.wait.WaitStrategy
+import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.containers.{BindMode, FixedHostPortGenericContainer => OTCFixedHostPortGenericContainer}
 
 class FixedHostPortGenericContainer(imageName: String,

@@ -3,10 +3,8 @@ package com.dimafeng.testcontainers.integration
 import java.net.URL
 
 import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer}
-import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
-import org.scalatest.junit.JUnitRunner
-import org.testcontainers.containers.wait.Wait
+import org.testcontainers.containers.wait.strategy.Wait
 
 import scala.io.Source
 
