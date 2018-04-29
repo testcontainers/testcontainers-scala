@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.ContainerSpec._
+import com.github.dockerjava.api.DockerClient
 import org.junit.runner.Description
-import org.mockito.Matchers.any
-import org.mockito.Mockito
+import org.mockito.Matchers._
+import org.mockito.{Matchers, Mockito}
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.{Args, FlatSpec, Reporter}
 import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
@@ -104,10 +105,11 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "work with `configure` method" in {
-    val innerContainer = mock[SampleOTCContainer]
-    val container = new SampleContainer(innerContainer).configure(_.withCommand("123"))
+    val innerContainer = new SampleOTCContainer
+    val container = new SampleContainer(innerContainer)
+      .configure{c => c.withWorkingDirectory("123"); ()}
 
-    verify(innerContainer).withCommand("123")
+    assert(container.workingDirectory == "123")
   }
 }
 
@@ -123,6 +125,7 @@ object ContainerSpec {
 
   protected class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
     override val container = _container
+
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
     it should "test" in {
@@ -144,6 +147,7 @@ object ContainerSpec {
 
   protected class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
     override val container = _container
+
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
 
     it should "test1" in {
@@ -164,13 +168,22 @@ object ContainerSpec {
   }
 
   class SampleOTCContainer extends OTCGenericContainer {
-    override def starting(description: Description): Unit = { println("starting") }
 
-    override def failed(e: Throwable, description: Description): Unit = { println("failed") }
+    override def starting(description: Description): Unit = {
+      println("starting")
+    }
 
-    override def finished(description: Description): Unit = { println("finished") }
+    override def failed(e: Throwable, description: Description): Unit = {
+      println("failed")
+    }
 
-    override def succeeded(description: Description): Unit = { println("succeeded") }
+    override def finished(description: Description): Unit = {
+      println("finished")
+    }
+
+    override def succeeded(description: Description): Unit = {
+      println("succeeded")
+    }
   }
 
   class SampleContainer(sampleOTCContainer: SampleOTCContainer) extends SingleContainer[SampleOTCContainer] {
