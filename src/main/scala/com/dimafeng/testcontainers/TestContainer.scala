@@ -11,7 +11,9 @@ import org.scalatest._
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer}
+import org.testcontainers.containers.{
+  FailureDetectingExternalResource, Network, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer
+}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
