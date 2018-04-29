@@ -1,6 +1,7 @@
 ![Logo](logo.png)
 
 [![Build Status](https://travis-ci.org/testcontainers/testcontainers-scala.svg?branch=master)](https://travis-ci.org/testcontainers/testcontainers-scala)
+[![Maven Central](https://img.shields.io/maven-central/v/com.dimafeng/testcontainers-scala_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/com.dimafeng/testcontainers-scala_2.12)
 
 # Testcontainers-scala
 
@@ -27,37 +28,10 @@ Plus
 
 ## Setup
 
-*Maven*
-
-```xml
-<!-- Scala 2.11.* -->
-<dependency>
-    <groupId>com.dimafeng</groupId>
-    <artifactId>testcontainers-scala_2.11</artifactId>
-    <version>0.16.0</version>
-    <scope>test</scope>
-</dependency>
-
-<!-- Scala 2.12.* -->
-<dependency>
-    <groupId>com.dimafeng</groupId>
-    <artifactId>testcontainers-scala_2.12</artifactId>
-    <version>0.16.0</version>
-    <scope>test</scope>
-</dependency>
-```
-
-*Gradle*
-
-```groovy
-testCompile("com.dimafeng:testcontainers-scala_2.11:0.16.0") // Scala 2.11.*
-testCompile("com.dimafeng:testcontainers-scala_2.12:0.16.0") // Scala 2.12.*
-```
-
 *SBT*
 
 ```scala
-libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % "0.16.0" % "test"
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % testcontainersScalaVersion % "test"
 ```
 
 ## Requirements
