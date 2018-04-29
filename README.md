@@ -15,16 +15,15 @@ Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-se
 
 ## Why can't I use testcontainers-java in my scala project?
 
-*testcontainers-java* is awesome and yes, you can use it in scala project but:
+*testcontainers-java* is awesome and yes, you can use it in scala projects as is **but**:
 
-* It's written to be used in JUnit tests
-* `DockerComposeContainer<SELF extends DockerComposeContainer<SELF>>` - it's not convinient to use its api with
-this 'recursive generic' from scala
+* It's integrated with JUnit only
+* There are some problems initializing containers due to `DockerComposeContainer<SELF extends DockerComposeContainer<SELF>>`
 
-Plus
+As a side bonus, you will have:
 
-* This wrapper provides with scala interfaces, approaches, types
-* This wrapper is integrated with [scalatest](http://www.scalatest.org/)
+* Scala friendly interfaces, approaches, types
+* Integration with [ScalaTest](http://www.scalatest.org/)
 
 ## Setup
 
@@ -41,9 +40,10 @@ libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % testcontainers
 
 ## Quick Start
 
-There are two modes of container launching: `ForEachTestContainer` and `ForAllTestContainer`.
-The first one starts a new container before each test case and then stops and removes it. The second one
- starts and stops a container only once.
+There are two ScalaTest aware traits:
+* `ForEachTestContainer` starts a new container(s) before each test case and then stops and removes it.
+* `ForAllTestContainer` starts and stops a container only once for all test cases within the spec.
+
 
 To start using it, you just need to extend one of those traits and override a `container` val as follows:
 
@@ -88,7 +88,7 @@ This spec starts one container and both tests share the container's state.
 
 ### Generic Container
 
-The most flexible but less convinient containtainer type is `GenericContainer`. This container allows to launch any docker image
+The most flexible but less convenient container type is `GenericContainer`. This container allows to launch any docker image
 with custom configuration.
 
 ```scala
