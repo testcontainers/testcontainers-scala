@@ -258,6 +258,19 @@ val container = FixedHostPortGenericGenericContainer("nginx:latest",
   )
 ```
 
+(#custom-config)
+### Custom configuration of inner containers
+
+All container types have constructor methods with most popular parameters. In case you're missing some custom option from `testcontainers-java`, there is
+a method that provides an elegant way to tune the nested container. **It's not recommended to access inner container directly.**
+
+```
+override val container = MySQLContainer().configure { c =>
+    c.withNetwork(...)
+    c.withStartupAttempts(...)
+  }
+```
+
 ### Start/Stop hooks
 
 If you want to execute your code after container start or before container stop you can override `afterStart()` and `beforeStop()` methods.
@@ -280,9 +293,12 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 ## Release notes
 
 * **0.17.0**
+    * Testcontainers `1.6.0` -> `1.7.1`
     * Removed `shapeless` dependency
     * Added implicit conversion to `LazyContainer`. This gives you a possibility to not wrap your containers into the `LazyContainer` manually.
     * `MultipleContainers.apply` now receives `LazyContainer[_]*` type. Together with the previous point, it makes usage experience of `MultipleContainers` more smooth.
+    * Added multiple missing reflecting methods to all containers
+    * Added `configure` method. See [this](#custom-config) for more details
 
 * **0.16.0**
     * `FixedHostPortGenericContainer` added

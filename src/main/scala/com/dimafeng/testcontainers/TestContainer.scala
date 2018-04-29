@@ -1,19 +1,21 @@
 package com.dimafeng.testcontainers
 
 import java.io.File
+import java.util.function.Consumer
 
-import com.github.dockerjava.api.command.InspectContainerResponse
-import com.github.dockerjava.api.model.Bind
+import com.github.dockerjava.api.DockerClient
+import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
+import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
 import org.junit.runner.Description
 import org.scalatest._
+import org.testcontainers.containers.output.OutputFrame
+import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{
-FailureDetectingExternalResource, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer
-}
+import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
-import scala.concurrent.Future
+import scala.concurrent.{Future, blocking}
 
 trait ForEachTestContainer extends SuiteMixin {
   self: Suite =>
@@ -119,6 +121,8 @@ object DockerComposeContainer {
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
+
+  @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
   implicit val container: T
 
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
@@ -153,12 +157,44 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
   import scala.concurrent.ExecutionContext.Implicits.global
 
   def image: Future[String] = Future {
-    container.getImage.get()
+    blocking {
+      container.getImage.get()
+    }
   }
 
+  @deprecated("See org.testcontainers.containers.Network")
   def linkedContainers: Map[String, LinkableContainer] = container.getLinkedContainers.asScala.toMap
 
   def mappedPort(port: Int): Int = container.getMappedPort(port)
 
   def portBindings: Seq[String] = container.getPortBindings.asScala
+
+  def networkMode: String = container.getNetworkMode
+
+  def network: Network = container.getNetwork
+
+  def networkAliases: Seq[String] = container.getNetworkAliases.asScala
+
+  def privilegedMode: Boolean = container.isPrivilegedMode
+
+  def volumesFroms: Seq[VolumesFrom] = container.getVolumesFroms.asScala
+
+  def startupCheckStrategy: StartupCheckStrategy = container.getStartupCheckStrategy
+
+  def startupAttempts: Int = container.getStartupAttempts
+
+  def workingDirectory: String = container.getWorkingDirectory
+
+  def dockerClient: DockerClient = container.getDockerClient
+
+  def dockerDaemonInfo: Info = container.getDockerDaemonInfo
+
+  def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala
+
+  def createContainerCmdModifiers: Set[Consumer[CreateContainerCmd]] = container.getCreateContainerCmdModifiers.asScala.toSet
+
+  def configure(configProvider: T => Unit): this.type = {
+    configProvider(container)
+    this
+  }
 }

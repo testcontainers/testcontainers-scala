@@ -102,6 +102,13 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
     verify(container, Mockito.never()).starting(any())
   }
+
+  it should "work with `configure` method" in {
+    val innerContainer = mock[SampleOTCContainer]
+    val container = new SampleContainer(innerContainer).configure(_.withCommand("123"))
+
+    verify(innerContainer).withCommand("123")
+  }
 }
 
 object ContainerSpec {
