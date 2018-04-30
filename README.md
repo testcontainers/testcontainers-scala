@@ -5,7 +5,6 @@
 
 # Testcontainers-scala
 
-
 Scala wrapper for [testcontainers-java](https://github.com/testcontainers/testcontainers-java) that
 allows using docker containers for functional/integration/~~unit~~ testing.
 
@@ -24,6 +23,10 @@ As a side bonus, you will have:
 
 * Scala friendly interfaces, approaches, types
 * Integration with [ScalaTest](http://www.scalatest.org/)
+
+## Slack
+
+[Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
 
 ## Setup
 
