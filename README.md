@@ -268,6 +268,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.18.0**
+    * TestContainers `1.7.1` -> `1.7.3`
+
 * **0.17.0**
     * Testcontainers `1.6.0` -> `1.7.1`
     * Removed `shapeless` dependency
