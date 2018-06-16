@@ -16,8 +16,8 @@ class GenericContainer(dockerImage: DockerImage,
 
   type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCGenericContainer[T]}
   override implicit val container: OTCContainer = dockerImage match {
-    case DockerImage(Left(imageFromDockerfile)) ⇒ new OTCGenericContainer(imageFromDockerfile)
-    case DockerImage(Right(imageName))          ⇒ new OTCGenericContainer(imageName)
+    case DockerImage(Left(imageFromDockerfile)) => new OTCGenericContainer(imageFromDockerfile)
+    case DockerImage(Right(imageName))          => new OTCGenericContainer(imageName)
   }
 
   if (exposedPorts.nonEmpty) {
