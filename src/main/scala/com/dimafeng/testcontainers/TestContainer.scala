@@ -98,6 +98,18 @@ trait Container {
   def succeeded()(implicit description: Description): Unit
 }
 
+object DockerComposeExposedService {
+  //for those who do not like options
+  def apply(name:String,port:Int,instance:Int,waitStrategy: WaitStrategy):DockerComposeExposedService= {
+    DockerComposeExposedService(name,port,waitStrategy,Option(instance))
+  }
+
+  //for those who do not like options
+  def apply(name:String,port:Int,instance:Int):DockerComposeExposedService= {
+    DockerComposeExposedService(name,port,Wait.defaultWaitStrategy(),Option(instance))
+  }
+}
+
 final case class DockerComposeExposedService(name: String, port: Int, waitStrategy: WaitStrategy = Wait.defaultWaitStrategy(), instance: Option[Int] = None)
 
 final case class DockerComposeScaledService(name: String, numInstances: Int)
