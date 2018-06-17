@@ -4,6 +4,7 @@ import java.io.File
 import java.util
 import java.util.function.Consumer
 
+import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
 import org.testcontainers.containers.{DockerComposeContainer => OTCDockerComposeContainer}
@@ -28,18 +29,30 @@ final case class ServiceLogConsumer(serviceName: String, consumer: Consumer[Outp
 object DockerComposeContainer {
   val ID_LENGTH = 6
 
-  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
+  case class ComposeFile(source: Either[File, Seq[File]])
 
   implicit def toExposedService(oldExposedServices: Map[String, Int]): Seq[ExposedService] =
     oldExposedServices.map { case (name, port) => ExposedService(name, port) }.toSeq
 
-  implicit def fileToEither(file: File): Either[File, Seq[File]] = Left(file)
+  implicit def fileToEither(file: File): ComposeFile = ComposeFile(Left(file))
 
-  implicit def filesToEither(files: Seq[File]): Either[File, Seq[File]] = Right(files)
+  implicit def filesToEither(files: Seq[File]): ComposeFile = ComposeFile(Right(files))
 
-  protected[testcontainers] def randomIdentifier = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
+  def randomIdentifier: String = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
 
-  def apply(composeFiles: Either[File, Seq[File]],
+  @deprecated("Please use expanded `apply` method")
+  def apply(composeFiles: ComposeFile,
+            exposedService: Map[String, Int],
+            identifier: String): DockerComposeContainer =
+    apply(composeFiles, exposedService, identifier)
+
+
+  @deprecated("Please use expanded `apply` method")
+  def apply(composeFiles: ComposeFile,
+            exposedService: Map[String, Int]): DockerComposeContainer =
+    apply(composeFiles, exposedService)
+
+  def apply(composeFiles: ComposeFile,
             exposedServices: Seq[ExposedService] = Seq.empty,
             identifier: String = DockerComposeContainer.randomIdentifier,
             scaledServices: Seq[ScaledService] = Seq.empty,
@@ -51,21 +64,23 @@ object DockerComposeContainer {
     new DockerComposeContainer(composeFiles, exposedServices, identifier, scaledServices, pull, localCompose, env, tailChildContainers, logConsumers)
 }
 
-class DockerComposeContainer private[testcontainers](composeFiles: Either[File, Seq[File]],
-                             exposedServices: Seq[ExposedService] = Seq.empty,
-                             identifier: String = DockerComposeContainer.randomIdentifier,
-                             scaledServices: Seq[ScaledService] = Seq.empty,
-                             pull: Boolean = true,
-                             localCompose: Boolean = true,
-                             env: Map[String, String] = Map.empty,
-                             tailChildContainers: Boolean = false,
-                             logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
+class DockerComposeContainer (composeFiles: ComposeFile,
+                              exposedServices: Seq[ExposedService] = Seq.empty,
+                              identifier: String = DockerComposeContainer.randomIdentifier,
+                              scaledServices: Seq[ScaledService] = Seq.empty,
+                              pull: Boolean = true,
+                              localCompose: Boolean = true,
+                              env: Map[String, String] = Map.empty,
+                              tailChildContainers: Boolean = false,
+                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
   extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
-  override val container: DockerComposeContainer.OTCContainer = {
-    val container: DockerComposeContainer.OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
-      case Left(f) => util.Arrays.asList(f)
-      case Right(files) => files.asJava
+  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
+
+  override val container: OTCContainer = {
+    val container: OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
+      case ComposeFile(Left(f)) => util.Arrays.asList(f)
+      case ComposeFile(Right(files)) => files.asJava
     })
 
     exposedServices.foreach { service =>
