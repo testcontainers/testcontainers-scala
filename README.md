@@ -130,7 +130,7 @@ Before you can use this type of containers, you need to add the following depend
 ```
 and
 ```
-"org.testcontainers" % "selenium" % "1.1.8"
+"org.testcontainers" % "selenium" % "1.8.0"
 ```
 
 Now you can write a test in this way:
@@ -267,6 +267,11 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 ```
 
 ## Release notes
+
+* **0.19.0**
+    * TestContainers `1.7.3` -> `1.8.0`
+    * (#24) `DockerComposeContainer` enhancements
+    * Added Dockerfile support to `GenericContainer`
 
 * **0.18.0**
     * TestContainers `1.7.1` -> `1.7.3`
