@@ -1,6 +1,7 @@
 package com.dimafeng.testcontainers
 
 import java.io.File
+import java.util
 import java.util.function.Consumer
 
 import org.testcontainers.containers.output.OutputFrame
@@ -32,24 +33,40 @@ object DockerComposeContainer {
   implicit def toExposedService(oldExposedServices: Map[String, Int]): Seq[ExposedService] =
     oldExposedServices.map { case (name, port) => ExposedService(name, port) }.toSeq
 
-  def apply(file: File, exposedService: Map[String, Int]): DockerComposeContainer =
-    DockerComposeContainer(Seq(file), exposedService)
+  implicit def fileToEither(file: File): Either[File, Seq[File]] = Left(file)
+
+  implicit def filesToEither(files: Seq[File]): Either[File, Seq[File]] = Right(files)
 
   protected[testcontainers] def randomIdentifier = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
+
+  def apply(composeFiles: Either[File, Seq[File]],
+            exposedServices: Seq[ExposedService] = Seq.empty,
+            identifier: String = DockerComposeContainer.randomIdentifier,
+            scaledServices: Seq[ScaledService] = Seq.empty,
+            pull: Boolean = true,
+            localCompose: Boolean = true,
+            env: Map[String, String] = Map.empty,
+            tailChildContainers: Boolean = false,
+            logConsumers: Seq[ServiceLogConsumer] = Seq.empty): DockerComposeContainer =
+    new DockerComposeContainer(composeFiles, exposedServices, identifier, scaledServices, pull, localCompose, env, tailChildContainers, logConsumers)
 }
 
-final case class DockerComposeContainer(composeFiles: Seq[File],
-                                        exposedServices: Seq[ExposedService] = Seq.empty,
-                                        identifier: String = DockerComposeContainer.randomIdentifier,
-                                        scaledServices: Seq[ScaledService] = Seq.empty,
-                                        pull: Boolean = true,
-                                        localCompose: Boolean = true,
-                                        env: Map[String, String] = Map.empty,
-                                        tailChildContainers: Boolean = false,
-                                        logConsumers: Seq[ServiceLogConsumer] = Seq.empty) extends TestContainerProxy[OTCDockerComposeContainer[_]] {
+class DockerComposeContainer private[testcontainers](composeFiles: Either[File, Seq[File]],
+                             exposedServices: Seq[ExposedService] = Seq.empty,
+                             identifier: String = DockerComposeContainer.randomIdentifier,
+                             scaledServices: Seq[ScaledService] = Seq.empty,
+                             pull: Boolean = true,
+                             localCompose: Boolean = true,
+                             env: Map[String, String] = Map.empty,
+                             tailChildContainers: Boolean = false,
+                             logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
+  extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
   override val container: DockerComposeContainer.OTCContainer = {
-    val container: DockerComposeContainer.OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles.asJava)
+    val container: DockerComposeContainer.OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
+      case Left(f) => util.Arrays.asList(f)
+      case Right(files) => files.asJava
+    })
 
     exposedServices.foreach { service =>
       if (service.instance.isDefined) {
