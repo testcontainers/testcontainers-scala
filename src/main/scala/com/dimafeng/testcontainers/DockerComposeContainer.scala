@@ -50,7 +50,7 @@ object DockerComposeContainer {
   @deprecated("Please use expanded `apply` method")
   def apply(composeFiles: ComposeFile,
             exposedService: Map[String, Int]): DockerComposeContainer =
-    apply(composeFiles, exposedService)
+    new DockerComposeContainer(composeFiles, exposedService)
 
   def apply(composeFiles: ComposeFile,
             exposedServices: Seq[ExposedService] = Seq.empty,
