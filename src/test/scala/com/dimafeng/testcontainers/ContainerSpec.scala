@@ -1,10 +1,9 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.ContainerSpec._
-import com.github.dockerjava.api.DockerClient
 import org.junit.runner.Description
 import org.mockito.Matchers._
-import org.mockito.{Matchers, Mockito}
+import org.mockito.Mockito
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.{Args, FlatSpec, Reporter}
 import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}

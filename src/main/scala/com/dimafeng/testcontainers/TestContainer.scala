@@ -1,6 +1,5 @@
 package com.dimafeng.testcontainers
 
-import java.io.File
 import java.util.function.Consumer
 
 import com.github.dockerjava.api.DockerClient
@@ -11,10 +10,7 @@ import org.scalatest._
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
-import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor}
-import org.testcontainers.containers.{DockerComposeContainer => OTCDockerComposeContainer, GenericContainer => OTCGenericContainer}
-import org.testcontainers.utility.Base58
+import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
@@ -96,89 +92,6 @@ trait Container {
   def starting()(implicit description: Description): Unit
 
   def succeeded()(implicit description: Description): Unit
-}
-
-object DockerComposeExposedService {
-  //for those who do not like options
-  def apply(name:String,port:Int,instance:Int,waitStrategy: WaitStrategy):DockerComposeExposedService= {
-    DockerComposeExposedService(name,port,waitStrategy,Option(instance))
-  }
-
-  //for those who do not like options
-  def apply(name:String,port:Int,instance:Int):DockerComposeExposedService= {
-    DockerComposeExposedService(name,port,Wait.defaultWaitStrategy(),Option(instance))
-  }
-}
-
-final case class DockerComposeExposedService(name: String, port: Int, waitStrategy: WaitStrategy = Wait.defaultWaitStrategy(), instance: Option[Int] = None)
-
-final case class DockerComposeScaledService(name: String, numInstances: Int)
-
-final case class DockerComposeServiceLogConsumer(serviceName: String, consumer: Consumer[OutputFrame])
-
-object DockerComposeContainer {
-  val ID_LENGTH = 6
-
-  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
-
-  private[DockerComposeContainer] def toExposedService(service: (String, Int)) = DockerComposeExposedService(service._1, service._2)
-
-  //for backward compatibility with version <=1.7.3
-  def apply(file: File, exposedService: Map[String, Int], identifier: String): DockerComposeContainer =
-    DockerComposeContainer(Seq(file), exposedService.map(toExposedService).toSeq, identifier)
-
-  //for backward compatibility with version <=1.7.3
-  def apply(file: File, exposedService: Map[String, Int]): DockerComposeContainer =
-    DockerComposeContainer(Seq(file), exposedService.map(toExposedService).toSeq)
-
-  //for backward compatibility with version <=1.7.3
-  def apply(file: File): DockerComposeContainer =
-    DockerComposeContainer(Seq(file))
-
-  protected[testcontainers] def randomIdentifier() = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
-}
-
-final case class DockerComposeContainer(
-                                         composeFiles: Seq[File],
-                                         exposedServices: Seq[DockerComposeExposedService] = Seq.empty,
-                                         identifier: String = DockerComposeContainer.randomIdentifier,
-                                         scaledServices: Seq[DockerComposeScaledService] = Seq.empty,
-                                         pull: Boolean = true,
-                                         localCompose: Boolean = true,
-                                         env: Map[String, String] = Map.empty,
-                                         tailChildContainers: Boolean = false,
-                                         logConsumers: Seq[DockerComposeServiceLogConsumer] = Seq.empty
-                                       )
-  extends TestContainerProxy[OTCDockerComposeContainer[_]] {
-
-  private def init(): DockerComposeContainer.OTCContainer = {
-    val container: DockerComposeContainer.OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles.asJava)
-    exposedServices.foreach { service =>
-      if (service.instance.isDefined) {
-        container.withExposedService(service.name, service.instance.get, service.port, service.waitStrategy)
-      } else {
-        container.withExposedService(service.name, service.port, service.waitStrategy)
-      }
-    }
-    scaledServices.foreach { service =>
-      container.withScaledService(service.name, service.numInstances)
-    }
-    container.withPull(pull)
-    container.withLocalCompose(localCompose)
-    container.withEnv(env.asJava)
-    container.withTailChildContainers(tailChildContainers)
-    logConsumers.foreach { serviceLogConsumer =>
-      container.withLogConsumer(serviceLogConsumer.serviceName, serviceLogConsumer.consumer)
-    }
-    container
-  }
-
-  override val container: DockerComposeContainer.OTCContainer = init()
-
-  def getServiceHost(serviceName: String, servicePort: Int): String = container.getServiceHost(serviceName, servicePort)
-
-  def getServicePort(serviceName: String, servicePort: Int): Int = container.getServicePort(serviceName, servicePort)
-
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
