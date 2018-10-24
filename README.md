@@ -219,7 +219,7 @@ If configuration of one container depends on runtime state of another one, you s
 lazy val container1 = Container1()
 lazy val container2 = Container2(container1.port)
 
-override val containers = MultipleContainers(pgContainer, appContainer)
+override val container = MultipleContainers(container1, container2)
 ```
 
 ### Fixed Host Port Containers
