@@ -2,7 +2,7 @@ import Dependencies._
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val testcontainersVersion = "1.8.3"
+val testcontainersVersion = "1.9.1"
 val seleniumVersion = "2.53.0"
 val slf4jVersion = "1.7.21"
 val scalaTestVersion = "3.0.1"

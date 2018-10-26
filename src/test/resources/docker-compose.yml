@@ -1,4 +1,4 @@
 redis:
-  image: redis
+  image: redis:5.0.0
 elasticsearch:
-  image: elasticsearch
+  image: elasticsearch:6.4.1
