@@ -2,10 +2,10 @@ import Dependencies._
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val testcontainersVersion = "1.9.1"
+val testcontainersVersion = "1.10.1"
 val seleniumVersion = "2.53.0"
 val slf4jVersion = "1.7.21"
-val scalaTestVersion = "3.0.1"
+val scalaTestVersion = "3.0.5"
 val mysqlConnectorVersion = "5.1.39"
 val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "1.10.19"
