@@ -15,8 +15,8 @@ lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 lazy val root = (project in file("."))
   .settings(
     organization in ThisBuild := "com.dimafeng",
-    scalaVersion in ThisBuild := "2.12.2",
-    crossScalaVersions := Seq("2.11.11", "2.12.2"),
+    scalaVersion in ThisBuild := "2.12.8",
+    crossScalaVersions := Seq("2.11.11", "2.12.8"),
     name := "testcontainers-scala",
     compileScalastyle := scalastyle.in(Compile).toTask("").value,
     test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
