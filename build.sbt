@@ -2,11 +2,11 @@ import Dependencies._
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val testcontainersVersion = "1.10.1"
-val seleniumVersion = "2.53.0"
-val slf4jVersion = "1.7.21"
+val testcontainersVersion = "1.10.5"
+val seleniumVersion = "2.53.1"
+val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.5"
-val mysqlConnectorVersion = "5.1.39"
+val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "1.10.19"
 
@@ -15,8 +15,8 @@ lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 lazy val root = (project in file("."))
   .settings(
     organization in ThisBuild := "com.dimafeng",
-    scalaVersion in ThisBuild := "2.12.2",
-    crossScalaVersions := Seq("2.11.11", "2.12.2"),
+    scalaVersion in ThisBuild := "2.12.8",
+    crossScalaVersions := Seq("2.11.11", "2.12.8"),
     name := "testcontainers-scala",
     compileScalastyle := scalastyle.in(Compile).toTask("").value,
     test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
