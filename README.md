@@ -268,6 +268,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.23.0**
+    * TestContainers `1.10.1` -> `1.10.6`
+
 * **0.22.0**
     * TestContainers `1.9.1` -> `1.10.1`
 
