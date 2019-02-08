@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import com.dimafeng.testcontainers.ContainerSpec.{SampleContainer, SampleOTCContainer}
 import com.dimafeng.testcontainers.MultipleContainersSpec.{ExampleContainerWithVariable, InitializableContainer, TestSpec}
 import org.junit.runner.Description
-import org.mockito.Matchers.any
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{Args, FlatSpec, Reporter}

@@ -2,7 +2,7 @@ package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.ContainerSpec._
 import org.junit.runner.Description
-import org.mockito.Matchers._
+import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.{Args, FlatSpec, Reporter}

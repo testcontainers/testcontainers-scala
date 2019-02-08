@@ -8,7 +8,7 @@ val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.5"
 val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
-val mockitoVersion = "1.10.19"
+val mockitoVersion = "2.23.4"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -41,7 +41,7 @@ lazy val root = (project in file("."))
         "junit" % "junit" % "4.12",
         "org.testcontainers" % "selenium" % testcontainersVersion,
         "org.postgresql" % "postgresql" % postgresqlDriverVersion,
-        "org.mockito" % "mockito-all" % mockitoVersion
+        "org.mockito" % "mockito-core" % mockitoVersion
       ),
 
     /**
