@@ -5,47 +5,74 @@ import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
 import org.testcontainers.scalafacade.containers.utils.F
 
-trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] {
-  def start: F[С]
+sealed trait ContainerDefList {
+  type Containers <: ContainerList
+}
+final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D1, tail : D2) extends ContainerDefList {
+  override type Containers = D1#Containers and D2#Containers
 }
 
-trait Container[JC <: JavaGenericContainer[_]] { self =>
+sealed trait ContainerList
+final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList
+
+trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends ContainerDefList {
+
+  override type Containers = С
+
+  def start: С
+}
+
+trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
 
   protected def javaContainer: JC
 
-  def stop: F[Unit]
+  def stop: Unit
 }
-
-sealed trait CList extends Product with Serializable
-
-final case class ::[H <: ContainerDef[_, _], T <: CList](head : H, tail : T) extends CList {
-  //    override def toString: String = head match {
-  //      case _: ::[_, _] => "("+head+") :: "+tail.toString
-  //      case _ => head+" :: "+tail.toString
-  //    }
-}
-
-sealed trait CNil extends CList {
-  override def toString: String = "CNil"
-}
-
-case object CNil extends CNil
 
 class PostgreSQLContainer extends Container[JavaPostgreSQLContainer[_]] {
 
   protected def javaContainer: JavaPostgreSQLContainer[_] = ???
 
-  def stop: F[Unit] = ???
+  def hehe: Unit = ???
+
+  def stop: Unit = ???
 }
 
 class PostgreSQLContainerDef extends ContainerDef[JavaPostgreSQLContainer[_], PostgreSQLContainer] {
-  override def start: F[PostgreSQLContainer] = ???
+  override def start: PostgreSQLContainer = ???
 }
 
-trait ForAllTestContainer[T <: CList] extends SuiteMixin { self: Suite =>
+trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
 
+  def startContainers: F[C#Containers]
+
+  def withContainers(containers: C#Containers => Unit): Unit = {
+    ???
+  }
 }
 
-class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef :: PostgreSQLContainerDef :: CNil] {
+class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef andDef PostgreSQLContainerDef andDef PostgreSQLContainerDef] {
 
+  override def startContainers = {
+    ???
+  }
+
+  "foo" - {
+    "bar" in withContainers { case pg1 and pg2 and pg3 =>
+      pg1.hehe
+    }
+  }
+}
+
+class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef] {
+
+  override def startContainers = {
+    ???
+  }
+
+  "foo" - {
+    "bar" in withContainers { case pg1 =>
+      pg1.hehe
+    }
+  }
 }
