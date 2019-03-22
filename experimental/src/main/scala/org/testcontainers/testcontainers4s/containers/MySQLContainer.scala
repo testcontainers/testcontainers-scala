@@ -22,6 +22,7 @@ object MySQLContainer {
       javaContainer.withDatabaseName(databaseName)
       javaContainer.withPassword(password)
       javaContainer.withUsername(username)
+      configurationOverride.foreach(javaContainer.withConfigurationOverride)
       new MySQLContainer(javaContainer)
     }
   }

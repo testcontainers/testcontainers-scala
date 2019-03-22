@@ -103,5 +103,7 @@ lazy val experimental = (project in file("experimental"))
         "org.testcontainers" % "mysql" % testcontainersVersion,
       ) ++ TEST(
         "org.slf4j" % "slf4j-simple" % slf4jVersion,
+        "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
+        "org.postgresql" % "postgresql" % postgresqlDriverVersion,
       ),
   )
