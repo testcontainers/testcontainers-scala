@@ -3,7 +3,6 @@ package org.testcontainers.scalafacade.containers
 import org.scalatest.{FreeSpec, Suite, SuiteMixin}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
-import org.testcontainers.scalafacade.containers.utils.F
 
 sealed trait ContainerDefList {
   type Containers <: ContainerList
@@ -14,6 +13,12 @@ final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D
 
 sealed trait ContainerList
 final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList
+
+object ContainerList {
+  implicit class ContainerListOps[T <: ContainerList](val self: T) extends AnyVal {
+    def and[T2 <: ContainerList](that: T2): T and T2 = org.testcontainers.scalafacade.containers.and(self, that)
+  }
+}
 
 trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends ContainerDefList {
 
@@ -44,7 +49,7 @@ class PostgreSQLContainerDef extends ContainerDef[JavaPostgreSQLContainer[_], Po
 
 trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
 
-  def startContainers: F[C#Containers]
+  def startContainers: C#Containers
 
   def withContainers(containers: C#Containers => Unit): Unit = {
     ???
@@ -54,7 +59,11 @@ trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suit
 class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef andDef PostgreSQLContainerDef andDef PostgreSQLContainerDef] {
 
   override def startContainers = {
-    ???
+    val pg1 = new PostgreSQLContainerDef().start
+    val pg2 = new PostgreSQLContainerDef().start
+    val pg3 = new PostgreSQLContainerDef().start
+
+    pg1 and pg2 and pg3
   }
 
   "foo" - {
@@ -67,7 +76,7 @@ class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainerD
 class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef] {
 
   override def startContainers = {
-    ???
+    new PostgreSQLContainerDef().start
   }
 
   "foo" - {
