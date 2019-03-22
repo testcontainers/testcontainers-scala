@@ -2,7 +2,6 @@ package org.testcontainers.scalafacade.containers
 
 import org.scalatest.{FreeSpec, Suite, SuiteMixin}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
-import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
 
 sealed trait ContainerDefList {
   type Containers <: ContainerList
@@ -24,27 +23,20 @@ trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends C
 
   override type Containers = С
 
-  def start: С
+  protected def createContainer: С
+
+  def start: С = {
+    val container = createContainer
+    container.underlyingUnsafeContainer.start()
+    container
+  }
 }
 
 trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
 
-  protected def javaContainer: JC
-
-  def stop: Unit
-}
-
-class PostgreSQLContainer extends Container[JavaPostgreSQLContainer[_]] {
-
-  protected def javaContainer: JavaPostgreSQLContainer[_] = ???
-
-  def hehe: Unit = ???
+  def underlyingUnsafeContainer: JC
 
   def stop: Unit = ???
-}
-
-class PostgreSQLContainerDef extends ContainerDef[JavaPostgreSQLContainer[_], PostgreSQLContainer] {
-  override def start: PostgreSQLContainer = ???
 }
 
 trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
@@ -56,32 +48,32 @@ trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suit
   }
 }
 
-class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef andDef PostgreSQLContainerDef andDef PostgreSQLContainerDef] {
+class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def andDef PostgreSQLContainer.Def andDef PostgreSQLContainer.Def] {
 
   override def startContainers = {
-    val pg1 = new PostgreSQLContainerDef().start
-    val pg2 = new PostgreSQLContainerDef().start
-    val pg3 = new PostgreSQLContainerDef().start
+    val pg1 = new PostgreSQLContainer.Def().start
+    val pg2 = new PostgreSQLContainer.Def().start
+    val pg3 = new PostgreSQLContainer.Def().start
 
     pg1 and pg2 and pg3
   }
 
   "foo" - {
     "bar" in withContainers { case pg1 and pg2 and pg3 =>
-      pg1.hehe
+      pg1.jdbcUrl
     }
   }
 }
 
-class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainerDef] {
+class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def] {
 
   override def startContainers = {
-    new PostgreSQLContainerDef().start
+    new PostgreSQLContainer.Def().start
   }
 
   "foo" - {
     "bar" in withContainers { case pg1 =>
-      pg1.hehe
+      pg1.jdbcUrl
     }
   }
 }
