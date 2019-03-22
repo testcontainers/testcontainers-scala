@@ -28,17 +28,4 @@ object PostgreSQLContainer {
 
 class PostgreSQLContainer private[containers] (
   val underlyingUnsafeContainer: JavaPostgreSQLContainer[_]
-) extends Container[JavaPostgreSQLContainer[_]] {
-
-  def driverClassName: String = underlyingUnsafeContainer.getDriverClassName
-
-  def jdbcUrl: String = underlyingUnsafeContainer.getJdbcUrl
-
-  def databaseName: String = underlyingUnsafeContainer.getDatabaseName
-
-  def username: String = underlyingUnsafeContainer.getUsername
-
-  def password: String = underlyingUnsafeContainer.getPassword
-
-  def testQueryString: String = underlyingUnsafeContainer.getTestQueryString
-}
+) extends Container[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer[JavaPostgreSQLContainer[_]]

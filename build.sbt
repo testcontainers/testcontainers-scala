@@ -100,5 +100,6 @@ lazy val experimental = (project in file("experimental"))
       ) ++ PROVIDED(
         "org.scalatest" %% "scalatest" % scalaTestVersion,
         "org.testcontainers" % "postgresql" % testcontainersVersion,
+        "org.testcontainers" % "mysql" % testcontainersVersion,
       ),
   )

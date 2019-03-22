@@ -48,19 +48,18 @@ trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suit
   }
 }
 
-class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def andDef PostgreSQLContainer.Def andDef PostgreSQLContainer.Def] {
+class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def andDef MySQLContainer.Def] {
 
   override def startContainers = {
-    val pg1 = new PostgreSQLContainer.Def().start
-    val pg2 = new PostgreSQLContainer.Def().start
-    val pg3 = new PostgreSQLContainer.Def().start
+    val pg = new PostgreSQLContainer.Def().start
+    val mySql = new MySQLContainer.Def().start
 
-    pg1 and pg2 and pg3
+    pg and mySql
   }
 
   "foo" - {
-    "bar" in withContainers { case pg1 and pg2 and pg3 =>
-      pg1.jdbcUrl
+    "bar" in withContainers { case pg and mySql =>
+      assert(pg.jdbcUrl.nonEmpty && mySql.jdbcUrl.nonEmpty)
     }
   }
 }
@@ -72,8 +71,8 @@ class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainer
   }
 
   "foo" - {
-    "bar" in withContainers { case pg1 =>
-      pg1.jdbcUrl
+    "bar" in withContainers { pg1 =>
+      assert(pg1.jdbcUrl.nonEmpty)
     }
   }
 }
