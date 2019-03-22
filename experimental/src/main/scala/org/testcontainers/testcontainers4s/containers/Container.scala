@@ -1,4 +1,4 @@
-package org.testcontainers.scalafacade.containers
+package org.testcontainers.testcontainers4s.containers
 
 import org.scalatest.{FreeSpec, Suite, SuiteMixin}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
@@ -15,7 +15,7 @@ final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail :
 
 object ContainerList {
   implicit class ContainerListOps[T <: ContainerList](val self: T) extends AnyVal {
-    def and[T2 <: ContainerList](that: T2): T and T2 = org.testcontainers.scalafacade.containers.and(self, that)
+    def and[T2 <: ContainerList](that: T2): T and T2 = org.testcontainers.testcontainers4s.containers.and(self, that)
   }
 }
 

@@ -1,4 +1,4 @@
-package org.testcontainers.scalafacade.containers
+package org.testcontainers.testcontainers4s.containers
 
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
 
