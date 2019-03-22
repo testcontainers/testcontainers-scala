@@ -5,7 +5,7 @@ import org.testcontainers.testcontainers4s.containers.scalatest.ForAllTestContai
 
 class SingleContainerSuite extends FreeSpec with ForAllTestContainer[MySQLContainer.Def] {
 
-  override def startContainers = {
+  override def startContainers() = {
     new MySQLContainer.Def().start
   }
 

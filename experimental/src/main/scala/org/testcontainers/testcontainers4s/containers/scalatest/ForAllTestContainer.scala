@@ -5,7 +5,7 @@ import org.testcontainers.testcontainers4s.containers.ContainerDefList
 
 trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
 
-  def startContainers: C#Containers
+  def startContainers(): C#Containers
 
   def withContainers(runTest: C#Containers => Unit): Unit = {
     val c = startedContainers.getOrElse(throw new IllegalStateException(
@@ -21,7 +21,7 @@ trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suit
     if (expectedTestCount(args.filter) == 0) {
       new CompositeStatus(Set.empty)
     } else {
-      startedContainers = Some(startContainers)
+      startedContainers = Some(startContainers())
       try {
         afterStart()
         super.run(testName, args)

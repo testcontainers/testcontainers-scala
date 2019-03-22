@@ -2,7 +2,7 @@ package org.testcontainers.testcontainers4s.containers
 
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
-trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
+trait Container[JC <: JavaGenericContainer[_]] extends ContainerList {
 
   def underlyingUnsafeContainer: JC
 
@@ -13,10 +13,10 @@ trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends C
 
   override type Containers = С
 
-  protected def createContainer: С
+  protected def createContainer(): С
 
   def start(): С = {
-    val container = createContainer
+    val container = createContainer()
     container.underlyingUnsafeContainer.start()
     container
   }
