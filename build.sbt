@@ -95,6 +95,10 @@ lazy val experimental = (project in file("experimental"))
     name := "testcontainers-scala-experimental",
     libraryDependencies ++=
       COMPILE(
-        "org.testcontainers" % "testcontainers" % testcontainersVersion
-      )
+        "org.testcontainers" % "testcontainers" % testcontainersVersion,
+        "com.chuusai" %% "shapeless" % "2.3.3"
+      ) ++ PROVIDED(
+        "org.scalatest" %% "scalatest" % scalaTestVersion,
+        "org.testcontainers" % "postgresql" % testcontainersVersion,
+      ),
   )
