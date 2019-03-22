@@ -6,7 +6,7 @@ trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
 
   def underlyingUnsafeContainer: JC
 
-  def stop: Unit = underlyingUnsafeContainer.stop()
+  def stop(): Unit = underlyingUnsafeContainer.stop()
 }
 
 trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends ContainerDefList {
@@ -15,7 +15,7 @@ trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends C
 
   protected def createContainer: С
 
-  def start: С = {
+  def start(): С = {
     val container = createContainer
     container.underlyingUnsafeContainer.start()
     container
@@ -32,13 +32,13 @@ final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D
 }
 
 sealed trait ContainerList {
-  def stop: Unit
+  def stop(): Unit
 }
 final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList {
-  override def stop: Unit = {
+  override def stop(): Unit = {
     // TODO: test stopping order
-    head.stop
-    tail.stop
+    head.stop()
+    tail.stop()
   }
 }
 

@@ -30,7 +30,7 @@ trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suit
           beforeStop()
         }
         finally {
-          startedContainers.foreach(_.stop)
+          startedContainers.foreach(_.stop())
         }
       }
     }
