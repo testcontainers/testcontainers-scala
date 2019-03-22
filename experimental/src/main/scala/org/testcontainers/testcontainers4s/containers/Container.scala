@@ -1,22 +1,12 @@
 package org.testcontainers.testcontainers4s.containers
 
-import org.scalatest.{FreeSpec, Suite, SuiteMixin}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
-sealed trait ContainerDefList {
-  type Containers <: ContainerList
-}
-final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D1, tail : D2) extends ContainerDefList {
-  override type Containers = D1#Containers and D2#Containers
-}
+trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
 
-sealed trait ContainerList
-final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList
+  def underlyingUnsafeContainer: JC
 
-object ContainerList {
-  implicit class ContainerListOps[T <: ContainerList](val self: T) extends AnyVal {
-    def and[T2 <: ContainerList](that: T2): T and T2 = org.testcontainers.testcontainers4s.containers.and(self, that)
-  }
+  def stop: Unit = underlyingUnsafeContainer.stop()
 }
 
 trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends ContainerDefList {
@@ -32,47 +22,28 @@ trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends C
   }
 }
 
-trait Container[JC <: JavaGenericContainer[_]] extends ContainerList { self =>
 
-  def underlyingUnsafeContainer: JC
-
-  def stop: Unit = ???
+sealed trait ContainerDefList {
+  type Containers <: ContainerList
 }
 
-trait ForAllTestContainer[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
-
-  def startContainers: C#Containers
-
-  def withContainers(containers: C#Containers => Unit): Unit = {
-    ???
-  }
+final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D1, tail : D2) extends ContainerDefList {
+  override type Containers = D1#Containers and D2#Containers
 }
 
-class MyTestSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def andDef MySQLContainer.Def] {
-
-  override def startContainers = {
-    val pg = new PostgreSQLContainer.Def().start
-    val mySql = new MySQLContainer.Def().start
-
-    pg and mySql
-  }
-
-  "foo" - {
-    "bar" in withContainers { case pg and mySql =>
-      assert(pg.jdbcUrl.nonEmpty && mySql.jdbcUrl.nonEmpty)
-    }
+sealed trait ContainerList {
+  def stop: Unit
+}
+final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList {
+  override def stop: Unit = {
+    // TODO: test stopping order
+    head.stop
+    tail.stop
   }
 }
 
-class MyTestSuite2 extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def] {
-
-  override def startContainers = {
-    new PostgreSQLContainer.Def().start
-  }
-
-  "foo" - {
-    "bar" in withContainers { pg1 =>
-      assert(pg1.jdbcUrl.nonEmpty)
-    }
+object ContainerList {
+  implicit class ContainerListOps[T <: ContainerList](val self: T) extends AnyVal {
+    def and[T2 <: ContainerList](that: T2): T and T2 = org.testcontainers.testcontainers4s.containers.and(self, that)
   }
 }
