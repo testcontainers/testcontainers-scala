@@ -87,3 +87,14 @@ lazy val microsite = (project in file("docs"))
     ghpagesNoJekyll := false,
     fork in tut := true
   )
+
+lazy val experimental = (project in file("experimental"))
+  .settings(
+    organization in ThisBuild := "org.testcontainers",
+    scalaVersion in ThisBuild := "2.12.8",
+    name := "testcontainers-scala-experimental",
+    libraryDependencies ++=
+      COMPILE(
+        "org.testcontainers" % "testcontainers" % testcontainersVersion
+      )
+  )
