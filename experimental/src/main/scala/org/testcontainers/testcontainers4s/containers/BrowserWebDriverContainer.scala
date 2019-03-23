@@ -1,9 +1,11 @@
 package org.testcontainers.testcontainers4s.containers
 
 import java.io.File
+import java.net.URL
 import java.util.Optional
 
 import org.openqa.selenium.Capabilities
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode
 import org.testcontainers.containers.{RecordingFileFactory, BrowserWebDriverContainer => JavaBrowserWebDriverContainer}
 import org.testcontainers.lifecycle.TestDescription
@@ -45,4 +47,10 @@ class BrowserWebDriverContainer private[containers] (
     }
     underlyingUnsafeContainer.afterTest(description, javaThrowable)
   }
+
+  def seleniumAddress: URL = underlyingUnsafeContainer.getSeleniumAddress
+  def vncAddress: String = underlyingUnsafeContainer.getVncAddress
+  def password: String = underlyingUnsafeContainer.getPassword
+  def port: Int = underlyingUnsafeContainer.getPort
+  def webDriver: RemoteWebDriver = underlyingUnsafeContainer.getWebDriver
 }
