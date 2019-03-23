@@ -1,9 +1,9 @@
 package org.testcontainers.testcontainers4s.containers
 
 import org.scalatest.FreeSpec
-import org.testcontainers.testcontainers4s.containers.scalatest.ForAllTestContainer
+import org.testcontainers.testcontainers4s.containers.scalatest.TestContainersForAll
 
-class MultipleContainersSuite extends FreeSpec with ForAllTestContainer[PostgreSQLContainer.Def andDef MySQLContainer.Def] {
+class MultipleContainersSuite extends FreeSpec with TestContainersForAll[PostgreSQLContainer.Def andDef MySQLContainer.Def] {
 
   override def startContainers() = {
     val pg = new PostgreSQLContainer.Def().start

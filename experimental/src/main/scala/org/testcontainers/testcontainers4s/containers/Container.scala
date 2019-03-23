@@ -32,7 +32,21 @@ final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D
 }
 
 sealed trait ContainerList {
+
   def stop(): Unit
+
+  def foreach[A](f: Container[_] => A): Unit = {
+    // TODO: test it
+    this match {
+      case and(head, tail) =>
+        head.foreach(f)
+        tail.foreach(f)
+
+      case container: Container[_] =>
+        f(container)
+    }
+  }
+
 }
 final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList {
   override def stop(): Unit = {

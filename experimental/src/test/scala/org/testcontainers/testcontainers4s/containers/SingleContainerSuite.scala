@@ -1,9 +1,9 @@
 package org.testcontainers.testcontainers4s.containers
 
 import org.scalatest.FreeSpec
-import org.testcontainers.testcontainers4s.containers.scalatest.ForAllTestContainer
+import org.testcontainers.testcontainers4s.containers.scalatest.TestContainersForEach
 
-class SingleContainerSuite extends FreeSpec with ForAllTestContainer[MySQLContainer.Def] {
+class SingleContainerSuite extends FreeSpec with TestContainersForEach[MySQLContainer.Def] {
 
   override def startContainers() = {
     new MySQLContainer.Def().start
@@ -11,6 +11,9 @@ class SingleContainerSuite extends FreeSpec with ForAllTestContainer[MySQLContai
 
   "foo" - {
     "bar" in withContainers { db =>
+      assert(db.jdbcUrl.nonEmpty)
+    }
+    "baz" in withContainers { db =>
       assert(db.jdbcUrl.nonEmpty)
     }
   }
