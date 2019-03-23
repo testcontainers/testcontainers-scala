@@ -7,7 +7,7 @@ import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 object GenericContainer {
 
   def createJavaGenericContainer(
-    dockerImageName: String,
+    dockerImageName: String, // TODO: Future[String] like in the old implementation?
     exposedPorts: List[Int] = List.empty,
     env: Map[String, String] = Map.empty,
     command: List[String] = List.empty,
