@@ -2,14 +2,11 @@ package org.testcontainers.testcontainers4s.containers
 
 import java.io.File
 import java.net.URL
-import java.util.Optional
 
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode
 import org.testcontainers.containers.{RecordingFileFactory, BrowserWebDriverContainer => JavaBrowserWebDriverContainer}
-import org.testcontainers.lifecycle.TestDescription
-import org.testcontainers.testcontainers4s.lifecycle.TestLifecycleAware
 
 object BrowserWebDriverContainer {
 
@@ -38,15 +35,7 @@ object BrowserWebDriverContainer {
 
 class BrowserWebDriverContainer private[containers] (
   val underlyingUnsafeContainer: JavaBrowserWebDriverContainer[_]
-) extends Container[JavaBrowserWebDriverContainer[_]] with TestLifecycleAware {
-
-  override def afterTest(description: TestDescription, throwable: Option[Throwable]): Unit = {
-    val javaThrowable: Optional[Throwable] = throwable match {
-      case Some(error) => Optional.of(error)
-      case None => Optional.empty()
-    }
-    underlyingUnsafeContainer.afterTest(description, javaThrowable)
-  }
+) extends Container[JavaBrowserWebDriverContainer[_]] {
 
   def seleniumAddress: URL = underlyingUnsafeContainer.getSeleniumAddress
   def vncAddress: String = underlyingUnsafeContainer.getVncAddress
