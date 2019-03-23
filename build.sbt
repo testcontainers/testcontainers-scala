@@ -101,6 +101,8 @@ lazy val experimental = (project in file("experimental"))
         "org.scalatest" %% "scalatest" % scalaTestVersion,
         "org.testcontainers" % "postgresql" % testcontainersVersion,
         "org.testcontainers" % "mysql" % testcontainersVersion,
+        "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion,
+        "org.testcontainers" % "selenium" % testcontainersVersion,
       ) ++ TEST(
         "org.slf4j" % "slf4j-simple" % slf4jVersion,
         "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
