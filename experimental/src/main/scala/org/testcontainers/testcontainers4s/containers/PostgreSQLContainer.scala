@@ -9,6 +9,7 @@ object PostgreSQLContainer {
   val defaultUsername = "test"
   val defaultPassword = "test"
 
+  // TODO: add extraConfiguration with java container?
   class Def(
     dockerImageName: String = defaultDockerImageName,
     databaseName: String = defaultDatabaseName,
