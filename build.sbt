@@ -5,7 +5,7 @@ import ReleaseTransformations._
 val testcontainersVersion = "1.10.6"
 val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
-val scalaTestVersion = "3.0.5"
+val scalaTestVersion = "3.0.7"
 val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "2.23.4"
@@ -16,7 +16,7 @@ lazy val root = (project in file("."))
   .settings(
     organization in ThisBuild := "com.dimafeng",
     scalaVersion in ThisBuild := "2.12.8",
-    crossScalaVersions := Seq("2.11.11", "2.12.8"),
+    crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
     name := "testcontainers-scala",
     compileScalastyle := scalastyle.in(Compile).toTask("").value,
     test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,

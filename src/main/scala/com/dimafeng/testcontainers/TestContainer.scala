@@ -110,7 +110,7 @@ trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Containe
 
 abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
 
-  def binds: Seq[Bind] = container.getBinds.asScala
+  def binds: Seq[Bind] = container.getBinds.asScala.toSeq
 
   def command: Seq[String] = container.getCommandParts
 
@@ -122,11 +122,11 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
 
   def containerName: String = container.getContainerName
 
-  def env: Seq[String] = container.getEnv.asScala
+  def env: Seq[String] = container.getEnv.asScala.toSeq
 
-  def exposedPorts: Seq[Int] = container.getExposedPorts.asScala.map(_.intValue())
+  def exposedPorts: Seq[Int] = container.getExposedPorts.asScala.toSeq.map(_.intValue())
 
-  def extraHosts: Seq[String] = container.getExtraHosts.asScala
+  def extraHosts: Seq[String] = container.getExtraHosts.asScala.toSeq
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -141,17 +141,17 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
 
   def mappedPort(port: Int): Int = container.getMappedPort(port)
 
-  def portBindings: Seq[String] = container.getPortBindings.asScala
+  def portBindings: Seq[String] = container.getPortBindings.asScala.toSeq
 
   def networkMode: String = container.getNetworkMode
 
   def network: Network = container.getNetwork
 
-  def networkAliases: Seq[String] = container.getNetworkAliases.asScala
+  def networkAliases: Seq[String] = container.getNetworkAliases.asScala.toSeq
 
   def privilegedMode: Boolean = container.isPrivilegedMode
 
-  def volumesFroms: Seq[VolumesFrom] = container.getVolumesFroms.asScala
+  def volumesFroms: Seq[VolumesFrom] = container.getVolumesFroms.asScala.toSeq
 
   def startupCheckStrategy: StartupCheckStrategy = container.getStartupCheckStrategy
 
@@ -163,7 +163,7 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
 
   def dockerDaemonInfo: Info = container.getDockerDaemonInfo
 
-  def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala
+  def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala.toSeq
 
   def createContainerCmdModifiers: Set[Consumer[CreateContainerCmd]] = container.getCreateContainerCmdModifiers.asScala.toSet
 
