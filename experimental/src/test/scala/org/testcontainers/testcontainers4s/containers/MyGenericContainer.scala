@@ -5,9 +5,7 @@ import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 object MyGenericContainer {
 
   class Def extends GenericContainer.Def[MyGenericContainer](
-    new MyGenericContainer(GenericContainer.createJavaGenericContainer("foobar"))
+    new MyGenericContainer(GenericContainer("foobar"))
   )
 }
-class MyGenericContainer(
-  val underlyingUnsafeContainer: JavaGenericContainer[_]
-) extends GenericContainer
+class MyGenericContainer(underlying: JavaGenericContainer[_]) extends GenericContainer(underlying)

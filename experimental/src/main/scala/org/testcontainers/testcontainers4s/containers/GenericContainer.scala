@@ -6,7 +6,7 @@ import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
 object GenericContainer {
 
-  def createJavaGenericContainer(
+  def apply(
     dockerImageName: String, // TODO: Future[String] like in the old implementation?
     exposedPorts: List[Int] = List.empty,
     env: Map[String, String] = Map.empty,
@@ -33,4 +33,5 @@ object GenericContainer {
     protected def createContainer(): C = init
   }
 }
-trait GenericContainer extends Container[JavaGenericContainer[_]]
+abstract class GenericContainer(val underlyingUnsafeContainer: JavaGenericContainer[_])
+  extends Container[JavaGenericContainer[_]]
