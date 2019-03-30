@@ -29,6 +29,8 @@ object GenericContainer {
     javaContainer
   }
 
-  abstract class Def[C <: GenericContainer] extends ContainerDef[JavaGenericContainer[_], C]
+  abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef[JavaGenericContainer[_], C] {
+    protected def createContainer(): C = init
+  }
 }
 trait GenericContainer extends Container[JavaGenericContainer[_]]
