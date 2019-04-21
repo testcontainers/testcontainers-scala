@@ -12,18 +12,6 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-selenium/
 
-## Why can't I use testcontainers-java in my scala project?
-
-*testcontainers-java* is awesome and yes, you can use it in scala projects as is **but**:
-
-* It's integrated with JUnit only
-* There are some problems initializing containers due to `DockerComposeContainer<SELF extends DockerComposeContainer<SELF>>`
-
-As a side bonus, you will have:
-
-* Scala friendly interfaces, approaches, types
-* Integration with [ScalaTest](http://www.scalatest.org/)
-
 ## Slack
 
 [Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
