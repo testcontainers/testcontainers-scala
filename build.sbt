@@ -5,7 +5,7 @@ import ReleaseTransformations._
 val testcontainersVersion = "1.11.1"
 val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
-val scalaTestVersion = "3.0.7"
+val scalaTestVersion = "3.0.8-RC2"
 val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
 val mockitoVersion = "2.23.4"
