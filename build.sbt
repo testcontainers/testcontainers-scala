@@ -8,7 +8,7 @@ val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.7"
 val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
-val mockitoVersion = "2.23.4"
+val mockitoVersion = "2.27.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
