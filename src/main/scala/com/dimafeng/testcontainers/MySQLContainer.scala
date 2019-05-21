@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.MySQLContainer.DEFAULT_MYSQL_VERSION
-import org.testcontainers.containers.{MySQLContainer => OTCMySQLContainer}
 
 class MySQLContainer(configurationOverride: Option[String] = None,
                      mysqlImageVersion: Option[String] = None,

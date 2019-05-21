@@ -1,7 +1,5 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{PostgreSQLContainer => OTCPostgreSQLContainer}
-
 class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None) extends SingleContainer[OTCPostgreSQLContainer[_]] {
 
   type OTCContainer = OTCPostgreSQLContainer[T] forSome {type T <: OTCPostgreSQLContainer[T]}

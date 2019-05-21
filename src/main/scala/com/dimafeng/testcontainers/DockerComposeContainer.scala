@@ -5,9 +5,6 @@ import java.util
 import java.util.function.Consumer
 
 import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
-import org.testcontainers.containers.output.OutputFrame
-import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
-import org.testcontainers.containers.{DockerComposeContainer => OTCDockerComposeContainer}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._

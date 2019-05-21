@@ -12,49 +12,44 @@ val mockitoVersion = "2.27.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
+val commonSettings = Seq(
+  scalaVersion in ThisBuild := "2.12.8",
+  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
+
+  /**
+    * Publishing
+    */
+  useGpg := true,
+  publishTo := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  },
+  publishMavenStyle := true,
+  sonatypeProfileName := "testcontainers-scala",
+  sonatypeProjectHosting := Some(GitLabHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
+  licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT")),
+  organization in ThisBuild := "com.dimafeng",
+
+  parallelExecution in Global := false,
+
+  releaseCrossBuild := true
+)
+
+lazy val noPublishSettings = Seq(
+  skip in publish := true
+)
+
 lazy val root = (project in file("."))
+  .aggregate(
+    core,
+    scalatest,
+    scalatestSelenium
+  )
+  .settings(noPublishSettings)
   .settings(
-    organization in ThisBuild := "com.dimafeng",
-    scalaVersion in ThisBuild := "2.12.8",
-    crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
-    name := "testcontainers-scala",
-    compileScalastyle := scalastyle.in(Compile).toTask("").value,
-    test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
-
-    /**
-      * Dependencies
-      */
-    libraryDependencies ++=
-      COMPILE(
-        "org.testcontainers" % "testcontainers" % testcontainersVersion
-      )
-        ++ PROVIDED(
-        "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion,
-        "org.testcontainers" % "selenium" % testcontainersVersion,
-        "org.slf4j" % "slf4j-simple" % slf4jVersion,
-        "org.scalatest" %% "scalatest" % scalaTestVersion,
-        "org.testcontainers" % "mysql" % testcontainersVersion,
-        "org.testcontainers" % "postgresql" % testcontainersVersion
-      )
-        ++ TEST(
-        "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
-        "junit" % "junit" % "4.12",
-        "org.testcontainers" % "selenium" % testcontainersVersion,
-        "org.postgresql" % "postgresql" % postgresqlDriverVersion,
-        "org.mockito" % "mockito-core" % mockitoVersion
-      ),
-
-    /**
-      * Publishing
-      */
-    useGpg := true,
-    publishTo := sonatypePublishTo.value,
-    publishMavenStyle := true,
-    sonatypeProfileName := "testcontainers-scala",
-    sonatypeProjectHosting := Some(GitLabHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
-    licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT")),
-
-    releaseCrossBuild := true,
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
@@ -66,8 +61,49 @@ lazy val root = (project in file("."))
       releaseStepCommandAndRemaining("+publishSigned"),
       setNextVersion,
       commitNextVersion,
-      releaseStepCommand("sonatypeReleaseAll"),
+      //releaseStepCommand("sonatypeReleaseAll"),
       pushChanges
+    )
+  )
+
+lazy val core = (project in file("core"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-core",
+
+    libraryDependencies ++=
+      COMPILE(
+        "org.testcontainers" % "testcontainers" % testcontainersVersion
+      )
+        ++ PROVIDED(
+        "org.slf4j" % "slf4j-simple" % slf4jVersion
+      )
+        ++ TEST(
+        "junit" % "junit" % "4.12",
+        "org.testcontainers" % "selenium" % testcontainersVersion,
+        "org.postgresql" % "postgresql" % postgresqlDriverVersion,
+        "org.mockito" % "mockito-core" % mockitoVersion
+      )
+  )
+
+lazy val scalatest = (project in file("test-framework/scalatest"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-scalatest",
+    libraryDependencies ++= PROVIDED(
+      "org.scalatest" %% "scalatest" % scalaTestVersion
+    )
+  )
+
+lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-scalatest-selenium",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "selenium" % testcontainersVersion,
+      "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion
     )
   )
 

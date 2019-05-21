@@ -6,7 +6,6 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.{Args, FlatSpec, Reporter}
-import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
 
 class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 

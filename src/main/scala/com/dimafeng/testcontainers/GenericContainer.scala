@@ -3,8 +3,6 @@ package com.dimafeng.testcontainers
 import java.util.concurrent.Future
 
 import com.dimafeng.testcontainers.GenericContainer.DockerImage
-import org.testcontainers.containers.wait.strategy.WaitStrategy
-import org.testcontainers.containers.{BindMode, GenericContainer => OTCGenericContainer}
 
 class GenericContainer(dockerImage: DockerImage,
                        exposedPorts: Seq[Int] = Seq(),

@@ -1,103 +1,24 @@
 package com.dimafeng.testcontainers
 
+import org.junit.runner.Description
 import java.util.function.Consumer
 
 import com.github.dockerjava.api.DockerClient
 import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
 import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
 import org.junit.runner.Description
-import org.scalatest._
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
 
-import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
 
-trait ForEachTestContainer extends SuiteMixin {
-  self: Suite =>
-
-  val container: Container
-
-  implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
-
-  abstract protected override def runTest(testName: String, args: Args): Status = {
-    container.starting()
-    try {
-      afterStart()
-      val status = super.runTest(testName, args)
-      status match {
-        case FailedStatus => container.failed(new RuntimeException(status.toString))
-        case _ => container.succeeded()
-      }
-      status
-    }
-    catch {
-      case e: Throwable =>
-        container.failed(e)
-        throw e
-    }
-    finally {
-      try {
-        beforeStop()
-      }
-      finally {
-        container.finished()
-      }
-    }
-  }
-
-  def afterStart(): Unit = {}
-
-  def beforeStop(): Unit = {}
-}
-
-trait ForAllTestContainer extends SuiteMixin {
-  self: Suite =>
-
-  val container: Container
-
-  implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
-
-  abstract override def run(testName: Option[String], args: Args): Status = {
-    if (expectedTestCount(args.filter) == 0) {
-      new CompositeStatus(Set.empty)
-    } else {
-      container.starting()
-      try {
-        afterStart()
-        super.run(testName, args)
-      } finally {
-        try {
-          beforeStop()
-        }
-        finally {
-          container.finished()
-        }
-      }
-    }
-  }
-
-  def afterStart(): Unit = {}
-
-  def beforeStop(): Unit = {}
-}
-
-trait Container {
-  def finished()(implicit description: Description): Unit
-
-  def failed(e: Throwable)(implicit description: Description): Unit
-
-  def starting()(implicit description: Description): Unit
-
-  def succeeded()(implicit description: Description): Unit
-}
+import scala.collection.JavaConverters._
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
 
-  @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
-  implicit val container: T
+  private[testcontainers] implicit val container: T
 
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 
@@ -171,4 +92,14 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
     configProvider(container)
     this
   }
+}
+
+trait Container {
+  def finished()(implicit description: Description): Unit
+
+  def failed(e: Throwable)(implicit description: Description): Unit
+
+  def starting()(implicit description: Description): Unit
+
+  def succeeded()(implicit description: Description): Unit
 }

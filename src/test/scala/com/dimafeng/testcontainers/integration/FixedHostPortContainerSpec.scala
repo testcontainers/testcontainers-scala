@@ -4,7 +4,6 @@ import java.net.URL
 
 import com.dimafeng.testcontainers.{FixedHostPortGenericContainer, ForAllTestContainer}
 import org.scalatest.FlatSpec
-import org.testcontainers.containers.wait.Wait
 
 import scala.io.Source
 
