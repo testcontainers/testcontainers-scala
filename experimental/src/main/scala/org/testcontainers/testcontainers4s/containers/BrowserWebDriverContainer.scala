@@ -13,7 +13,7 @@ import org.testcontainers.testcontainers4s.lifecycle.TestLifecycleAware
 
 object BrowserWebDriverContainer {
 
-  class Def(
+  case class Def(
     dockerImageName: Option[String] = None,
     capabilities: Option[Capabilities] = None,
     recordingMode: Option[(VncRecordingMode, File)] = None,

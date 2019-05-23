@@ -30,27 +30,29 @@ private[scalatest] object TestContainers {
     description
   }
 
-  trait TestContainersSuite[C <: ContainerDefList] extends SuiteMixin { self: Suite =>
+  trait TestContainersSuite extends SuiteMixin { self: Suite =>
 
-    def startContainers(): C#Containers
+    type ContainerDefs <: ContainerDefList
 
-    def withContainers(runTest: C#Containers => Unit): Unit = {
+    def startContainers(): ContainerDefs#Containers
+
+    def withContainers(runTest: ContainerDefs#Containers => Unit): Unit = {
       val c = startedContainers.getOrElse(throw IllegalWithContainersCall())
       runTest(c)
     }
 
     private val suiteDescription = createDescription(self)
 
-    @volatile private[scalatest] var startedContainers: Option[C#Containers] = None
+    @volatile private[scalatest] var startedContainers: Option[ContainerDefs#Containers] = None
 
-    private[scalatest] def beforeTest(containers: C#Containers): Unit = {
+    private[scalatest] def beforeTest(containers: ContainerDefs#Containers): Unit = {
       containers.foreach {
         case container: TestLifecycleAware => container.beforeTest(suiteDescription)
         case _ => // do nothing
       }
     }
 
-    private[scalatest] def afterTest(containers: C#Containers, throwable: Option[Throwable]): Unit = {
+    private[scalatest] def afterTest(containers: ContainerDefs#Containers, throwable: Option[Throwable]): Unit = {
       containers.foreach {
         case container: TestLifecycleAware => container.afterTest(suiteDescription, throwable)
         case _ => // do nothing
@@ -68,7 +70,7 @@ case class IllegalWithContainersCall() extends IllegalStateException(
     "'withContainers' method should be used only in test cases to prevent this."
 )
 
-trait TestContainersForAll[C <: ContainerDefList] extends TestContainersSuite[C] { self: Suite =>
+trait TestContainersForAll extends TestContainersSuite { self: Suite =>
 
   abstract override def run(testName: Option[String], args: Args): Status = {
     if (expectedTestCount(args.filter) == 0) {
@@ -120,7 +122,7 @@ trait TestContainersForAll[C <: ContainerDefList] extends TestContainersSuite[C]
   }
 }
 
-trait TestContainersForEach[C <: ContainerDefList] extends TestContainersSuite[C] { self: Suite =>
+trait TestContainersForEach extends TestContainersSuite { self: Suite =>
 
   abstract protected override def runTest(testName: String, args: Args): Status = {
     val containers = startContainers()

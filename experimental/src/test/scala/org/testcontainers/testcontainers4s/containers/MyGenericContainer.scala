@@ -4,7 +4,7 @@ import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
 object MyGenericContainer {
 
-  class Def extends GenericContainer.Def[MyGenericContainer](
+  case class Def() extends GenericContainer.Def[MyGenericContainer](
     new MyGenericContainer(GenericContainer("foobar"))
   )
 }

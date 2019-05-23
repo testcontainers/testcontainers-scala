@@ -9,7 +9,7 @@ object MySQLContainer {
   val defaultUsername = "test"
   val defaultPassword = "test"
 
-  class Def(
+  case class Def(
     dockerImageName: String = defaultDockerImageName,
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
