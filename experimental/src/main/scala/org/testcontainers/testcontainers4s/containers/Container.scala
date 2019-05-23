@@ -42,7 +42,7 @@ sealed trait ContainerList {
 
   def stop(): Unit
 
-  def foreach[A](f: Container => A): Unit = {
+  def foreach(f: Container => Unit): Unit = {
     // TODO: test it
     this match {
       case and(head, tail) =>
