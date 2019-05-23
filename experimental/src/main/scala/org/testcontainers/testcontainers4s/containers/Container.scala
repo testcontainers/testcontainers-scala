@@ -9,13 +9,13 @@ trait Container[JC <: JavaGenericContainer[_]] extends ContainerList {
   def stop(): Unit = underlyingUnsafeContainer.stop()
 }
 
-trait ContainerDef[JC <: JavaGenericContainer[_], С <: Container[JC]] extends ContainerDefList {
+trait ContainerDef[JC <: JavaGenericContainer[_], C <: Container[JC]] extends ContainerDefList {
 
-  override type Containers = С
+  override type Containers = C
 
-  protected def createContainer(): С
+  protected def createContainer(): C
 
-  def start(): С = {
+  def start(): C = {
     val container = createContainer()
     container.underlyingUnsafeContainer.start()
     container
