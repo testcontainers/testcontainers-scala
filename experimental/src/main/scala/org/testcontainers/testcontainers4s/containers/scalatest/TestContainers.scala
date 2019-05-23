@@ -3,7 +3,7 @@ package org.testcontainers.testcontainers4s.containers.scalatest
 import org.junit.runner.{Description => JunitDescription}
 import org.scalatest.{Args, CompositeStatus, Status, Suite, SuiteMixin}
 import org.testcontainers.lifecycle.TestDescription
-import org.testcontainers.testcontainers4s.containers.ContainerDefList
+import org.testcontainers.testcontainers4s.containers.{ContainerDef, ContainerDefList}
 import org.testcontainers.testcontainers4s.containers.scalatest.TestContainers.TestContainersSuite
 import org.testcontainers.testcontainers4s.lifecycle.TestLifecycleAware
 
@@ -164,5 +164,29 @@ trait TestContainersForEach extends TestContainersSuite { self: Suite =>
         }
       }
     }
+  }
+}
+
+trait TestContainerForAll extends TestContainersForAll { self: Suite =>
+
+  type Container <: org.testcontainers.testcontainers4s.containers.Container
+  val containerDef: ContainerDef[Container]
+
+  final override type ContainerDefs = containerDef.type
+
+  override def startContainers(): Container = {
+    containerDef.start()
+  }
+}
+
+trait TestContainerForEach extends TestContainersForEach { self: Suite =>
+
+  type Container <: org.testcontainers.testcontainers4s.containers.Container
+  val containerDef: ContainerDef[Container]
+
+  final override type ContainerDefs = containerDef.type
+
+  override def startContainers(): Container = {
+    containerDef.start()
   }
 }

@@ -1,15 +1,12 @@
 package org.testcontainers.testcontainers4s.containers
 
 import org.scalatest.FreeSpec
-import org.testcontainers.testcontainers4s.containers.scalatest.TestContainersForEach
+import org.testcontainers.testcontainers4s.containers.scalatest.TestContainerForEach
 
-class SingleContainerSuite extends FreeSpec with TestContainersForEach {
+class SingleContainerSuite extends FreeSpec with TestContainerForEach {
 
-  override type ContainerDefs = MySQLContainer.Def
-
-  override def startContainers(): MySQLContainer = {
-    MySQLContainer.Def().start()
-  }
+  override type Container = MySQLContainer
+  override val containerDef = MySQLContainer.Def()
 
   "foo" - {
     "bar" in withContainers { db =>
