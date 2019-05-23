@@ -29,9 +29,10 @@ object GenericContainer {
     javaContainer
   }
 
-  abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef[JavaGenericContainer[_], C] {
+  abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef[C] {
     protected def createContainer(): C = init
   }
 }
-abstract class GenericContainer(val underlyingUnsafeContainer: JavaGenericContainer[_])
-  extends Container[JavaGenericContainer[_]]
+abstract class GenericContainer(val underlyingUnsafeContainer: JavaGenericContainer[_]) extends Container {
+  override type JavaContainer = JavaGenericContainer[_]
+}

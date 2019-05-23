@@ -2,14 +2,19 @@ package org.testcontainers.testcontainers4s.containers
 
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
-trait Container[JC <: JavaGenericContainer[_]] extends ContainerList {
+trait Container extends ContainerList {
 
-  def underlyingUnsafeContainer: JC
+  type JavaContainer <: JavaGenericContainer[_]
+
+  def underlyingUnsafeContainer: JavaContainer
 
   def stop(): Unit = underlyingUnsafeContainer.stop()
 }
+object Container {
+  type Aux[JC <: JavaGenericContainer[_]] = Container { type JavaContainer = JC }
+}
 
-trait ContainerDef[JC <: JavaGenericContainer[_], C <: Container[JC]] extends ContainerDefList {
+trait ContainerDef[C <: Container] extends ContainerDefList {
 
   override type Containers = C
 
@@ -35,14 +40,14 @@ sealed trait ContainerList {
 
   def stop(): Unit
 
-  def foreach[A](f: Container[_] => A): Unit = {
+  def foreach[A](f: Container => A): Unit = {
     // TODO: test it
     this match {
       case and(head, tail) =>
         head.foreach(f)
         tail.foreach(f)
 
-      case container: Container[_] =>
+      case container: Container =>
         f(container)
     }
   }

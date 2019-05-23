@@ -15,7 +15,7 @@ object MySQLContainer {
     username: String = defaultUsername,
     password: String = defaultPassword,
     configurationOverride: Option[String] = None,
-  ) extends ContainerDef[JavaMySQLContainer[_], MySQLContainer] {
+  ) extends ContainerDef[MySQLContainer] {
 
     override def createContainer(): MySQLContainer = {
       val javaContainer = new JavaMySQLContainer(dockerImageName)
@@ -30,4 +30,6 @@ object MySQLContainer {
 
 class MySQLContainer private[containers] (
   val underlyingUnsafeContainer: JavaMySQLContainer[_]
-) extends Container[JavaMySQLContainer[_]] with JdbcDatabaseContainer[JavaMySQLContainer[_]]
+) extends Container with JdbcDatabaseContainer[JavaMySQLContainer[_]] {
+  override type JavaContainer = JavaMySQLContainer[_]
+}

@@ -18,7 +18,7 @@ object BrowserWebDriverContainer {
     capabilities: Option[Capabilities] = None,
     recordingMode: Option[(VncRecordingMode, File)] = None,
     recordingFileFactory: Option[RecordingFileFactory] = None,
-  ) extends ContainerDef[JavaBrowserWebDriverContainer[_], BrowserWebDriverContainer] {
+  ) extends ContainerDef[BrowserWebDriverContainer] {
 
     override def createContainer(): BrowserWebDriverContainer = {
       val javaContainer = dockerImageName match {
@@ -38,7 +38,9 @@ object BrowserWebDriverContainer {
 
 class BrowserWebDriverContainer private[containers] (
   val underlyingUnsafeContainer: JavaBrowserWebDriverContainer[_]
-) extends Container[JavaBrowserWebDriverContainer[_]] with TestLifecycleAware {
+) extends Container with TestLifecycleAware {
+
+  override type JavaContainer = JavaBrowserWebDriverContainer[_]
 
   override def afterTest(description: TestDescription, throwable: Option[Throwable]): Unit = {
     val javaThrowable: Optional[Throwable] = throwable match {

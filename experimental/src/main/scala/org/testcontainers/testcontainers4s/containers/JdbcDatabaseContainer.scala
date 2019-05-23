@@ -4,7 +4,7 @@ import java.sql.Driver
 
 import org.testcontainers.containers.{JdbcDatabaseContainer => JavaJdbcDatabaseContainer}
 
-trait JdbcDatabaseContainer[T <: JavaJdbcDatabaseContainer[_]] { container: Container[T] =>
+trait JdbcDatabaseContainer[T <: JavaJdbcDatabaseContainer[_]] { container: Container.Aux[T] =>
 
   def driverClassName: String = underlyingUnsafeContainer.getDriverClassName
 
