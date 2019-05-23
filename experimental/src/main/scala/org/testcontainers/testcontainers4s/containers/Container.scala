@@ -14,13 +14,15 @@ object Container {
   type Aux[JC <: JavaGenericContainer[_]] = Container { type JavaContainer = JC }
 }
 
-trait ContainerDef[C <: Container] extends ContainerDefList {
+trait ContainerDef extends ContainerDefList {
 
-  override type Containers = C
+  type Container <: org.testcontainers.testcontainers4s.containers.Container
 
-  protected def createContainer(): C
+  override type Containers = Container
 
-  def start(): C = {
+  protected def createContainer(): Container
+
+  def start(): Container = {
     val container = createContainer()
     container.underlyingUnsafeContainer.start()
     container

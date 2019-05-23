@@ -18,7 +18,9 @@ object BrowserWebDriverContainer {
     capabilities: Option[Capabilities] = None,
     recordingMode: Option[(VncRecordingMode, File)] = None,
     recordingFileFactory: Option[RecordingFileFactory] = None,
-  ) extends ContainerDef[BrowserWebDriverContainer] {
+  ) extends ContainerDef {
+
+    override type Container = BrowserWebDriverContainer
 
     override def createContainer(): BrowserWebDriverContainer = {
       val javaContainer = dockerImageName match {

@@ -169,24 +169,22 @@ trait TestContainersForEach extends TestContainersSuite { self: Suite =>
 
 trait TestContainerForAll extends TestContainersForAll { self: Suite =>
 
-  type Container <: org.testcontainers.testcontainers4s.containers.Container
-  val containerDef: ContainerDef[Container]
+  val containerDef: ContainerDef
 
   final override type ContainerDefs = containerDef.type
 
-  override def startContainers(): Container = {
+  override def startContainers(): containerDef.Container = {
     containerDef.start()
   }
 }
 
 trait TestContainerForEach extends TestContainersForEach { self: Suite =>
 
-  type Container <: org.testcontainers.testcontainers4s.containers.Container
-  val containerDef: ContainerDef[Container]
+  val containerDef: ContainerDef
 
   final override type ContainerDefs = containerDef.type
 
-  override def startContainers(): Container = {
+  override def startContainers(): containerDef.Container = {
     containerDef.start()
   }
 }

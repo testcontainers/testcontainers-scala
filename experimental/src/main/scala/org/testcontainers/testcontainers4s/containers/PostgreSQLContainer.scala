@@ -15,7 +15,9 @@ object PostgreSQLContainer {
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,
-  ) extends ContainerDef[PostgreSQLContainer] {
+  ) extends ContainerDef {
+
+    override type Container = PostgreSQLContainer
 
     override def createContainer(): PostgreSQLContainer = {
       val javaContainer = new JavaPostgreSQLContainer(dockerImageName)

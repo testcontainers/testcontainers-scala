@@ -5,7 +5,6 @@ import org.testcontainers.testcontainers4s.containers.scalatest.TestContainerFor
 
 class SingleContainerSuite extends FreeSpec with TestContainerForEach {
 
-  override type Container = MySQLContainer
   override val containerDef = MySQLContainer.Def()
 
   "foo" - {
