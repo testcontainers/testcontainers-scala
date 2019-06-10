@@ -2,6 +2,8 @@ package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
 
+import org.scalatest.FlatSpec
+
 class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
 
   override val container = PostgreSQLContainer()
