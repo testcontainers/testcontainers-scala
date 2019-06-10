@@ -1,8 +1,8 @@
-import Dependencies._
+import Dependencies.{PROVIDED, TEST, _}
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val testcontainersVersion = "1.11.2"
+val testcontainersVersion = "1.11.3"
 val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.7"
@@ -80,6 +80,7 @@ lazy val core = (project in file("core"))
       )
         ++ TEST(
         "junit" % "junit" % "4.12",
+        "org.scalatest" %% "scalatest" % scalaTestVersion,
         "org.testcontainers" % "selenium" % testcontainersVersion,
         "org.postgresql" % "postgresql" % postgresqlDriverVersion,
         "org.mockito" % "mockito-core" % mockitoVersion
@@ -104,6 +105,30 @@ lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium
     libraryDependencies ++= COMPILE(
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion
+    )
+  )
+
+lazy val moduleMysql = (project in file("modules/mysql"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-mysql",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "mysql" % testcontainersVersion
+    ) ++ TEST(
+      "mysql" % "mysql-connector-java" % mysqlConnectorVersion
+    )
+  )
+
+lazy val modulePostgres = (project in file("modules/postgres"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-mysql",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "postgresql" % testcontainersVersion
+    ) ++ TEST(
+      "org.postgresql" % "postgresql" % postgresqlDriverVersion
     )
   )
 
