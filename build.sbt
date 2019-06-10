@@ -46,7 +46,9 @@ lazy val root = (project in file("."))
   .aggregate(
     core,
     scalatest,
-    scalatestSelenium
+    scalatestSelenium,
+    moduleMysql,
+    modulePostgres
   )
   .settings(noPublishSettings)
   .settings(
