@@ -16,4 +16,3 @@ class SingleContainerSuite extends FreeSpec with TestContainerForEach {
     }
   }
 }
-

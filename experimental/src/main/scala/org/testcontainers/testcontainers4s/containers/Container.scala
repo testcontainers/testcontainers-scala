@@ -14,11 +14,9 @@ object Container {
   type Aux[JC <: JavaGenericContainer[_]] = Container { type JavaContainer = JC }
 }
 
-trait ContainerDef extends ContainerDefList {
+trait ContainerDef {
 
   type Container <: org.testcontainers.testcontainers4s.containers.Container
-
-  override type Containers = Container
 
   protected def createContainer(): Container
 
@@ -27,15 +25,6 @@ trait ContainerDef extends ContainerDefList {
     container.underlyingUnsafeContainer.start()
     container
   }
-}
-
-
-sealed trait ContainerDefList {
-  type Containers <: ContainerList
-}
-
-final case class andDef[D1 <: ContainerDefList, D2 <: ContainerDefList](head : D1, tail : D2) extends ContainerDefList {
-  override type Containers = D1#Containers and D2#Containers
 }
 
 sealed trait ContainerList {

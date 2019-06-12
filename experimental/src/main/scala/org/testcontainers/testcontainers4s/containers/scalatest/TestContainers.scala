@@ -3,7 +3,7 @@ package org.testcontainers.testcontainers4s.containers.scalatest
 import org.junit.runner.{Description => JunitDescription}
 import org.scalatest.{Args, CompositeStatus, Status, Suite, SuiteMixin}
 import org.testcontainers.lifecycle.TestDescription
-import org.testcontainers.testcontainers4s.containers.{ContainerDef, ContainerDefList}
+import org.testcontainers.testcontainers4s.containers.{ContainerDef, ContainerList}
 import org.testcontainers.testcontainers4s.containers.scalatest.TestContainers.TestContainersSuite
 import org.testcontainers.testcontainers4s.lifecycle.TestLifecycleAware
 
@@ -32,27 +32,27 @@ private[scalatest] object TestContainers {
 
   trait TestContainersSuite extends SuiteMixin { self: Suite =>
 
-    type ContainerDefs <: ContainerDefList
+    type Containers <: ContainerList
 
-    def startContainers(): ContainerDefs#Containers
+    def startContainers(): Containers
 
-    def withContainers(runTest: ContainerDefs#Containers => Unit): Unit = {
+    def withContainers(runTest: Containers => Unit): Unit = {
       val c = startedContainers.getOrElse(throw IllegalWithContainersCall())
       runTest(c)
     }
 
     private val suiteDescription = createDescription(self)
 
-    @volatile private[scalatest] var startedContainers: Option[ContainerDefs#Containers] = None
+    @volatile private[scalatest] var startedContainers: Option[Containers] = None
 
-    private[scalatest] def beforeTest(containers: ContainerDefs#Containers): Unit = {
+    private[scalatest] def beforeTest(containers: Containers): Unit = {
       containers.foreach {
         case container: TestLifecycleAware => container.beforeTest(suiteDescription)
         case _ => // do nothing
       }
     }
 
-    private[scalatest] def afterTest(containers: ContainerDefs#Containers, throwable: Option[Throwable]): Unit = {
+    private[scalatest] def afterTest(containers: Containers, throwable: Option[Throwable]): Unit = {
       containers.foreach {
         case container: TestLifecycleAware => container.afterTest(suiteDescription, throwable)
         case _ => // do nothing
@@ -171,7 +171,7 @@ trait TestContainerForAll extends TestContainersForAll { self: Suite =>
 
   val containerDef: ContainerDef
 
-  final override type ContainerDefs = containerDef.type
+  final override type Containers = containerDef.Container
 
   override def startContainers(): containerDef.Container = {
     containerDef.start()
@@ -182,7 +182,7 @@ trait TestContainerForEach extends TestContainersForEach { self: Suite =>
 
   val containerDef: ContainerDef
 
-  final override type ContainerDefs = containerDef.type
+  final override type Containers = containerDef.Container
 
   override def startContainers(): containerDef.Container = {
     containerDef.start()
