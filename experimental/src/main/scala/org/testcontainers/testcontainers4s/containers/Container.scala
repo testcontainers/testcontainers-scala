@@ -9,6 +9,8 @@ trait Container extends ContainerList {
   def underlyingUnsafeContainer: JavaContainer
 
   def stop(): Unit = underlyingUnsafeContainer.stop()
+
+  def start(): Unit = underlyingUnsafeContainer.start()
 }
 object Container {
   type Aux[JC <: JavaGenericContainer[_]] = Container { type JavaContainer = JC }
