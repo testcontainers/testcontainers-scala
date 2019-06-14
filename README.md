@@ -71,7 +71,116 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
     }
 }
 ```
+This spec creates a mysql container to support a [Lightbend Slick](http://slick.lightbend.com/doc/3.0.0/queries.html) Table query
 
+```scala
+
+import java.sql.DriverManager
+
+import akka.stream.alpakka.slick.scaladsl.SlickSession
+import akka.stream.scaladsl.Sink
+import com.dimafeng.testcontainers.ForAllTestContainer
+import com.dimafeng.testcontainers.MySQLContainer
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigValueFactory
+import org.scalatest.Matchers._
+import org.scalatest._
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.mockito.MockitoSugar
+
+class SlickRepositoryTest extends AsyncWordSpec
+  with AkkaSpec
+  with ScalaFutures
+  with MockitoSugar
+  with Suite
+  with ForAllTestContainer {
+
+  override val container = MySQLContainer(databaseName = "YOURDB")
+
+// --- under your application.conf test/ config ---
+// your-db {
+//  profile = "slick.jdbc.MySQLProfile$"
+//  db {
+//    dataSourceClass = "slick.jdbc.DriverDataSource"
+//    properties = {
+//      driver = "com.mysql.jdbc.Driver"
+//      user = "",
+//      password =""
+//    }
+//  }
+// }
+// ------------- END -------------------
+
+  def config: Config = {
+    ConfigFactory.load()
+      .withValue(
+      "your-db.db.properties.url",
+      ConfigValueFactory.fromAnyRef(
+        container.jdbcUrl
+      )
+    ).withValue(
+      "your-db.db.properties.user",
+      ConfigValueFactory.fromAnyRef(
+        container.username
+      )
+    ).withValue(
+      "your-db.db.properties.password",
+      ConfigValueFactory.fromAnyRef(
+        container.password
+      )
+    )
+  }
+
+  override def beforeAll: Unit = {
+
+    val connection = DriverManager.getConnection(
+      container.jdbcUrl,
+      container.username,
+      container.password
+    )
+
+    val creates =
+      """
+        |CREATE TABLE SOME_THING (
+        |  <columns>
+        |);
+      """.stripMargin
+
+    val inserts =
+      """
+        |insert into SOMETHING (COL_1,..COL_N) values
+        | (v1,...,vn)
+        
+        |
+      """.stripMargin
+
+    connection.createStatement.execute(creates)
+    connection.createStatement.execute(inserts)
+    super.beforeAll()
+
+  }
+
+  "Slick Repo" should {
+
+    "should have several rows" in {
+
+      val session: SlickSession =
+        SlickSession.forConfig("your-db", config)
+
+      // a slick repo generated with codegen
+      val slickRepo = new SlickRepo(session)
+
+      val source =
+        slickRepo.getSomeRowsFromTable.map(_ => 1)
+
+      source.runWith(Sink.fold(0)(_ + _)) map { count =>
+        count should be > 1
+      }
+    }
+  }
+}
+```
 This spec starts one container and both tests share the container's state.
 
 
