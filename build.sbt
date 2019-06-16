@@ -8,6 +8,7 @@ val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.8"
 val mysqlConnectorVersion = "5.1.42"
 val postgresqlDriverVersion = "9.4.1212"
+val kafkaDriverVersion = "2.2.0"
 val mockitoVersion = "2.27.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
@@ -34,13 +35,15 @@ lazy val root = (project in file("."))
         "org.slf4j" % "slf4j-simple" % slf4jVersion,
         "org.scalatest" %% "scalatest" % scalaTestVersion,
         "org.testcontainers" % "mysql" % testcontainersVersion,
-        "org.testcontainers" % "postgresql" % testcontainersVersion
+        "org.testcontainers" % "postgresql" % testcontainersVersion,
+        "org.testcontainers" % "kafka" % testcontainersVersion
       )
         ++ TEST(
         "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
         "junit" % "junit" % "4.12",
         "org.testcontainers" % "selenium" % testcontainersVersion,
         "org.postgresql" % "postgresql" % postgresqlDriverVersion,
+        "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
         "org.mockito" % "mockito-core" % mockitoVersion
       ),
 
