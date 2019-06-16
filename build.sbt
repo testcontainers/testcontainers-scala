@@ -20,6 +20,13 @@ lazy val root = (project in file("."))
     scalaVersion in ThisBuild := "2.12.8",
     crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0"),
     name := "testcontainers-scala",
+    scalacOptions ++= Seq(
+      "-unchecked",
+      "-deprecation",
+      "-language:_",
+      "-target:jvm-1.8",
+      "-encoding", "UTF-8"
+    ),
     compileScalastyle := scalastyle.in(Compile).toTask("").value,
     test in Test := (test in Test).dependsOn(compileScalastyle in Compile).value,
 
