@@ -7,6 +7,7 @@ val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.8"
 val mysqlConnectorVersion = "5.1.42"
+val cassandraDriverVersion = "4.0.1"
 val postgresqlDriverVersion = "9.4.1212"
 val kafkaDriverVersion = "2.2.0"
 val mockitoVersion = "2.27.0"
@@ -34,6 +35,7 @@ lazy val root = (project in file("."))
         "org.testcontainers" % "selenium" % testcontainersVersion,
         "org.slf4j" % "slf4j-simple" % slf4jVersion,
         "org.scalatest" %% "scalatest" % scalaTestVersion,
+        "org.testcontainers" % "cassandra" % testcontainersVersion,
         "org.testcontainers" % "mysql" % testcontainersVersion,
         "org.testcontainers" % "postgresql" % testcontainersVersion,
         "org.testcontainers" % "kafka" % testcontainersVersion
@@ -42,6 +44,7 @@ lazy val root = (project in file("."))
         "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
         "junit" % "junit" % "4.12",
         "org.testcontainers" % "selenium" % testcontainersVersion,
+        "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion,
         "org.postgresql" % "postgresql" % postgresqlDriverVersion,
         "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
         "org.mockito" % "mockito-core" % mockitoVersion
