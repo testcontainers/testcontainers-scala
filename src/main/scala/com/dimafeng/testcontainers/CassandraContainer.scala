@@ -9,12 +9,12 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
 
   type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCCassandraContainer[T]}
 
-  var cassandraContainer: OTCCassandraContainer[Nothing] = null
-
-  if (dockerImageNameOverride.isEmpty) {
-    cassandraContainer = new OTCCassandraContainer()
-  } else {
-    cassandraContainer = new OTCCassandraContainer(dockerImageNameOverride.get)
+  val cassandraContainer: OTCCassandraContainer[Nothing] = {
+    if (dockerImageNameOverride.isEmpty) {
+      new OTCCassandraContainer()
+    } else {
+      new OTCCassandraContainer(dockerImageNameOverride.get)
+    }
   }
 
   if (configurationOverride.isDefined) cassandraContainer.withConfigurationOverride(configurationOverride.get)
