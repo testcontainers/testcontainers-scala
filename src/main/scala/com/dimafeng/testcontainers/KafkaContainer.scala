@@ -7,12 +7,12 @@ class KafkaContainer(confluentPlatformVersion: Option[String] = None,
 
   type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCKafkaContainer}
 
-  var kafkaContainer: OTCKafkaContainer = null
-
-  if (confluentPlatformVersion.isEmpty) {
-    kafkaContainer = new OTCKafkaContainer()
-  } else {
-    kafkaContainer = new OTCKafkaContainer(confluentPlatformVersion.get)
+  val kafkaContainer: OTCKafkaContainer = {
+    if (confluentPlatformVersion.isEmpty) {
+      new OTCKafkaContainer()
+    } else {
+      new OTCKafkaContainer(confluentPlatformVersion.get)
+    }
   }
 
   if (externalZookeeper.isEmpty) {
