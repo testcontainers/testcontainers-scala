@@ -1,4 +1,6 @@
-package com.dimafeng.testcontainers;
+package com.dimafeng.testcontainers
+
+import org.testcontainers.containers.{CassandraContainer => OTCCassandraContainer, GenericContainer => OTCGenericContainer}
 
 class CassandraContainer(dockerImageNameOverride: Option[String] = None,
                          configurationOverride: Option[String] = None,
@@ -20,4 +22,19 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
   if (jmxReporting) cassandraContainer.withJmxReporting(jmxReporting)
 
   override val container: OTCCassandraContainer[_] = cassandraContainer
+}
+
+
+object CassandraContainer {
+
+  def apply(dockerImageNameOverride: String = null,
+            configurationOverride: String = null,
+            initScript: String = null,
+            jmxReporting: Boolean = false): CassandraContainer = new CassandraContainer(
+    Option(dockerImageNameOverride),
+    Option(configurationOverride),
+    Option(initScript),
+    jmxReporting
+  )
+
 }
