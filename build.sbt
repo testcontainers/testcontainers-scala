@@ -7,7 +7,9 @@ val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
 val scalaTestVersion = "3.0.7"
 val mysqlConnectorVersion = "5.1.42"
+val cassandraDriverVersion = "4.0.1"
 val postgresqlDriverVersion = "9.4.1212"
+val kafkaDriverVersion = "2.2.0"
 val mockitoVersion = "2.27.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
@@ -16,6 +18,14 @@ val commonSettings = Seq(
   scalaVersion in ThisBuild := "2.12.8",
   crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
 
+  scalacOptions ++= Seq(
+    "-unchecked",
+    "-deprecation",
+    "-language:_",
+    "-target:jvm-1.8",
+    "-encoding", "UTF-8"
+  ),
+  
   /**
     * Publishing
     */
@@ -131,6 +141,30 @@ lazy val modulePostgres = (project in file("modules/postgres"))
       "org.testcontainers" % "postgresql" % testcontainersVersion
     ) ++ TEST(
       "org.postgresql" % "postgresql" % postgresqlDriverVersion
+    )
+  )
+
+lazy val moduleCassandra = (project in file("modules/cassandra"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-cassandra",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "cassandra" % testcontainersVersion,
+    ) ++ TEST(
+      "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion,
+    )
+  )
+
+lazy val moduleKafka = (project in file("modules/kafka"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-cassandra",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "kafka" % testcontainersVersion
+    ) ++ TEST(
+      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
     )
   )
 
