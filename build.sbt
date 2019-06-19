@@ -160,7 +160,7 @@ lazy val moduleKafka = (project in file("modules/kafka"))
   .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
-    name := "testcontainers-scala-cassandra",
+    name := "testcontainers-scala-kafka",
     libraryDependencies ++= COMPILE(
       "org.testcontainers" % "kafka" % testcontainersVersion
     ) ++ TEST(
