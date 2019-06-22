@@ -11,6 +11,8 @@ import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
+import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
+import org.testcontainers.lifecycle.Startable
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
@@ -84,31 +86,61 @@ trait ForAllTestContainer extends SuiteMixin {
   def beforeStop(): Unit = {}
 }
 
-trait Container {
-  def finished()(implicit description: Description): Unit
+sealed trait ContainerList {
 
-  def failed(e: Throwable)(implicit description: Description): Unit
+  def stop(): Unit
 
-  def starting()(implicit description: Description): Unit
+  def foreach(f: Container => Unit): Unit = {
+    // TODO: test it
+    this match {
+      case and(head, tail) =>
+        head.foreach(f)
+        tail.foreach(f)
 
-  def succeeded()(implicit description: Description): Unit
+      case container: Container =>
+        f(container)
+    }
+  }
+
+}
+final case class and[C1 <: ContainerList, C2 <: ContainerList](head : C1, tail : C2) extends ContainerList {
+  override def stop(): Unit = {
+    // TODO: test stopping order
+    head.stop()
+    tail.stop()
+  }
 }
 
-trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
+object ContainerList {
+  implicit class ContainerListOps[T <: ContainerList](val self: T) extends AnyVal {
+    def and[T2 <: ContainerList](that: T2): T and T2 = com.dimafeng.testcontainers.and(self, that)
+  }
+}
+
+trait Container extends ContainerList {
+  @deprecated def finished()(implicit description: Description): Unit = stop()
+
+  @deprecated def failed(e: Throwable)(implicit description: Description): Unit = {}
+
+  @deprecated def starting()(implicit description: Description): Unit = start()
+
+  @deprecated def succeeded()(implicit description: Description): Unit = {}
 
   @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
-  implicit val container: T
+  implicit def container: JavaContainer
 
-  override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
+  type JavaContainer <: Startable
 
-  override def succeeded()(implicit description: Description): Unit = TestContainerAccessor.succeeded(description)
+  def underlyingUnsafeContainer: JavaContainer = container
 
-  override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
+  def stop(): Unit = underlyingUnsafeContainer.stop()
 
-  override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
+  def start(): Unit = underlyingUnsafeContainer.start()
 }
 
-abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
+abstract class SingleContainer[T <: OTCGenericContainer[_]] extends Container {
+
+  type JavaContainer = T
 
   def binds: Seq[Bind] = container.getBinds.asScala
 

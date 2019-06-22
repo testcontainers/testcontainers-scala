@@ -1,18 +1,17 @@
 package com.dimafeng.testcontainers
 
-import org.junit.runner.Description
+import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 
 import scala.language.implicitConversions
 
 class MultipleContainers private(containers: Seq[LazyContainer[_]]) extends Container {
+  override type JavaContainer = JavaGenericContainer[_]
 
-  override def finished()(implicit description: Description): Unit = containers.foreach(_.finished()(description))
+  override def container: JavaContainer = null
 
-  override def succeeded()(implicit description: Description): Unit = containers.foreach(_.succeeded()(description))
+  override def start(): Unit = containers.foreach(_.start())
 
-  override def starting()(implicit description: Description): Unit = containers.foreach(_.starting()(description))
-
-  override def failed(e: Throwable)(implicit description: Description): Unit = containers.foreach(_.failed(e)(description))
+  override def stop(): Unit = containers.foreach(_.stop())
 }
 
 object MultipleContainers {
@@ -48,15 +47,9 @@ object MultipleContainers {
   * when you pass your containers in the `MultipleContainers`- there is implicit conversion for that.
   */
 class LazyContainer[T <: Container](factory: => T) extends Container {
-  lazy val container: T = factory
+  override type JavaContainer = T#JavaContainer
 
-  override def finished()(implicit description: Description): Unit = container.finished
-
-  override def failed(e: Throwable)(implicit description: Description): Unit = container.failed(e)
-
-  override def starting()(implicit description: Description): Unit = container.starting()
-
-  override def succeeded()(implicit description: Description): Unit = container.succeeded()
+  override lazy val container: JavaContainer = factory.container
 }
 
 object LazyContainer {

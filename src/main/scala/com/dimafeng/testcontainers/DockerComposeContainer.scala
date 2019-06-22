@@ -5,6 +5,7 @@ import java.util
 import java.util.function.Consumer
 
 import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
 import org.testcontainers.containers.{DockerComposeContainer => OTCDockerComposeContainer}
@@ -73,12 +74,12 @@ class DockerComposeContainer (composeFiles: ComposeFile,
                               env: Map[String, String] = Map.empty,
                               tailChildContainers: Boolean = false,
                               logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
-  extends TestContainerProxy[OTCDockerComposeContainer[_]] {
+  extends Container {
 
-  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
+  type JavaContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
 
-  override val container: OTCContainer = {
-    val container: OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
+  override val container: JavaContainer = {
+    val container: JavaContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })
