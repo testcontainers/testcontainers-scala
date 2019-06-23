@@ -260,7 +260,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
     * New `TestLifecycleAware` trait introduced. You can use it when you want to do something with the container before or after the test.
     * `Container` now implements `Startable` interface with `start` and `stop` methods.
     * Old container's lifecycle methods `finished`, `succeeded`, `starting`, `failed` are deprecated. Use `start`, `stop`, and `TestLifecycleAware` methods instead.
-
+    * Added `KafkaContainer`
+    * Added `CassandraContainer`
+    
 * **0.26.0**
     * TestContainers `1.11.2` -> `1.11.3`
     * Scala 2.13.0
