@@ -2,6 +2,7 @@ package org.testcontainers.containers
 
 import org.junit.runner.Description
 
+@deprecated("Should be replaced by lifecycle methods")
 object TestContainerAccessor {
   def finished[T <:FailureDetectingExternalResource](description: Description)(implicit container: T): Unit =
     container.finished(description)

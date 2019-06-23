@@ -2,6 +2,9 @@ package com.dimafeng.testcontainers
 
 import java.util.function.Consumer
 
+import com.dimafeng.testcontainers.TestContainers.TestContainersSuite
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
+import org.junit.runner.{Description => JunitDescription}
 import com.github.dockerjava.api.DockerClient
 import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
 import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
@@ -11,31 +14,92 @@ import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
+import org.testcontainers.lifecycle.{Startable, TestDescription}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
 
-trait ForEachTestContainer extends SuiteMixin {
+private[testcontainers] object TestContainers {
+
+  implicit def junit2testContainersDescription(junit: JunitDescription): TestDescription = {
+    new TestDescription {
+      override def getTestId: String = junit.getDisplayName
+      override def getFilesystemFriendlyName: String = s"${junit.getClassName}-${junit.getMethodName}"
+    }
+  }
+
+  // Copy-pasted from `org.scalatest.junit.JUnitRunner.createDescription`
+  def createDescription(suite: Suite): JunitDescription = {
+    val description = JunitDescription.createSuiteDescription(suite.getClass)
+    // If we don't add the testNames and nested suites in, we get
+    // Unrooted Tests show up in Eclipse
+    for (name <- suite.testNames) {
+      description.addChild(JunitDescription.createTestDescription(suite.getClass, name))
+    }
+    for (nestedSuite <- suite.nestedSuites) {
+      description.addChild(createDescription(nestedSuite))
+    }
+    description
+  }
+
+  trait TestContainersSuite extends SuiteMixin { self: Suite =>
+
+    val container: Container
+
+    def afterStart(): Unit = {}
+
+    def beforeStop(): Unit = {}
+
+    private val suiteDescription = createDescription(self)
+
+    private[testcontainers] def beforeTest(): Unit = {
+      container match {
+        case container: TestLifecycleAware => container.beforeTest(suiteDescription)
+        case _ => // do nothing
+      }
+    }
+
+    private[testcontainers] def afterTest(throwable: Option[Throwable]): Unit = {
+      container match {
+        case container: TestLifecycleAware => container.afterTest(suiteDescription, throwable)
+        case _ => // do nothing
+      }
+    }
+  }
+}
+
+trait ForEachTestContainer extends TestContainersSuite {
   self: Suite =>
 
-  val container: Container
-
-  implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
-
   abstract protected override def runTest(testName: String, args: Args): Status = {
-    container.starting()
+    container.start()
+
+    @volatile var testCalled = false
+    @volatile var afterTestCalled = false
+
     try {
       afterStart()
+      beforeTest()
+
+      testCalled = true
       val status = super.runTest(testName, args)
-      status match {
-        case FailedStatus => container.failed(new RuntimeException(status.toString))
-        case _ => container.succeeded()
+
+      afterTestCalled = true
+      if (!status.succeeds()) {
+        afterTest(Some(new RuntimeException("Test failed")))
+      } else {
+        afterTest(None)
       }
+
       status
     }
     catch {
       case e: Throwable =>
-        container.failed(e)
+        if (testCalled && !afterTestCalled) {
+          afterTestCalled = true
+          afterTest(Some(e))
+        }
+
         throw e
     }
     finally {
@@ -43,28 +107,20 @@ trait ForEachTestContainer extends SuiteMixin {
         beforeStop()
       }
       finally {
-        container.finished()
+        container.stop()
       }
     }
   }
-
-  def afterStart(): Unit = {}
-
-  def beforeStop(): Unit = {}
 }
 
-trait ForAllTestContainer extends SuiteMixin {
+trait ForAllTestContainer extends TestContainersSuite {
   self: Suite =>
-
-  val container: Container
-
-  implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
 
   abstract override def run(testName: Option[String], args: Args): Status = {
     if (expectedTestCount(args.filter) == 0) {
       new CompositeStatus(Set.empty)
     } else {
-      container.starting()
+      container.start()
       try {
         afterStart()
         super.run(testName, args)
@@ -73,42 +129,81 @@ trait ForAllTestContainer extends SuiteMixin {
           beforeStop()
         }
         finally {
-          container.finished()
+          container.stop()
         }
       }
     }
   }
 
-  def afterStart(): Unit = {}
+  abstract protected override def runTest(testName: String, args: Args): Status = {
+    @volatile var testCalled = false
+    @volatile var afterTestCalled = false
 
-  def beforeStop(): Unit = {}
+    try {
+      beforeTest()
+
+      testCalled = true
+      val status = super.runTest(testName, args)
+
+      afterTestCalled = true
+      if (!status.succeeds()) {
+        afterTest(Some(new RuntimeException("Test failed")))
+      } else {
+        afterTest(None)
+      }
+
+      status
+    }
+    catch {
+      case e: Throwable =>
+        if (testCalled && !afterTestCalled) {
+          afterTestCalled = true
+          afterTest(Some(e))
+        }
+
+        throw e
+    }
+  }
 }
 
-trait Container {
-  def finished()(implicit description: Description): Unit
+trait Container extends Startable {
 
-  def failed(e: Throwable)(implicit description: Description): Unit
+  @deprecated("Use `stop` instead")
+  def finished()(implicit description: Description): Unit = stop()
 
-  def starting()(implicit description: Description): Unit
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  def failed(e: Throwable)(implicit description: Description): Unit = {}
 
-  def succeeded()(implicit description: Description): Unit
+  @deprecated("Use `start` instead")
+  def starting()(implicit description: Description): Unit = start()
+
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  def succeeded()(implicit description: Description): Unit = {}
 }
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
 
   @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
-  implicit val container: T
+  implicit def container: T
 
+  @deprecated("Use `stop` instead")
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def succeeded()(implicit description: Description): Unit = TestContainerAccessor.succeeded(description)
 
+  @deprecated("Use `start` instead")
   override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
 abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
+
+  override def start(): Unit = container.start()
+
+  override def stop(): Unit = container.stop()
 
   def binds: Seq[Bind] = container.getBinds.asScala.toSeq
 

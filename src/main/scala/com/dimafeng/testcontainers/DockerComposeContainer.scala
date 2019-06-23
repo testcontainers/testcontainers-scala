@@ -111,4 +111,7 @@ class DockerComposeContainer (composeFiles: ComposeFile,
 
   def getServicePort(serviceName: String, servicePort: Int): Int = container.getServicePort(serviceName, servicePort)
 
+  override def start(): Unit = container.start()
+
+  override def stop(): Unit = container.stop()
 }
