@@ -60,8 +60,10 @@ lazy val root = (project in file("."))
     moduleMysql,
     modulePostgres
   )
-  .settings(noPublishSettings)
+  //.settings(noPublishSettings)
   .settings(
+    name := "testcontainers-scala",
+  
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
