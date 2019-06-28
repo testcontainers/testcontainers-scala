@@ -11,6 +11,7 @@ val cassandraDriverVersion = "4.0.1"
 val postgresqlDriverVersion = "9.4.1212"
 val kafkaDriverVersion = "2.2.0"
 val mockitoVersion = "2.27.0"
+val restAssuredVersion = "4.0.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -45,7 +46,8 @@ lazy val root = (project in file("."))
         "org.testcontainers" % "cassandra" % testcontainersVersion,
         "org.testcontainers" % "mysql" % testcontainersVersion,
         "org.testcontainers" % "postgresql" % testcontainersVersion,
-        "org.testcontainers" % "kafka" % testcontainersVersion
+        "org.testcontainers" % "kafka" % testcontainersVersion,
+        "org.testcontainers" % "vault" % testcontainersVersion,
       )
         ++ TEST(
         "mysql" % "mysql-connector-java" % mysqlConnectorVersion,
@@ -54,7 +56,8 @@ lazy val root = (project in file("."))
         "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion,
         "org.postgresql" % "postgresql" % postgresqlDriverVersion,
         "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
-        "org.mockito" % "mockito-core" % mockitoVersion
+        "org.mockito" % "mockito-core" % mockitoVersion,
+        "io.rest-assured" % "scala-support" % restAssuredVersion
       ),
 
     /**
