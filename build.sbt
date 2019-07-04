@@ -11,6 +11,7 @@ val cassandraDriverVersion = "4.0.1"
 val postgresqlDriverVersion = "9.4.1212"
 val kafkaDriverVersion = "2.2.0"
 val mockitoVersion = "2.27.0"
+val restAssuredVersion = "4.0.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -25,7 +26,7 @@ val commonSettings = Seq(
     "-target:jvm-1.8",
     "-encoding", "UTF-8"
   ),
-  
+
   /**
     * Publishing
     */
@@ -63,19 +64,19 @@ lazy val root = (project in file("."))
   //.settings(noPublishSettings)
   .settings(
     name := "testcontainers-scala",
-  
+
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
       runClean,
-      runTest,
+      //runTest,
       setReleaseVersion,
       commitReleaseVersion,
       tagRelease,
       releaseStepCommandAndRemaining("+publishSigned"),
       setNextVersion,
       commitNextVersion,
-      //releaseStepCommand("sonatypeReleaseAll"),
+      releaseStepCommand("sonatypeReleaseAll"),
       pushChanges
     )
   )
@@ -165,6 +166,18 @@ lazy val moduleKafka = (project in file("modules/kafka"))
     name := "testcontainers-scala-kafka",
     libraryDependencies ++= COMPILE(
       "org.testcontainers" % "kafka" % testcontainersVersion
+    ) ++ TEST(
+      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
+    )
+  )
+
+lazy val moduleVault = (project in file("modules/vault"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-kafka",
+    libraryDependencies ++= COMPILE(
+      "org.testcontainers" % "vault" % testcontainersVersion,
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
     )

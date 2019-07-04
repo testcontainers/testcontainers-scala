@@ -1,8 +1,9 @@
 package com.dimafeng.testcontainers
 
-import org.junit.runner.Description
 import java.util.function.Consumer
 
+import com.dimafeng.testcontainers.TestContainers.TestContainersSuite
+import org.junit.runner.{Description => JunitDescription}
 import com.github.dockerjava.api.DockerClient
 import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
 import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
@@ -11,25 +12,35 @@ import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
+import org.testcontainers.lifecycle.{Startable, TestDescription}
 
+import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
-
 import scala.collection.JavaConverters._
 
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
 
-  private[testcontainers] implicit val container: T
+  @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
+  implicit def container: T
 
+  @deprecated("Use `stop` instead")
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def succeeded()(implicit description: Description): Unit = TestContainerAccessor.succeeded(description)
 
+  @deprecated("Use `start` instead")
   override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
 abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
+
+  override def start(): Unit = container.start()
+
+  override def stop(): Unit = container.stop()
 
   def binds: Seq[Bind] = container.getBinds.asScala.toSeq
 
@@ -94,12 +105,17 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
   }
 }
 
-trait Container {
-  def finished()(implicit description: Description): Unit
+trait Container extends Startable {
 
-  def failed(e: Throwable)(implicit description: Description): Unit
+  @deprecated("Use `stop` instead")
+  def finished()(implicit description: Description): Unit = stop()
 
-  def starting()(implicit description: Description): Unit
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  def failed(e: Throwable)(implicit description: Description): Unit = {}
 
-  def succeeded()(implicit description: Description): Unit
+  @deprecated("Use `start` instead")
+  def starting()(implicit description: Description): Unit = start()
+
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  def succeeded()(implicit description: Description): Unit = {}
 }

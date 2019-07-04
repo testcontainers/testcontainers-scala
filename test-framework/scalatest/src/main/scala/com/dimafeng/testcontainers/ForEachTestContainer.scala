@@ -1,32 +1,44 @@
 package com.dimafeng.testcontainers
 
+import com.dimafeng.testcontainers.TestContainers.TestContainersSuite
 import org.junit.runner.Description
 import org.scalatest._
 
 /**
   * Starts and stops a container for each tests within the suite
   */
-trait ForEachTestContainer extends SuiteMixin {
+trait ForEachTestContainer extends TestContainersSuite {
   self: Suite =>
 
-  val container: Container
-
-  implicit private val suiteDescription = Description.createSuiteDescription(self.getClass)
-
   abstract protected override def runTest(testName: String, args: Args): Status = {
-    container.starting()
+    container.start()
+
+    @volatile var testCalled = false
+    @volatile var afterTestCalled = false
+
     try {
       afterStart()
+      beforeTest()
+
+      testCalled = true
       val status = super.runTest(testName, args)
-      status match {
-        case FailedStatus => container.failed(new RuntimeException(status.toString))
-        case _ => container.succeeded()
+
+      afterTestCalled = true
+      if (!status.succeeds()) {
+        afterTest(Some(new RuntimeException("Test failed")))
+      } else {
+        afterTest(None)
       }
+
       status
     }
     catch {
       case e: Throwable =>
-        container.failed(e)
+        if (testCalled && !afterTestCalled) {
+          afterTestCalled = true
+          afterTest(Some(e))
+        }
+
         throw e
     }
     finally {
@@ -34,12 +46,8 @@ trait ForEachTestContainer extends SuiteMixin {
         beforeStop()
       }
       finally {
-        container.finished()
+        container.stop()
       }
     }
   }
-
-  def afterStart(): Unit = {}
-
-  def beforeStop(): Unit = {}
 }

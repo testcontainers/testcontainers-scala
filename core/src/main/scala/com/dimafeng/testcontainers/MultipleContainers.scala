@@ -1,18 +1,35 @@
 package com.dimafeng.testcontainers
 
 import org.junit.runner.Description
+import org.testcontainers.lifecycle.TestDescription
 
 import scala.language.implicitConversions
 
-class MultipleContainers private(containers: Seq[LazyContainer[_]]) extends Container {
+class MultipleContainers private(containers: Seq[LazyContainer[_]]) extends Container with TestLifecycleAware {
 
+  @deprecated("Use `stop` instead")
   override def finished()(implicit description: Description): Unit = containers.foreach(_.finished()(description))
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def succeeded()(implicit description: Description): Unit = containers.foreach(_.succeeded()(description))
 
+  @deprecated("Use `start` instead")
   override def starting()(implicit description: Description): Unit = containers.foreach(_.starting()(description))
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def failed(e: Throwable)(implicit description: Description): Unit = containers.foreach(_.failed(e)(description))
+
+  override def beforeTest(description: TestDescription): Unit = {
+    containers.foreach(_.beforeTest(description))
+  }
+
+  override def afterTest(description: TestDescription, throwable: Option[Throwable]): Unit = {
+    containers.foreach(_.afterTest(description, throwable))
+  }
+
+  override def start(): Unit = containers.foreach(_.start())
+
+  override def stop(): Unit = containers.foreach(_.stop())
 }
 
 object MultipleContainers {
@@ -47,16 +64,38 @@ object MultipleContainers {
   * You don't need to wrap your containers into the `LazyContainer` manually
   * when you pass your containers in the `MultipleContainers`- there is implicit conversion for that.
   */
-class LazyContainer[T <: Container](factory: => T) extends Container {
+class LazyContainer[T <: Container](factory: => T) extends Container with TestLifecycleAware {
   lazy val container: T = factory
 
+  @deprecated("Use `stop` instead")
   override def finished()(implicit description: Description): Unit = container.finished
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def failed(e: Throwable)(implicit description: Description): Unit = container.failed(e)
 
+  @deprecated("Use `start` instead")
   override def starting()(implicit description: Description): Unit = container.starting()
 
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def succeeded()(implicit description: Description): Unit = container.succeeded()
+
+  override def beforeTest(description: TestDescription): Unit = {
+    container match {
+      case c: TestLifecycleAware => c.beforeTest(description)
+      case _ => // do nothing
+    }
+  }
+
+  override def afterTest(description: TestDescription, throwable: Option[Throwable]): Unit = {
+    container match {
+      case c: TestLifecycleAware => c.afterTest(description, throwable)
+      case _ => // do nothing
+    }
+  }
+
+  override def start(): Unit = container.start()
+
+  override def stop(): Unit = container.stop()
 }
 
 object LazyContainer {

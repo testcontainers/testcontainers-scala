@@ -1,12 +1,15 @@
 package com.dimafeng.testcontainers
 
+import java.util.Optional
+
 import com.dimafeng.testcontainers.ContainerSpec.{SampleContainer, SampleOTCContainer}
 import com.dimafeng.testcontainers.MultipleContainersSpec.{InitializableContainer, TestSpec}
 import org.junit.runner.Description
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{times, verify}
-import org.scalatest.mockito.MockitoSugar
+import org.mockito.Mockito.verify
 import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatestplus.mockito.MockitoSugar
 
 class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
   it should "call all expected methods of the multiple containers" in {
@@ -19,14 +22,15 @@ class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
       assert(1 == 1)
     }, containers).run(None, Args(mock[Reporter]))
 
-    verify(container1).starting(any())
-    verify(container1, times(0)).failed(any(), any())
-    verify(container1).finished(any())
-    verify(container1).succeeded(any())
-    verify(container2).starting(any())
-    verify(container2, times(0)).failed(any(), any())
-    verify(container2).finished(any())
-    verify(container2).succeeded(any())
+    verify(container1).beforeTest(any())
+    verify(container1).start()
+    verify(container1).afterTest(any(), ArgumentMatchers.eq(Optional.empty()))
+    verify(container1).stop()
+
+    verify(container2).beforeTest(any())
+    verify(container2).start()
+    verify(container2).afterTest(any(), ArgumentMatchers.eq(Optional.empty()))
+    verify(container2).stop()
   }
 
   /**
@@ -53,15 +57,9 @@ object MultipleContainersSpec {
     override implicit val container: SampleOTCContainer = mock[SampleOTCContainer]
     var value: String = _
 
-    override def finished()(implicit description: Description): Unit = ()
-
-    override def succeeded()(implicit description: Description): Unit = ()
-
-    override def starting()(implicit description: Description): Unit = {
+    override def start(): Unit = {
       value = valueToBeSetAfterStart
     }
-
-    override def failed(e: Throwable)(implicit description: Description): Unit = ()
   }
 
   class ExampleContainerWithVariable(val variable: String) extends SingleContainer[SampleOTCContainer] with MockitoSugar {
