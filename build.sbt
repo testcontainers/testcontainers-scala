@@ -59,9 +59,12 @@ lazy val root = (project in file("."))
     scalatest,
     scalatestSelenium,
     moduleMysql,
-    modulePostgres
+    modulePostgres,
+    moduleCassandra,
+    moduleKafka,
+    moduleVault
   )
-  //.settings(noPublishSettings)
+  .settings(noPublishSettings)
   .settings(
     name := "testcontainers-scala",
 
@@ -78,6 +81,25 @@ lazy val root = (project in file("."))
       commitNextVersion,
       releaseStepCommand("sonatypeReleaseAll"),
       pushChanges
+    )
+  )
+
+lazy val allOld = (project in file("allOld"))
+  .dependsOn(
+    core % "compile->compile;provided->provided",
+    scalatest % "compile->provided;provided->provided",
+    scalatestSelenium % "compile->provided;provided->provided",
+    moduleMysql % "compile->provided;provided->provided",
+    modulePostgres % "compile->provided;provided->provided",
+    moduleCassandra % "compile->provided;provided->provided",
+    moduleKafka % "compile->provided;provided->provided",
+    moduleVault % "compile->provided;provided->provided"
+  )
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala",
+    libraryDependencies ++= PROVIDED(
+      "org.scalatest" %% "scalatest" % scalaTestVersion
     )
   )
 
@@ -139,7 +161,7 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
-    name := "testcontainers-scala-mysql",
+    name := "testcontainers-scala-postgresql",
     libraryDependencies ++= COMPILE(
       "org.testcontainers" % "postgresql" % testcontainersVersion
     ) ++ TEST(
