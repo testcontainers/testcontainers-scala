@@ -256,6 +256,12 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.29.0**
+    * TestContainers `1.11.2` -> `1.11.4`
+
+* **0.28.0**
+    * `VaultContainer`
+
 * **0.27.0**
     * New `TestLifecycleAware` trait introduced. You can use it when you want to do something with the container before or after the test.
     * `Container` now implements `Startable` interface with `start` and `stop` methods.
