@@ -48,7 +48,7 @@ object PostgreSQLContainer {
             databaseName: String = null,
             username: String = null,
             password: String = null,
-            mountPostgresDataToTmpfs: Boolean = false,
+            mountPostgresDataToTmpfs: Boolean = false
            ): PostgreSQLContainer =
     new PostgreSQLContainer(
       Option(dockerImageNameOverride),
