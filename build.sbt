@@ -19,7 +19,7 @@ lazy val root = (project in file("."))
   .settings(
     organization in ThisBuild := "com.dimafeng",
     scalaVersion in ThisBuild := "2.12.9",
-    crossScalaVersions := Seq("2.11.12", "2.12.9", "2.13.0"),
+    crossScalaVersions := Seq("2.11.12", "2.12.9", "2.13.1"),
     name := "testcontainers-scala",
     scalacOptions ++= Seq(
       "-unchecked",
