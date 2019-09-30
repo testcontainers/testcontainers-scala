@@ -21,6 +21,8 @@ lazy val root = (project in file("."))
     scalaVersion in ThisBuild := "2.12.9",
     crossScalaVersions := Seq("2.11.12", "2.12.9", "2.13.1"),
     name := "testcontainers-scala",
+    parallelExecution in ThisBuild := false,
+    fork := true,
     scalacOptions ++= Seq(
       "-unchecked",
       "-deprecation",
