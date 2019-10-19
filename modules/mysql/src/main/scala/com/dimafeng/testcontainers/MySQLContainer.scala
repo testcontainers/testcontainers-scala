@@ -11,10 +11,7 @@ class MySQLContainer(configurationOverride: Option[String] = None,
                      mysqlPassword: Option[String] = None)
   extends SingleContainer[OTCMySQLContainer[_]] {
 
-  type OTCContainer = OTCMySQLContainer[T] forSome {
-    type T <: OTCMySQLContainer[T]
-  }
-  override val container: OTCContainer = mysqlImageVersion
+  override val container: OTCMySQLContainer[_] = mysqlImageVersion
     .map(new OTCMySQLContainer(_))
     .getOrElse(new OTCMySQLContainer(DEFAULT_MYSQL_VERSION))
 

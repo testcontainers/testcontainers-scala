@@ -13,8 +13,7 @@ class FixedHostPortGenericContainer(imageName: String,
                                     exposedContainerPort: Int
                                    ) extends SingleContainer[OTCFixedHostPortGenericContainer[_]] {
 
-  type FixedHostPortContainer = OTCFixedHostPortGenericContainer[T] forSome {type T <: OTCFixedHostPortGenericContainer[T]}
-  override implicit val container: FixedHostPortContainer = new OTCFixedHostPortGenericContainer(imageName)
+  override implicit val container: OTCFixedHostPortGenericContainer[_] = new OTCFixedHostPortGenericContainer(imageName)
 
   if (exposedPorts.nonEmpty) {
     container.withExposedPorts(exposedPorts.map(int2Integer): _*)

@@ -75,10 +75,8 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
   extends TestContainerProxy[OTCDockerComposeContainer[_]] {
 
-  type OTCContainer = OTCDockerComposeContainer[T] forSome {type T <: OTCDockerComposeContainer[T]}
-
-  override val container: OTCContainer = {
-    val container: OTCContainer = new OTCDockerComposeContainer(identifier, composeFiles match {
+  override val container: OTCDockerComposeContainer[_] = {
+    val container: OTCDockerComposeContainer[_] = new OTCDockerComposeContainer(identifier, composeFiles match {
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })

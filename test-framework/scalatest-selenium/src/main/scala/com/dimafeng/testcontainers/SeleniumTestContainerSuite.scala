@@ -28,8 +28,7 @@ class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
   extends SingleContainer[BrowserWebDriverContainer[_]] with TestLifecycleAware {
   require(desiredCapabilities.isDefined, "'desiredCapabilities' is required parameter")
 
-  type OTCContainer = BrowserWebDriverContainer[T] forSome {type T <: BrowserWebDriverContainer[T]}
-  override val container: OTCContainer = new BrowserWebDriverContainer()
+  override val container: BrowserWebDriverContainer[_] = new BrowserWebDriverContainer()
   desiredCapabilities.foreach(container.withDesiredCapabilities)
   recordingMode.foreach(Function.tupled(container.withRecordingMode))
 

@@ -1,13 +1,10 @@
 package com.dimafeng.testcontainers;
 
-import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
 import org.testcontainers.vault.{VaultContainer => OTCVaultContainer}
 
 class VaultContainer(dockerImageNameOverride: Option[String] = None,
                      vaultToken: Option[String] = None,
                      vaultPort: Option[Int]) extends SingleContainer[OTCVaultContainer[_]] {
-
-  type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCVaultContainer[T]}
 
   val vaultContainer: OTCVaultContainer[Nothing] = {
     if (dockerImageNameOverride.isEmpty) {

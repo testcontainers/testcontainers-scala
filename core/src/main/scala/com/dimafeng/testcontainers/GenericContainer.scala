@@ -14,8 +14,7 @@ class GenericContainer(dockerImage: DockerImage,
                        waitStrategy: Option[WaitStrategy] = None
                       ) extends SingleContainer[OTCGenericContainer[_]] {
 
-  type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCGenericContainer[T]}
-  override implicit val container: OTCContainer = dockerImage match {
+  override implicit val container: OTCGenericContainer[_] = dockerImage match {
     case DockerImage(Left(imageFromDockerfile)) => new OTCGenericContainer(imageFromDockerfile)
     case DockerImage(Right(imageName))          => new OTCGenericContainer(imageName)
   }
