@@ -8,13 +8,12 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{times, verify}
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}
 import org.scalatest.{Args, FlatSpec, Reporter}
-import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
 import org.testcontainers.lifecycle.{TestDescription, TestLifecycleAware => JavaTestLifecycleAware}
 
 class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
   it should "call all appropriate methods of the container" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
 
     new TestSpec({
       assert(1 == 1)
@@ -27,7 +26,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "call all appropriate methods of the container if assertion fails" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
 
     var err: Throwable = null
 
@@ -44,7 +43,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "start and stop container only once" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
 
     new MultipleTestsSpec({
       assert(1 == 1)
@@ -57,7 +56,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "call afterStart() and beforeStop()" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
 
     // ForEach
     val specForEach = Mockito.spy(new TestSpec({}, new SampleContainer(container)))
@@ -76,7 +75,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "call beforeStop() and stop container if error thrown in afterStart()" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
 
     // ForEach
     val specForEach = Mockito.spy(new TestSpecWithFailedAfterStart({}, new SampleContainer(container)))
@@ -104,7 +103,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "not start container if all tests are ignored" in {
-    val container = mock[SampleOTCContainer]
+    val container = mock[SampleJavaContainer]
     val specForAll = Mockito.spy(new TestSpecWithAllIgnored({}, new SampleContainer(container)))
     specForAll.run(None, Args(mock[Reporter]))
 
@@ -112,7 +111,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
   }
 
   it should "work with `configure` method" in {
-    val innerContainer = new SampleOTCContainer
+    val innerContainer = new SampleJavaContainer
     val container = new SampleContainer(innerContainer)
       .configure{c => c.withWorkingDirectory("123"); ()}
 
@@ -171,38 +170,6 @@ object ContainerSpec {
 
     it should "test" ignore {
       testBody
-    }
-  }
-
-  class SampleOTCContainer extends OTCGenericContainer with JavaTestLifecycleAware {
-
-    override def beforeTest(description: TestDescription): Unit = {
-      println("beforeTest")
-    }
-
-    override def afterTest(description: TestDescription, throwable: Optional[Throwable]): Unit = {
-      println("afterTest")
-    }
-
-    override def start(): Unit = {
-      println("start")
-    }
-
-    override def stop(): Unit = {
-      println("stop")
-    }
-  }
-
-  class SampleContainer(sampleOTCContainer: SampleOTCContainer)
-    extends SingleContainer[SampleOTCContainer] with TestLifecycleAware {
-    override implicit val container: SampleOTCContainer = sampleOTCContainer
-
-    override def beforeTest(description: TestDescription): Unit = {
-      container.beforeTest(description)
-    }
-
-    override def afterTest(description: TestDescription, throwable: Option[Throwable]): Unit = {
-      container.afterTest(description, throwable.fold[Optional[Throwable]](Optional.empty())(Optional.of))
     }
   }
 }

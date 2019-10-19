@@ -2,9 +2,7 @@ package com.dimafeng.testcontainers
 
 import java.util.Optional
 
-import com.dimafeng.testcontainers.ContainerSpec.{SampleContainer, SampleOTCContainer}
 import com.dimafeng.testcontainers.MultipleContainersSpec.{InitializableContainer, TestSpec}
-import org.junit.runner.Description
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.verify
@@ -13,8 +11,8 @@ import org.scalatestplus.mockito.MockitoSugar
 
 class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
   it should "call all expected methods of the multiple containers" in {
-    val container1 = mock[SampleOTCContainer]
-    val container2 = mock[SampleOTCContainer]
+    val container1 = mock[SampleJavaContainer]
+    val container2 = mock[SampleJavaContainer]
 
     val containers = MultipleContainers(new SampleContainer(container1), new SampleContainer(container2))
 
@@ -53,8 +51,8 @@ class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
 
 object MultipleContainersSpec {
 
-  class InitializableContainer(valueToBeSetAfterStart: String) extends SingleContainer[SampleOTCContainer] with MockitoSugar {
-    override implicit val container: SampleOTCContainer = mock[SampleOTCContainer]
+  class InitializableContainer(valueToBeSetAfterStart: String) extends SingleContainer[SampleJavaContainer] with MockitoSugar {
+    override implicit val container: SampleJavaContainer = mock[SampleJavaContainer]
     var value: String = _
 
     override def start(): Unit = {
@@ -62,8 +60,8 @@ object MultipleContainersSpec {
     }
   }
 
-  class ExampleContainerWithVariable(val variable: String) extends SingleContainer[SampleOTCContainer] with MockitoSugar {
-    override implicit val container: SampleOTCContainer = mock[SampleOTCContainer]
+  class ExampleContainerWithVariable(val variable: String) extends SingleContainer[SampleJavaContainer] with MockitoSugar {
+    override implicit val container: SampleJavaContainer = mock[SampleJavaContainer]
   }
 
   protected class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {

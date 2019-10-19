@@ -1,7 +1,7 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.wait.strategy.WaitStrategy
-import org.testcontainers.containers.{BindMode, FixedHostPortGenericContainer => OTCFixedHostPortGenericContainer}
+import org.testcontainers.containers.{BindMode, FixedHostPortGenericContainer => JavaFixedHostPortGenericContainer}
 
 class FixedHostPortGenericContainer(imageName: String,
                                     exposedPorts: Seq[Int] = Seq(),
@@ -11,9 +11,9 @@ class FixedHostPortGenericContainer(imageName: String,
                                     waitStrategy: Option[WaitStrategy] = None,
                                     exposedHostPort: Int,
                                     exposedContainerPort: Int
-                                   ) extends SingleContainer[OTCFixedHostPortGenericContainer[_]] {
+                                   ) extends SingleContainer[JavaFixedHostPortGenericContainer[_]] {
 
-  override implicit val container: OTCFixedHostPortGenericContainer[_] = new OTCFixedHostPortGenericContainer(imageName)
+  override implicit val container: JavaFixedHostPortGenericContainer[_] = new JavaFixedHostPortGenericContainer(imageName)
 
   if (exposedPorts.nonEmpty) {
     container.withExposedPorts(exposedPorts.map(int2Integer): _*)
