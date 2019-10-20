@@ -18,7 +18,7 @@ cache:
     - $HOME/.sbt
 
 install:
-- rvm use 2.2.5 --install --fuzzy
+- rvm use 2.2.7 --install --fuzzy
 - gem i rubygems-update -v '<3' && update_rubygems
 - gem install sass
 - gem install ruby_dep -v 1.3.1

@@ -7,6 +7,7 @@ class KafkaContainer(confluentPlatformVersion: Option[String] = None,
 
   type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCKafkaContainer}
 
+  @deprecated("Please use reflective methods of the scala container or `configure` method")
   val kafkaContainer: OTCKafkaContainer = {
     if (confluentPlatformVersion.isEmpty) {
       new OTCKafkaContainer()
@@ -23,6 +24,7 @@ class KafkaContainer(confluentPlatformVersion: Option[String] = None,
 
   override val container: OTCKafkaContainer = kafkaContainer
 
+  def bootstrapServers: String = container.getBootstrapServers
 }
 
 object KafkaContainer {

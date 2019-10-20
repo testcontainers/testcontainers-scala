@@ -256,6 +256,23 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ## Release notes
 
+* **0.32.0**
+    * TestContainers -> `1.12.1`
+    * SBT -> `1.3.0`
+
+* **0.31.0**
+    * Additional config options for PostgreSQL [#70](https://github.com/testcontainers/testcontainers-scala/pull/70)
+
+* **0.30.0**
+    * TestContainers -> `1.12.0`
+    * Scala -> `2.12.9`
+
+* **0.29.0**
+    * TestContainers `1.11.2` -> `1.11.4`
+
+* **0.28.0**
+    * `VaultContainer`
+
 * **0.27.0**
     * New `TestLifecycleAware` trait introduced. You can use it when you want to do something with the container before or after the test.
     * `Container` now implements `Startable` interface with `start` and `stop` methods.

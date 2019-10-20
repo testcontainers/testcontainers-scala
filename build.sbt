@@ -2,10 +2,10 @@ import Dependencies.{PROVIDED, TEST, _}
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
 
-val testcontainersVersion = "1.11.3"
+val testcontainersVersion = "1.12.2"
 val seleniumVersion = "2.53.1"
 val slf4jVersion = "1.7.25"
-val scalaTestVersion = "3.0.7"
+val scalaTestVersion = "3.0.8"
 val mysqlConnectorVersion = "5.1.42"
 val cassandraDriverVersion = "4.0.1"
 val postgresqlDriverVersion = "9.4.1212"
@@ -16,8 +16,11 @@ val restAssuredVersion = "4.0.0"
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
-  scalaVersion in ThisBuild := "2.12.8",
-  crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.0-M5"),
+  scalaVersion in ThisBuild := "2.12.9",
+  crossScalaVersions := Seq("2.11.12", "2.12.9", "2.13.1"),
+
+  parallelExecution in ThisBuild := false,
+  fork := true,
 
   scalacOptions ++= Seq(
     "-unchecked",
