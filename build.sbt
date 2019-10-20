@@ -205,6 +205,7 @@ lazy val moduleVault = (project in file("modules/vault"))
       "org.testcontainers" % "vault" % testcontainersVersion,
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
+      "io.rest-assured" % "scala-support" % restAssuredVersion
     )
   )
 

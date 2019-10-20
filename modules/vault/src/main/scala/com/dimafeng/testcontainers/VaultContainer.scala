@@ -1,5 +1,8 @@
 package com.dimafeng.testcontainers;
 
+import org.testcontainers.containers.{GenericContainer => OTCGenericContainer}
+import org.testcontainers.vault.{VaultContainer => OTCVaultContainer}
+
 class VaultContainer(dockerImageNameOverride: Option[String] = None,
                      vaultToken: Option[String] = None,
                      vaultPort: Option[Int]) extends SingleContainer[OTCVaultContainer[_]] {
@@ -18,4 +21,16 @@ class VaultContainer(dockerImageNameOverride: Option[String] = None,
   if (vaultPort.isDefined) vaultContainer.withVaultPort(vaultPort.get)
 
   override val container: OTCVaultContainer[_] = vaultContainer
+}
+
+object VaultContainer {
+
+  def apply(dockerImageNameOverride: String = null,
+            vaultToken: String = null,
+            vaultPort: Option[Int] = None): VaultContainer = new VaultContainer(
+    Option(dockerImageNameOverride),
+    Option(vaultToken),
+    vaultPort
+  )
+
 }
