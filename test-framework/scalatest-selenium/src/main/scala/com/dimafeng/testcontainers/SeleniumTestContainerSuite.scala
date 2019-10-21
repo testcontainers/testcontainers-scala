@@ -4,6 +4,7 @@ import java.io.File
 import java.net.URL
 import java.util.Optional
 
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
 import org.scalatest.Suite

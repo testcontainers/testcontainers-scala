@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers
 
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.junit.runner.{Description => JunitDescription}
 import org.scalatest._
 import org.testcontainers.lifecycle.TestDescription

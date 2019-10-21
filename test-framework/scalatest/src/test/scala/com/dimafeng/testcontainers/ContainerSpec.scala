@@ -3,6 +3,7 @@ package com.dimafeng.testcontainers
 import java.util.Optional
 
 import com.dimafeng.testcontainers.ContainerSpec._
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{times, verify}
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}

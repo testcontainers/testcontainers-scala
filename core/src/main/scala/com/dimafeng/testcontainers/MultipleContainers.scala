@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers
 
+import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.junit.runner.Description
 import org.testcontainers.lifecycle.TestDescription
 
