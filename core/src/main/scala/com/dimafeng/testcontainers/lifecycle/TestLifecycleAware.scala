@@ -1,4 +1,4 @@
-package com.dimafeng.testcontainers
+package com.dimafeng.testcontainers.lifecycle
 
 import org.testcontainers.lifecycle.TestDescription
 
