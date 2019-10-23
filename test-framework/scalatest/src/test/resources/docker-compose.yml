@@ -1,0 +1,6 @@
+version: '3'
+services:
+  redis:
+    image: redis:5.0.0
+  elasticsearch:
+    image: elasticsearch:6.4.1
