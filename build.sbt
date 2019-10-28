@@ -200,11 +200,10 @@ lazy val moduleVault = (project in file("modules/vault"))
   .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
-    name := "testcontainers-scala-kafka",
+    name := "testcontainers-scala-vault",
     libraryDependencies ++= COMPILE(
       "org.testcontainers" % "vault" % testcontainersVersion,
     ) ++ TEST(
-      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
       "io.rest-assured" % "scala-support" % restAssuredVersion
     )
   )
