@@ -18,7 +18,7 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
   }
 
   if (configurationOverride.isDefined) cassandraContainer.withConfigurationOverride(configurationOverride.get)
-  if (initScript.isDefined) cassandraContainer.withConfigurationOverride(initScript.get)
+  if (initScript.isDefined) cassandraContainer.withInitScript(initScript.get)
   if (jmxReporting) cassandraContainer.withJmxReporting(jmxReporting)
 
   override val container: OTCCassandraContainer[_] = cassandraContainer
