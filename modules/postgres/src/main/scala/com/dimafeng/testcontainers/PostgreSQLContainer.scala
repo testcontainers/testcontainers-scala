@@ -8,9 +8,7 @@ class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None,
                           pgPassword: Option[String] = None,
                           mountPostgresDataToTmpfs: Boolean = false) extends SingleContainer[OTCPostgreSQLContainer[_]] {
 
-  type OTCContainer = OTCPostgreSQLContainer[T] forSome {type T <: OTCPostgreSQLContainer[T]}
-
-  override val container: OTCContainer = dockerImageNameOverride match {
+  override val container: OTCPostgreSQLContainer[_] = dockerImageNameOverride match {
 
     case Some(imageNameOverride) =>
       new OTCPostgreSQLContainer(imageNameOverride)

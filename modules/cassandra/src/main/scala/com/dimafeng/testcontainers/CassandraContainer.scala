@@ -7,9 +7,7 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
                          initScript: Option[String] = None,
                          jmxReporting: Boolean = false) extends SingleContainer[OTCCassandraContainer[_]] {
 
-  type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCCassandraContainer[T]}
-
-  val cassandraContainer: OTCCassandraContainer[Nothing] = {
+  val cassandraContainer: OTCCassandraContainer[_] = {
     if (dockerImageNameOverride.isEmpty) {
       new OTCCassandraContainer()
     } else {

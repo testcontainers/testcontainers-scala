@@ -1,11 +1,9 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{GenericContainer => OTCGenericContainer, KafkaContainer => OTCKafkaContainer}
+import org.testcontainers.containers.{KafkaContainer => OTCKafkaContainer}
 
 class KafkaContainer(confluentPlatformVersion: Option[String] = None,
-                     externalZookeeper: Option[String] = None) extends SingleContainer[OTCGenericContainer[_]] {
-
-  type OTCContainer = OTCGenericContainer[T] forSome {type T <: OTCKafkaContainer}
+                     externalZookeeper: Option[String] = None) extends SingleContainer[OTCKafkaContainer] {
 
   @deprecated("Please use reflective methods of the scala container or `configure` method")
   val kafkaContainer: OTCKafkaContainer = {
