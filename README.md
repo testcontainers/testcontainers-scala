@@ -259,6 +259,8 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 Starting from 0.34.0 version testcontainers-scala provides the new API. 
 The main motivation points are in the [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78).
 
+**This API is experimental and may change!**
+
 ### `Container` and `ContainerDef` 
 
 Docker containers are represented through the two different entities:
