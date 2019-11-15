@@ -30,7 +30,7 @@ private[testcontainers] object TestContainers {
 
   trait TestContainersSuite extends SuiteMixin { self: Suite =>
 
-    val container: Container
+    def container: Container
 
     def afterStart(): Unit = {}
 
