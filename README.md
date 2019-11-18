@@ -254,7 +254,136 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 }
 ```
 
+## New API
+
+Starting from 0.34.0 version testcontainers-scala provides the new API. 
+The main motivation points are in the [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78).
+
+**This API is experimental and may change!**
+
+### `Container` and `ContainerDef` 
+
+Docker containers are represented through the two different entities:
+1. `ContainerDef` — it's container definition. `ContainerDef` describes, how to build a container.
+   You can think about it like about a container constructor, or dockerfile description.
+   Usually, `ContainerDef` receives some parameters.
+   `ContainerDef` has a `start()` method. It returns a started `Container`.
+2. `Container` — it's a started container. You can interact with it through its methods.
+   For example, in the case of `MySQLContainer` you can get it's JDBC URL with `jdbcUrl` method.
+   `Container` is the main entity for using inside tests.
+
+### Scalatest usage
+
+You can use one of the four traits:
+1. `TestContainerForAll` — will start a single container before all tests and stop after all tests.
+2. `TestContainerForEach` — will start a single container before each test and stop after each test.
+3. `TestContainersForAll` — will start multiple containers before all tests and stop after all tests.
+4. `TestContainersForEach` — will start multiple containers before each test and stop after each test.
+
+
+#### Single container in tests
+
+If you want to use a single container in your test:
+```scala
+class MysqlSpec extends FlatSpec with TestContainerForAll {
+
+  // You need to override `containerDef` with needed container definition
+  override val containerDef = MySQLContainer.Def()
+
+  // To use containers in tests you need to use `withContainers` function
+  it should "test" in withContainers { mysqlContainer =>
+    // Inside your test body you can do with your container whatever you want to
+    assert(mysqlContainer.jdbcUrl.nonEmpty)
+  }
+}
+```
+
+Usage of `TestContainerForEach` is not different from the example above.
+
+#### Multiple containers in tests
+
+If you want to use multiple containers in your test:
+```scala
+class ExampleSpec extends FlatSpec with TestContainersForAll {
+
+  // First of all, you need to declare, which containers you want to use
+  override type Containers = MySQLContainer and PostgreSQLContainer
+
+  // After that, you need to describe, how you want to start them,
+  // In this method you can use any intermediate logic.
+  // You can pass parameters between containers, for example.
+  override def startContainers(): Containers = {
+    val container1 = MySQLContainer.Def().start()
+    val container2 = PostgreSQLContainer.Def().start()
+    container1 and container2
+  }
+  
+  // `withContainers` function supports multiple containers:
+  it should "test" in withContainers { case mysqlContainer and pgContainer =>
+    // Inside your test body you can do with your containers whatever you want to
+    assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
+  }
+  
+}
+```
+
+Usage of `TestContainersForEach` is not different from the example above.
+
+### `GenericContainer` usage
+
+To create a custom container, which is not built-in in the library, you need to use `GenericContainer`.
+
+For example, you want to create a custom nginx container:
+```scala
+class NginxContainer(port: Int, underlying: GenericContainer) extends GenericContainer(underlying) {
+  // you can add any methods or fields inside your container's body
+  def rootUrl: String = s"http://$containerIpAddress:${mappedPort(port)}/"
+}
+object NginxContainer {
+
+  // In the container definition you need to describe, how your container will be constructed:
+  case class Def(port: Int) extends GenericContainer.Def[NginxContainer](
+    new NginxContainer(port, GenericContainer(
+      dockerImage = "nginx:latest",
+      exposedPorts = Seq(port),
+      waitStrategy = Wait.forHttp("/")
+    ))
+  )
+}
+```
+
+### Migration from the classic API
+
+1. If you have custom containers created with the `GenericContainer`, add `ContainerDef` in the companion like this:
+   ```scala
+   object MyCustomContainer {
+     case class Def(/*constructor params here*/) extends GenericContainer.Def[MyCustomContainer](
+       new MyCustomContainer(/*constructor params here*/)
+     )
+   }
+   ```
+2. If you are using `ForEachTestContainer`:
+    1. If your test contains only one container, replace `ForEachTestContainer` with `TestContainerForEach`
+    2. If your test contains multiple containers, replace `ForEachTestContainer` with `TestContainersForEach`
+3. If you are using `ForAllTestContainer`:
+    1. If your test contains only one container, replace `ForAllTestContainer` with `TestContainerForAll`
+    2. If your test contains multiple containers, replace `ForAllTestContainer` with `TestContainersForAll`
+4. Fix all compilation errors using compiler messages and examples above.
+
+If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
+
 ## Release notes
+
+* **0.34.0**
+    * Added new, experimental API and DSL.
+      The main motivation points are in the [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78). 
+      Old API remains the same, so all your old code will continue to work.      
+      We will wait for the user's feedback about the new API. 
+      If it will be positive, eventually this API may replace the current API.
+      You can find more information about the new API above.
+
+* **0.33.0**
+    * TODO
 
 * **0.32.0**
     * TestContainers -> `1.12.1`

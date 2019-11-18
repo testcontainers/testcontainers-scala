@@ -1,17 +1,17 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{CassandraContainer => OTCCassandraContainer, GenericContainer => OTCGenericContainer}
+import org.testcontainers.containers.{CassandraContainer => JavaCassandraContainer}
 
 class CassandraContainer(dockerImageNameOverride: Option[String] = None,
                          configurationOverride: Option[String] = None,
                          initScript: Option[String] = None,
-                         jmxReporting: Boolean = false) extends SingleContainer[OTCCassandraContainer[_]] {
+                         jmxReporting: Boolean = false) extends SingleContainer[JavaCassandraContainer[_]] {
 
-  val cassandraContainer: OTCCassandraContainer[_] = {
+  val cassandraContainer: JavaCassandraContainer[_] = {
     if (dockerImageNameOverride.isEmpty) {
-      new OTCCassandraContainer()
+      new JavaCassandraContainer()
     } else {
-      new OTCCassandraContainer(dockerImageNameOverride.get)
+      new JavaCassandraContainer(dockerImageNameOverride.get)
     }
   }
 
@@ -19,11 +19,13 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
   if (initScript.isDefined) cassandraContainer.withInitScript(initScript.get)
   if (jmxReporting) cassandraContainer.withJmxReporting(jmxReporting)
 
-  override val container: OTCCassandraContainer[_] = cassandraContainer
+  override val container: JavaCassandraContainer[_] = cassandraContainer
 }
 
 
 object CassandraContainer {
+
+  val defaultDockerImageName = "cassandra:3.11.2"
 
   def apply(dockerImageNameOverride: String = null,
             configurationOverride: String = null,
@@ -34,5 +36,24 @@ object CassandraContainer {
     Option(initScript),
     jmxReporting
   )
+
+  case class Def(
+    dockerImageName: String = defaultDockerImageName,
+    configurationOverride: Option[String] = None,
+    initScript: Option[String] = None,
+    jmxReporting: Boolean = false
+  ) extends ContainerDef {
+
+    override type Container = CassandraContainer
+
+    override def createContainer(): CassandraContainer = {
+      new CassandraContainer(
+        dockerImageNameOverride = Some(dockerImageName),
+        configurationOverride = configurationOverride,
+        initScript = initScript,
+        jmxReporting = jmxReporting
+      )
+    }
+  }
 
 }

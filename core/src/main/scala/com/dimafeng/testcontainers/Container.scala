@@ -2,6 +2,7 @@ package com.dimafeng.testcontainers
 
 import java.util.function.Consumer
 
+import com.dimafeng.testcontainers.lifecycle.Stoppable
 import com.github.dockerjava.api.DockerClient
 import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
 import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
@@ -9,12 +10,13 @@ import org.junit.runner.Description
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => OTCGenericContainer}
+import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => JavaGenericContainer}
 import org.testcontainers.lifecycle.Startable
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
 
+@deprecated("For internal usage only. Will be deleted.")
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
 
   @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
@@ -33,7 +35,9 @@ trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Containe
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
-abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContainerProxy[T] {
+abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContainerProxy[T] {
+
+  def underlyingUnsafeContainer: T = container
 
   override def start(): Unit = container.start()
 
@@ -102,7 +106,7 @@ abstract class SingleContainer[T <: OTCGenericContainer[_]] extends TestContaine
   }
 }
 
-trait Container extends Startable {
+trait Container extends Startable with Stoppable {
 
   @deprecated("Use `stop` instead")
   def finished()(implicit description: Description): Unit = stop()

@@ -1,20 +1,20 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{PostgreSQLContainer => OTCPostgreSQLContainer}
+import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
 
 class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None,
                           databaseName: Option[String] = None,
                           pgUsername: Option[String] = None,
                           pgPassword: Option[String] = None,
-                          mountPostgresDataToTmpfs: Boolean = false) extends SingleContainer[OTCPostgreSQLContainer[_]] {
+                          mountPostgresDataToTmpfs: Boolean = false) extends SingleContainer[JavaPostgreSQLContainer[_]] {
 
-  override val container: OTCPostgreSQLContainer[_] = dockerImageNameOverride match {
+  override val container: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
 
     case Some(imageNameOverride) =>
-      new OTCPostgreSQLContainer(imageNameOverride)
+      new JavaPostgreSQLContainer(imageNameOverride)
 
     case None =>
-      new OTCPostgreSQLContainer()
+      new JavaPostgreSQLContainer()
   }
 
   databaseName.map(container.withDatabaseName)
@@ -42,6 +42,12 @@ class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None,
 }
 
 object PostgreSQLContainer {
+
+  val defaultDockerImageName = s"${JavaPostgreSQLContainer.IMAGE}:${JavaPostgreSQLContainer.DEFAULT_TAG}"
+  val defaultDatabaseName = "test"
+  val defaultUsername = "test"
+  val defaultPassword = "test"
+
   def apply(dockerImageNameOverride: String = null,
             databaseName: String = null,
             username: String = null,
@@ -55,4 +61,25 @@ object PostgreSQLContainer {
       Option(password),
       mountPostgresDataToTmpfs
     )
+
+  case class Def(
+    dockerImageName: String = defaultDockerImageName,
+    databaseName: String = defaultDatabaseName,
+    username: String = defaultUsername,
+    password: String = defaultPassword,
+    mountPostgresDataToTmpfs: Boolean = false
+  ) extends ContainerDef {
+
+    override type Container = PostgreSQLContainer
+
+    override def createContainer(): PostgreSQLContainer = {
+      new PostgreSQLContainer(
+        dockerImageNameOverride = Some(dockerImageName),
+        databaseName = Some(databaseName),
+        pgUsername = Some(username),
+        pgPassword = Some(password),
+        mountPostgresDataToTmpfs = mountPostgresDataToTmpfs
+      )
+    }
+  }
 }

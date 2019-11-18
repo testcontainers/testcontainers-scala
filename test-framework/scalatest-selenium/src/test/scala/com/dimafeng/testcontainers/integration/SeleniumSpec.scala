@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers.integration
 import com.dimafeng.testcontainers.SeleniumTestContainerSuite
 import org.openqa.selenium.remote.DesiredCapabilities
 import org.scalatest.FlatSpec
-import org.scalatest.selenium.WebBrowser
+import org.scalatestplus.selenium.WebBrowser
 
 class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrowser {
   override def desiredCapabilities = DesiredCapabilities.chrome()

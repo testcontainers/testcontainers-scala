@@ -1,19 +1,17 @@
 package com.dimafeng.testcontainers
 
-import com.dimafeng.testcontainers.MySQLContainer.DEFAULT_MYSQL_VERSION
-import org.testcontainers.containers.{MySQLContainer => OTCMySQLContainer}
-
+import org.testcontainers.containers.{MySQLContainer => JavaMySQLContainer}
 
 class MySQLContainer(configurationOverride: Option[String] = None,
                      mysqlImageVersion: Option[String] = None,
                      databaseName: Option[String] = None,
                      mysqlUsername: Option[String] = None,
                      mysqlPassword: Option[String] = None)
-  extends SingleContainer[OTCMySQLContainer[_]] {
+  extends SingleContainer[JavaMySQLContainer[_]] {
 
-  override val container: OTCMySQLContainer[_] = mysqlImageVersion
-    .map(new OTCMySQLContainer(_))
-    .getOrElse(new OTCMySQLContainer(DEFAULT_MYSQL_VERSION))
+  override val container: JavaMySQLContainer[_] = mysqlImageVersion
+    .map(new JavaMySQLContainer(_))
+    .getOrElse(new JavaMySQLContainer(MySQLContainer.DEFAULT_MYSQL_VERSION))
 
   databaseName.map(container.withDatabaseName)
   mysqlUsername.map(container.withUsername)
@@ -34,7 +32,13 @@ class MySQLContainer(configurationOverride: Option[String] = None,
 }
 
 object MySQLContainer {
-  val DEFAULT_MYSQL_VERSION = "mysql:5"
+
+  val defaultDockerImageName = s"${JavaMySQLContainer.IMAGE}:${JavaMySQLContainer.DEFAULT_TAG}"
+  val defaultDatabaseName = "test"
+  val defaultUsername = "test"
+  val defaultPassword = "test"
+
+  val DEFAULT_MYSQL_VERSION = defaultDockerImageName
 
   def apply(configurationOverride: String = null,
             mysqlImageVersion: String = null,
@@ -46,5 +50,26 @@ object MySQLContainer {
       Option(databaseName),
       Option(username),
       Option(password))
+
+  case class Def(
+    dockerImageName: String = defaultDockerImageName,
+    databaseName: String = defaultDatabaseName,
+    username: String = defaultUsername,
+    password: String = defaultPassword,
+    configurationOverride: Option[String] = None
+  ) extends ContainerDef {
+
+    override type Container = MySQLContainer
+
+    override def createContainer(): MySQLContainer = {
+      new MySQLContainer(
+        mysqlImageVersion = Some(dockerImageName),
+        databaseName = Some(databaseName),
+        mysqlUsername = Some(username),
+        mysqlPassword = Some(password),
+        configurationOverride = configurationOverride
+      )
+    }
+  }
 
 }
