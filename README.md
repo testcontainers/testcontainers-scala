@@ -14,6 +14,8 @@ Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-se
 
 ## Slack
 
+How does one get an invite to the Slack channel? I can't seem to join it on my own. Thanks!
+
 [Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
 
 ## Setup
