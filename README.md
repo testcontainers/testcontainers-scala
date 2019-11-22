@@ -16,6 +16,8 @@ Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-se
 
 [Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
 
+[Invite link for slack](https://slack.testcontainers.org/)
+
 ## Setup
 
 *SBT*
