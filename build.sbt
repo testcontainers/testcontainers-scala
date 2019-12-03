@@ -1,17 +1,5 @@
-import Dependencies.{PROVIDED, TEST, _}
 import xerial.sbt.Sonatype._
 import ReleaseTransformations._
-
-val testcontainersVersion = "1.12.2"
-val seleniumVersion = "2.53.1"
-val slf4jVersion = "1.7.25"
-val scalaTestVersion = "3.0.8"
-val mysqlConnectorVersion = "5.1.42"
-val cassandraDriverVersion = "4.0.1"
-val postgresqlDriverVersion = "9.4.1212"
-val kafkaDriverVersion = "2.2.0"
-val mockitoVersion = "2.27.0"
-val restAssuredVersion = "4.0.0"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -88,42 +76,99 @@ lazy val root = (project in file("."))
 
 lazy val allOld = (project in file("allOld"))
   .dependsOn(
-    core % "compile->compile;provided->provided",
-    scalatest % "compile->provided;provided->provided",
-    scalatestSelenium % "compile->provided;provided->provided",
-    moduleMysql % "compile->provided;provided->provided",
-    modulePostgres % "compile->provided;provided->provided",
-    moduleCassandra % "compile->provided;provided->provided",
-    moduleKafka % "compile->provided;provided->provided",
-    moduleVault % "compile->provided;provided->provided"
+    core,
+    scalatest,
+    scalatestSelenium,
+    moduleMysql,
+    modulePostgres,
+    moduleCassandra,
+    moduleKafka,
+    moduleVault,
   )
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala",
-    libraryDependencies ++= PROVIDED(
-      "org.scalatest" %% "scalatest" % scalaTestVersion
-    )
+    libraryDependencies ++= Dependencies.allOld.value ++ (
+      Dependencies.scalatestSelenium.value ++
+      Dependencies.moduleMysql.value ++
+      Dependencies.modulePostgres.value ++
+      Dependencies.moduleCassandra.value ++
+      Dependencies.moduleKafka.value ++
+      Dependencies.moduleVault.value
+    ).collect {
+      case module if module.configurations.isEmpty =>
+        module.withConfigurations(Some("provided"))
+    },
+    pomPostProcess := { root =>
+      import scala.xml.{Node => XmlNode, NodeSeq => XmlNodeSeq, _}
+      import scala.xml.transform.{RewriteRule, RuleTransformer}
+
+      class ExcludeModule(moduleName: String) {
+        def unapply(e: Elem): Option[Elem] = {
+          if (
+            e.label == "dependency" &&
+            e.child.exists(c => c.label == "groupId" && c.text == "com.dimafeng") &&
+            e.child.exists(c => c.label == "artifactId" && c.text.startsWith(moduleName))
+          ) Some(e) else None
+        }
+      }
+
+      val scalatestSeleniumEx = new ExcludeModule((scalatestSelenium/name).value)
+      val moduleMysqlEx       = new ExcludeModule((moduleMysql/name).value)
+      val modulePostgresEx    = new ExcludeModule((modulePostgres/name).value)
+      val moduleCassandraEx   = new ExcludeModule((moduleCassandra/name).value)
+      val moduleKafkaEx       = new ExcludeModule((moduleKafka/name).value)
+      val moduleVaultEx       = new ExcludeModule((moduleVault/name).value)
+
+      def exclude(modules: Seq[ModuleID]): Elem = {
+        <exclusions>
+          {
+            modules.map { module =>
+              if (module.configurations.isEmpty) {
+                <exclusion>
+                  <groupId>{module.organization}</groupId>
+                  <artifactId>{module.name}</artifactId>
+                </exclusion>
+              } else {
+                XmlNodeSeq.Empty
+              }
+            }
+          }
+        </exclusions>
+      }
+
+      new RuleTransformer(new RewriteRule {
+        override def transform(node: XmlNode): XmlNodeSeq = node match {
+          case scalatestSeleniumEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.scalatestSelenium.value))
+
+          case moduleMysqlEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.moduleMysql.value))
+
+          case modulePostgresEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.modulePostgres.value))
+
+          case moduleCassandraEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.moduleCassandra.value))
+
+          case moduleKafkaEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.moduleKafka.value))
+
+          case moduleVaultEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.moduleVault.value))
+
+          case _ =>
+            node
+        }
+      }).transform(root).head
+    }
   )
 
 lazy val core = (project in file("core"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-core",
-
-    libraryDependencies ++=
-      COMPILE(
-        "org.testcontainers" % "testcontainers" % testcontainersVersion
-      )
-        ++ PROVIDED(
-        "org.slf4j" % "slf4j-simple" % slf4jVersion
-      )
-        ++ TEST(
-        "junit" % "junit" % "4.12",
-        "org.scalatest" %% "scalatest" % scalaTestVersion,
-        "org.testcontainers" % "selenium" % testcontainersVersion,
-        "org.postgresql" % "postgresql" % postgresqlDriverVersion,
-        "org.mockito" % "mockito-core" % mockitoVersion
-      )
+    libraryDependencies ++= Dependencies.core.value
   )
 
 lazy val scalatest = (project in file("test-framework/scalatest"))
@@ -131,9 +176,7 @@ lazy val scalatest = (project in file("test-framework/scalatest"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-scalatest",
-    libraryDependencies ++= PROVIDED(
-      "org.scalatest" %% "scalatest" % scalaTestVersion
-    )
+    libraryDependencies ++= Dependencies.scalatest.value
   )
 
 lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium"))
@@ -141,10 +184,7 @@ lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-scalatest-selenium",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "selenium" % testcontainersVersion,
-      "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion
-    )
+    libraryDependencies ++= Dependencies.scalatestSelenium.value
   )
 
 lazy val moduleMysql = (project in file("modules/mysql"))
@@ -152,11 +192,7 @@ lazy val moduleMysql = (project in file("modules/mysql"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mysql",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "mysql" % testcontainersVersion
-    ) ++ TEST(
-      "mysql" % "mysql-connector-java" % mysqlConnectorVersion
-    )
+    libraryDependencies ++= Dependencies.moduleMysql.value
   )
 
 lazy val modulePostgres = (project in file("modules/postgres"))
@@ -164,11 +200,7 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-postgresql",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "postgresql" % testcontainersVersion
-    ) ++ TEST(
-      "org.postgresql" % "postgresql" % postgresqlDriverVersion
-    )
+    libraryDependencies ++= Dependencies.modulePostgres.value
   )
 
 lazy val moduleCassandra = (project in file("modules/cassandra"))
@@ -176,11 +208,7 @@ lazy val moduleCassandra = (project in file("modules/cassandra"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-cassandra",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "cassandra" % testcontainersVersion,
-    ) ++ TEST(
-      "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion,
-    )
+    libraryDependencies ++= Dependencies.moduleCassandra.value
   )
 
 lazy val moduleKafka = (project in file("modules/kafka"))
@@ -188,11 +216,7 @@ lazy val moduleKafka = (project in file("modules/kafka"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-kafka",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "kafka" % testcontainersVersion
-    ) ++ TEST(
-      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
-    )
+    libraryDependencies ++= Dependencies.moduleKafka.value
   )
 
 lazy val moduleVault = (project in file("modules/vault"))
@@ -200,11 +224,7 @@ lazy val moduleVault = (project in file("modules/vault"))
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-vault",
-    libraryDependencies ++= COMPILE(
-      "org.testcontainers" % "vault" % testcontainersVersion,
-    ) ++ TEST(
-      "io.rest-assured" % "scala-support" % restAssuredVersion
-    )
+    libraryDependencies ++= Dependencies.moduleVault.value
   )
 
 lazy val microsite = (project in file("docs"))
