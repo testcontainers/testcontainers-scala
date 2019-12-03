@@ -65,12 +65,11 @@ lazy val root = (project in file("."))
     modulePostgres,
     moduleCassandra,
     moduleKafka,
-    moduleVault
+    moduleVault,
+    allOld
   )
   .settings(noPublishSettings)
   .settings(
-    name := "testcontainers-scala",
-
     releaseProcess := Seq[ReleaseStep](
       checkSnapshotDependencies,
       inquireVersions,
