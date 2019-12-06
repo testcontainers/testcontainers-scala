@@ -53,17 +53,17 @@ class TestContainerForAllSpec extends BaseSpec[TestContainerForAll] {
     verify(container).stop()
   }
 
-  it should "call afterStart() and beforeStop()" in {
+  it should "call afterContainersStart() and beforeContainersStop()" in {
     val container = mock[SampleJavaContainer]
 
     val spec = Mockito.spy(new MultipleTestsSpec({}, SampleContainer.Def(container)))
     spec.run(None, Args(mock[Reporter]))
 
-    verify(spec).afterStart()
-    verify(spec).beforeStop()
+    verify(spec).afterContainersStart(any())
+    verify(spec).beforeContainersStop(any())
   }
 
-  it should "call beforeStop() and stop container if error thrown in afterStart()" in {
+  it should "call beforeContainersStop() and stop container if error thrown in afterContainersStart()" in {
     val container = mock[SampleJavaContainer]
 
     val spec = Mockito.spy(new MultipleTestsSpecWithFailedAfterStart({}, SampleContainer.Def(container)))
@@ -72,9 +72,9 @@ class TestContainerForAllSpec extends BaseSpec[TestContainerForAll] {
     }
     verify(container, times(0)).beforeTest(any())
     verify(container).start()
-    verify(spec).afterStart()
+    verify(spec).afterContainersStart(any())
     verify(container, times(0)).afterTest(any(), any())
-    verify(spec).beforeStop()
+    verify(spec).beforeContainersStop(any())
     verify(container).stop()
   }
 
@@ -116,7 +116,8 @@ object TestContainerForAllSpec {
 
     override val containerDef: ContainerDef = contDef
 
-    override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
+    override def afterContainersStart(containers: Containers): Unit =
+      throw new RuntimeException("something wrong in afterContainersStart()")
 
     it should "test1" in {
       testBody

@@ -36,13 +36,14 @@ trait TestContainersForAll extends TestContainersSuite { self: Suite =>
     if (expectedTestCount(args.filter) == 0) {
       new CompositeStatus(Set.empty)
     } else {
-      startedContainers = Some(startContainers())
+      val containers = startContainers()
+      startedContainers = Some(containers)
       try {
-        afterStart()
+        afterContainersStart(containers)
         super.run(testName, args)
       } finally {
         try {
-          beforeStop()
+          beforeContainersStop(containers)
         }
         finally {
           try {
