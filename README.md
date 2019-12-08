@@ -20,10 +20,9 @@ Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-se
 
 ## Setup
 
-*SBT*
-
+For scalatest users:
 ```scala
-libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % testcontainersScalaVersion % "test"
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala-scalatest" % testcontainersScalaVersion % "test"
 ```
 
 ## Requirements
@@ -32,6 +31,15 @@ libraryDependencies += "com.dimafeng" %% "testcontainers-scala" % testcontainers
 * [See 'Compatibility' section](https://www.testcontainers.org/compatibility.html)
 
 ## Quick Start
+
+First of all, let's add scalatest and MySQL testcontainers modules in the `build.sbt` file to play with:
+
+```scala
+libraryDependencies ++= Seq(
+  "com.dimafeng" %% "testcontainers-scala-scalatest" % testcontainersScalaVersion % "test",
+  "com.dimafeng" %% "testcontainers-scala-mysql" % testcontainersScalaVersion % "test",
+)
+```
 
 There are two ScalaTest aware traits:
 * `ForEachTestContainer` starts a new container(s) before each test case and then stops and removes it.
@@ -76,6 +84,25 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 This spec starts one container and both tests share the container's state.
 
+## Modules
+
+Testcontainers-scala is modular. All modules has the same version. To depend on some module put this into your `build.sbt` file: 
+```scala
+libraryDependencies += "com.dimafeng" %% moduleName % testcontainersScalaVersion % "test"
+```
+
+Here is the full list of the currently available modules:
+
+* `testcontainers-scala-core` — core module. 
+  It contains some basic building blocks of the library and no integration with any test frameworks. 
+  You probably will not use it directly, because all other modules depend on it.
+* `testcontainers-scala-scalatest` — Scalatest integration module.
+* `testcontainers-scala-scalatest-selenium` — module to use the Selenium container with the Scalatest.
+* `testcontainers-scala-mysql` — module with the MySQL container.
+* `testcontainers-scala-postgres` — module with the PostgreSQL container.
+* `testcontainers-scala-cassandra` — module with the Cassandra container.
+* `testcontainers-scala-kafka` — module with the Kafka container.
+* `testcontainers-scala-vault` — module with the Vault container.
 
 ## Container types
 
@@ -115,12 +142,8 @@ class ComposeSpec extends FlatSpec with ForAllTestContainer {
 
 Before you can use this type of containers, you need to add the following dependencies to your project:
 
-```
-"org.seleniumhq.selenium" % "selenium-java" % "2.53.1"
-```
-and
-```
-"org.testcontainers" % "selenium" % "1.8.0"
+```scala
+"com.dimafeng" %% "testcontainers-scala-scalatest-selenium" % testcontainersScalaVersion % "test"
 ```
 
 Now you can write a test in this way:
@@ -142,7 +165,11 @@ for more details.
 
 ### Mysql
 
-Requires you to add [this dependency](http://mvnrepository.com/artifact/org.testcontainers/mysql)
+Requires you to add this dependency:
+
+```scala
+"com.dimafeng" %% "testcontainers-scala-mysql" % testcontainersScalaVersion % "test"
+```
 
 ```scala
 class MysqlSpec extends FlatSpec with ForAllTestContainer {
@@ -176,7 +203,11 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 ### PostgreSQL
 
-Requires you to add [this dependency](https://mvnrepository.com/artifact/org.testcontainers/postgresql)
+Requires you to add this dependency:
+
+```scala
+"com.dimafeng" %% "testcontainers-scala-postgresql" % testcontainersScalaVersion % "test"
+```
 
 ```scala
 class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
@@ -383,9 +414,15 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
       We will wait for the user's feedback about the new API. 
       If it will be positive, eventually this API may replace the current API.
       You can find more information about the new API above.
+    * The library is split into multiple modules.
+      Every built-in container now has a separate module with all needed transitive dependencies,
+      so you will not have to add them manually. More details are above, in the dedicated paragraph.
+      Old module `testcontainers-scala` is still provided but will be eventually dropped in future.
+      To migrate to the new modules remove `testcontainers-scala` dependency
+      and add only needed dependencies from the modules list in the docs.
 
 * **0.33.0**
-    * TODO
+    * TestContainers `1.12.1` -> `1.12.2`
 
 * **0.32.0**
     * TestContainers -> `1.12.1`
