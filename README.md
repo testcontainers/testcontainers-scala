@@ -407,6 +407,13 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.34.1**
+    * New API improvements:
+        * Changed signature of `def withContainers(runTest: Containers => Unit): Unit` to 
+        `def withContainers[A](runTest: Containers => A): A`
+        * Renamed `afterStart` to `afterContainersStart` and added a `containers: Containers` argument to it.
+        * Renamed `beforeStop` to `beforeContainersStop` and added a `containers: Containers` argument to it.
+
 * **0.34.0**
     * Added new, experimental API and DSL.
       The main motivation points are in the [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78). 

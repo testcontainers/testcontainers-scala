@@ -61,7 +61,7 @@ private[scalatest] trait TestContainersSuite extends SuiteMixin { self: Suite =>
     *
     * @param runTest Test body
     */
-  def withContainers(runTest: Containers => Unit): Unit = {
+  def withContainers[A](runTest: Containers => A): A = {
     val c = startedContainers.getOrElse(throw IllegalWithContainersCall())
     runTest(c)
   }
@@ -69,12 +69,12 @@ private[scalatest] trait TestContainersSuite extends SuiteMixin { self: Suite =>
   /**
     * Override, if you want to do something after containers start.
     */
-  def afterStart(): Unit = {}
+  def afterContainersStart(containers: Containers): Unit = {}
 
   /**
     * Override, if you want to do something before containers stop.
     */
-  def beforeStop(): Unit = {}
+  def beforeContainersStop(containers: Containers): Unit = {}
 
   @volatile private[testcontainers] var startedContainers: Option[Containers] = None
 

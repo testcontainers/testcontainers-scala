@@ -80,7 +80,7 @@ class TestContainersForEachSpec extends BaseSpec[TestContainersForEach] {
     verify(container2, times(2)).stop()
   }
 
-  it should "call afterStart() and beforeStop()" in {
+  it should "call afterContainersStart() and beforeContainersStop()" in {
     val container1 = mock[SampleJavaContainer]
     val container2 = mock[SampleJavaContainer]
 
@@ -91,13 +91,13 @@ class TestContainersForEachSpec extends BaseSpec[TestContainersForEach] {
     val spec = new MultipleTestsSpec({
       assert(1 == 1)
     }, container1, container2) {
-      override def afterStart(): Unit = {
-        super.afterStart()
+      override def afterContainersStart(containers: Containers): Unit = {
+        super.afterContainersStart(containers)
         afterStartCalled = true
       }
 
-      override def beforeStop(): Unit = {
-        super.beforeStop()
+      override def beforeContainersStop(containers: Containers): Unit = {
+        super.beforeContainersStop(containers)
         beforeStopCalled = true
       }
     }
@@ -107,7 +107,7 @@ class TestContainersForEachSpec extends BaseSpec[TestContainersForEach] {
     assert(res.succeeds() && afterStartCalled && beforeStopCalled)
   }
 
-  it should "call beforeStop() and stop container if error thrown in afterStart()" in {
+  it should "call beforeContainersStop() and stop container if error thrown in afterContainersStart()" in {
     val container1 = mock[SampleJavaContainer]
     val container2 = mock[SampleJavaContainer]
 
@@ -117,13 +117,13 @@ class TestContainersForEachSpec extends BaseSpec[TestContainersForEach] {
     val spec = new MultipleTestsSpec({
       assert(1 == 1)
     }, container1, container2) {
-      override def afterStart(): Unit = {
+      override def afterContainersStart(containers: Containers): Unit = {
         afterStartCalled = true
         throw new RuntimeException("Test")
       }
 
-      override def beforeStop(): Unit = {
-        super.beforeStop()
+      override def beforeContainersStop(containers: Containers): Unit = {
+        super.beforeContainersStop(containers)
         beforeStopCalled = true
       }
     }

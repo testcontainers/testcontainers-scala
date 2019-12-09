@@ -40,7 +40,7 @@ trait TestContainersForEach extends TestContainersSuite { self: Suite =>
     @volatile var afterTestCalled = false
 
     try {
-      afterStart()
+      afterContainersStart(containers)
       beforeTest(containers)
 
       testCalled = true
@@ -67,7 +67,7 @@ trait TestContainersForEach extends TestContainersSuite { self: Suite =>
     }
     finally {
       try {
-        beforeStop()
+        beforeContainersStop(containers)
       }
       finally {
         try {
