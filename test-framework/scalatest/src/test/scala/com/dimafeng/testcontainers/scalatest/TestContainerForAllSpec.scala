@@ -66,16 +66,19 @@ class TestContainerForAllSpec extends BaseSpec[TestContainerForAll] {
   it should "call beforeContainersStop() and stop container if error thrown in afterContainersStart()" in {
     val container = mock[SampleJavaContainer]
 
-    val spec = Mockito.spy(new MultipleTestsSpecWithFailedAfterStart({}, SampleContainer.Def(container)))
+    @volatile var beforeContainersStopCalled = false
+
+    val spec = new MultipleTestsSpecWithFailedAfterStart({}, SampleContainer.Def(container), () => {
+      beforeContainersStopCalled = true
+    })
     intercept[RuntimeException] {
       spec.run(None, Args(mock[Reporter]))
     }
     verify(container, times(0)).beforeTest(any())
     verify(container).start()
-    verify(spec).afterContainersStart(any())
     verify(container, times(0)).afterTest(any(), any())
-    verify(spec).beforeContainersStop(any())
     verify(container).stop()
+    assert(beforeContainersStopCalled)
   }
 
   it should "not start container if all tests are ignored" in {
@@ -112,12 +115,18 @@ object TestContainerForAllSpec {
     }
   }
 
-  protected class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, contDef: ContainerDef) extends FlatSpec with TestContainerForAll {
+  protected class MultipleTestsSpecWithFailedAfterStart(
+    testBody: => Unit,
+    contDef: ContainerDef,
+    beforeContStop: () => Unit
+  ) extends FlatSpec with TestContainerForAll {
 
     override val containerDef: ContainerDef = contDef
 
     override def afterContainersStart(containers: Containers): Unit =
       throw new RuntimeException("something wrong in afterContainersStart()")
+
+    override def beforeContainersStop(containers: containerDef.Container): Unit = beforeContStop()
 
     it should "test1" in {
       testBody
