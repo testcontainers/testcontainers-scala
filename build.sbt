@@ -93,7 +93,6 @@ lazy val allOld = (project in file("allOld"))
       Dependencies.scalatestSelenium.value ++
       Dependencies.moduleMysql.value ++
       Dependencies.modulePostgres.value ++
-      Dependencies.moduleOracle.value ++
       Dependencies.moduleCassandra.value ++
       Dependencies.moduleKafka.value ++
       Dependencies.moduleVault.value
