@@ -82,7 +82,6 @@ lazy val allOld = (project in file("allOld"))
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
-    moduleOracle,
     moduleCassandra,
     moduleKafka,
     moduleVault,
@@ -119,7 +118,6 @@ lazy val allOld = (project in file("allOld"))
       val scalatestSeleniumEx = new ExcludeModule((scalatestSelenium/name).value)
       val moduleMysqlEx       = new ExcludeModule((moduleMysql/name).value)
       val modulePostgresEx    = new ExcludeModule((modulePostgres/name).value)
-      val moduleOracleEx      = new ExcludeModule((moduleOracle/name).value)
       val moduleCassandraEx   = new ExcludeModule((moduleCassandra/name).value)
       val moduleKafkaEx       = new ExcludeModule((moduleKafka/name).value)
       val moduleVaultEx       = new ExcludeModule((moduleVault/name).value)
@@ -151,9 +149,6 @@ lazy val allOld = (project in file("allOld"))
 
           case modulePostgresEx(e) =>
             e.copy(child = e.child :+ exclude(Dependencies.modulePostgres.value))
-
-          case moduleOracleEx(e) =>
-            e.copy(child = e.child :+ exclude(Dependencies.moduleOracle.value))
 
           case moduleCassandraEx(e) =>
             e.copy(child = e.child :+ exclude(Dependencies.moduleCassandra.value))

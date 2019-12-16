@@ -2,18 +2,19 @@ package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
 
-import com.dimafeng.testcontainers.ForAllTestContainer
-import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
-import org.scalatest.junit.JUnitRunner
 
 class OracleSpec extends FlatSpec with ForAllTestContainer {
 
-  override val container: OracleContainer = OracleContainer(OracleContainer.defaultDockerImageName)
+  override val container: OracleContainer = new OracleContainer()
 
   "Oracle container" should "be started" in {
     Class.forName(container.driverClassName)
-    val connection = DriverManager.getConnection(container.jdbcUrl, container.username, container.password)
+    val connection = DriverManager.getConnection(
+      container.jdbcUrl,
+      container.username,
+      container.password
+    )
 
     val prepareStatement = connection.prepareStatement("SELECT 1 FROM DUAL")
     try {
