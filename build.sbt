@@ -51,6 +51,7 @@ lazy val root = (project in file("."))
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
+    moduleOracle,
     moduleCassandra,
     moduleKafka,
     moduleVault,
@@ -81,6 +82,7 @@ lazy val allOld = (project in file("allOld"))
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
+    moduleOracle,
     moduleCassandra,
     moduleKafka,
     moduleVault,
@@ -92,6 +94,7 @@ lazy val allOld = (project in file("allOld"))
       Dependencies.scalatestSelenium.value ++
       Dependencies.moduleMysql.value ++
       Dependencies.modulePostgres.value ++
+      Dependencies.moduleOracle.value ++
       Dependencies.moduleCassandra.value ++
       Dependencies.moduleKafka.value ++
       Dependencies.moduleVault.value
@@ -116,6 +119,7 @@ lazy val allOld = (project in file("allOld"))
       val scalatestSeleniumEx = new ExcludeModule((scalatestSelenium/name).value)
       val moduleMysqlEx       = new ExcludeModule((moduleMysql/name).value)
       val modulePostgresEx    = new ExcludeModule((modulePostgres/name).value)
+      val moduleOracleEx      = new ExcludeModule((moduleOracle/name).value)
       val moduleCassandraEx   = new ExcludeModule((moduleCassandra/name).value)
       val moduleKafkaEx       = new ExcludeModule((moduleKafka/name).value)
       val moduleVaultEx       = new ExcludeModule((moduleVault/name).value)
@@ -147,6 +151,9 @@ lazy val allOld = (project in file("allOld"))
 
           case modulePostgresEx(e) =>
             e.copy(child = e.child :+ exclude(Dependencies.modulePostgres.value))
+
+          case moduleOracleEx(e) =>
+            e.copy(child = e.child :+ exclude(Dependencies.moduleOracle.value))
 
           case moduleCassandraEx(e) =>
             e.copy(child = e.child :+ exclude(Dependencies.moduleCassandra.value))
@@ -201,6 +208,14 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   .settings(
     name := "testcontainers-scala-postgresql",
     libraryDependencies ++= Dependencies.modulePostgres.value
+  )
+
+lazy val moduleOracle = (project in file("modules/oracle"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-oracle-xe",
+    libraryDependencies ++= Dependencies.moduleOracle.value
   )
 
 lazy val moduleCassandra = (project in file("modules/cassandra"))
