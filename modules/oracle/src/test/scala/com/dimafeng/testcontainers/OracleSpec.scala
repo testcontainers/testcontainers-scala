@@ -16,7 +16,7 @@ class OracleSpec extends FlatSpec with ForAllTestContainer {
       container.password
     )
 
-    val prepareStatement = connection.prepareStatement("SELECT 1 FROM DUAL")
+    val prepareStatement = connection.prepareStatement(container.testQueryString)
     try {
       val resultSet = prepareStatement.executeQuery()
       resultSet.next()

@@ -4,7 +4,6 @@ import org.testcontainers.containers.{OracleContainer => JavaOracleContainer}
 
 class OracleContainer(
   dockerImageName: String = OracleContainer.defaultDockerImageName,
-  databaseName: String = OracleContainer.defaultDatabaseName,
   oraUsername: String = OracleContainer.defaultUsername,
   oraPassword: String = OracleContainer.defaultPassword,
   containerSharedMemory: Long = OracleContainer.defaultSharedMemory
@@ -13,7 +12,6 @@ class OracleContainer(
   override val container: JavaOracleContainer =
     new JavaOracleContainer(dockerImageName)
       .withSharedMemorySize(containerSharedMemory)
-      .withDatabaseName(databaseName)
       .withUsername(oraUsername)
       .withPassword(oraPassword)
 
@@ -37,7 +35,6 @@ object OracleContainer {
   val defaultSharedMemory = 10240000000L //1 GB
 
   case class Def(dockerImageName: String = defaultDockerImageName,
-                 databaseName: String = defaultDatabaseName,
                  username: String = defaultUsername,
                  password: String = defaultPassword,
                  containerSharedMemory: Long = defaultSharedMemory)
@@ -48,7 +45,6 @@ object OracleContainer {
     override def createContainer(): OracleContainer = {
       new OracleContainer(
         dockerImageName = dockerImageName,
-        databaseName = databaseName,
         oraUsername = username,
         oraPassword = password,
         containerSharedMemory = containerSharedMemory
