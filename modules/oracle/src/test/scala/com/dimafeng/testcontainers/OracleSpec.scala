@@ -15,7 +15,7 @@ class OracleSpec extends FlatSpec with ForAllTestContainer {
     Class.forName(container.driverClassName)
     val connection = DriverManager.getConnection(container.jdbcUrl, container.username, container.password)
 
-    val prepareStatement = connection.prepareStatement("select 1")
+    val prepareStatement = connection.prepareStatement("SELECT 1 FROM DUAL")
     try {
       val resultSet = prepareStatement.executeQuery()
       resultSet.next()
