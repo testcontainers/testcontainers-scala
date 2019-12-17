@@ -99,7 +99,7 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-scalatest` — Scalatest integration module.
 * `testcontainers-scala-scalatest-selenium` — module to use the Selenium container with the Scalatest.
 * `testcontainers-scala-mysql` — module with the MySQL container.
-* `testcontainers-scala-postgres` — module with the PostgreSQL container.
+* `testcontainers-scala-postgresql` — module with the PostgreSQL container.
 * `testcontainers-scala-cassandra` — module with the Cassandra container.
 * `testcontainers-scala-kafka` — module with the Kafka container.
 * `testcontainers-scala-vault` — module with the Vault container.
