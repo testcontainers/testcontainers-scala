@@ -51,6 +51,7 @@ lazy val root = (project in file("."))
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
+    moduleOracle,
     moduleCassandra,
     moduleKafka,
     moduleVault,
@@ -201,6 +202,14 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   .settings(
     name := "testcontainers-scala-postgresql",
     libraryDependencies ++= Dependencies.modulePostgres.value
+  )
+
+lazy val moduleOracle = (project in file("modules/oracle"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-oracle-xe",
+    libraryDependencies ++= Dependencies.moduleOracle.value
   )
 
 lazy val moduleCassandra = (project in file("modules/cassandra"))

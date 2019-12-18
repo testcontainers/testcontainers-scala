@@ -11,11 +11,12 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.12.2"
+  private val testcontainersVersion = "1.12.3"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.0.8"
   private val mysqlConnectorVersion = "5.1.42"
+  private val oracleDriverVersion = "19.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
   private val postgresqlDriverVersion = "9.4.1212"
   private val kafkaDriverVersion = "2.2.0"
@@ -71,11 +72,19 @@ object Dependencies {
     )
   )
 
+  val moduleOracle = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "oracle-xe" % testcontainersVersion
+    ) ++ TEST(
+      "com.oracle.ojdbc" % "ojdbc8" % oracleDriverVersion
+    )
+  )
+
   val moduleCassandra = Def.setting(
     COMPILE(
-      "org.testcontainers" % "cassandra" % testcontainersVersion,
+      "org.testcontainers" % "cassandra" % testcontainersVersion
     ) ++ TEST(
-      "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion,
+      "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion
     )
   )
 
@@ -83,13 +92,13 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "kafka" % testcontainersVersion
     ) ++ TEST(
-      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
+      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion
     )
   )
 
   val moduleVault = Def.setting(
     COMPILE(
-      "org.testcontainers" % "vault" % testcontainersVersion,
+      "org.testcontainers" % "vault" % testcontainersVersion
     ) ++ TEST(
       "io.rest-assured" % "scala-support" % restAssuredVersion
     )
