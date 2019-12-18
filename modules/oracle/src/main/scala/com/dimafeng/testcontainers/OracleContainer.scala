@@ -2,7 +2,7 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{OracleContainer => JavaOracleContainer}
 
-class OracleContainer(
+case class OracleContainer(
   dockerImageName: String = OracleContainer.defaultDockerImageName,
   oraUsername: String = OracleContainer.defaultUsername,
   oraPassword: String = OracleContainer.defaultPassword,
@@ -43,7 +43,7 @@ object OracleContainer {
     override type Container = OracleContainer
 
     override def createContainer(): OracleContainer = {
-      new OracleContainer(
+      OracleContainer(
         dockerImageName = dockerImageName,
         oraUsername = username,
         oraPassword = password,
