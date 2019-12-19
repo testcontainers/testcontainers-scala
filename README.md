@@ -103,6 +103,7 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-cassandra` — module with the Cassandra container.
 * `testcontainers-scala-kafka` — module with the Kafka container.
 * `testcontainers-scala-vault` — module with the Vault container.
+* `testcontainers-scala-oracle-xe` — module with the Oracle container.
 
 ## Container types
 
@@ -406,6 +407,9 @@ object NginxContainer {
 If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
 
 ## Release notes
+
+* **0.34.2**
+    * New `OracleContainer`. It is in the `testcontainers-scala-oracle-xe` package.
 
 * **0.34.1**
     * New API improvements:

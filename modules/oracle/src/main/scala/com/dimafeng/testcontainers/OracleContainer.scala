@@ -2,8 +2,14 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{OracleContainer => JavaOracleContainer}
 
+/**
+  * @param dockerImageName Oracle doesn't have any official distribution of XE,
+  *                        so we don't provide any default `dockerImageName`.
+  *                        You either need to build your own image or use some third-party image,
+  *                        for instance "oracleinanutshell/oracle-xe-11g".
+  */
 case class OracleContainer(
-  dockerImageName: String = OracleContainer.defaultDockerImageName,
+  dockerImageName: String,
   oraUsername: String = OracleContainer.defaultUsername,
   oraPassword: String = OracleContainer.defaultPassword,
   containerSharedMemory: Long = OracleContainer.defaultSharedMemory
@@ -28,13 +34,12 @@ case class OracleContainer(
 
 object OracleContainer {
 
-  val defaultDockerImageName = s"oracleinanutshell/oracle-xe-11g"
   val defaultDatabaseName = "xe"
   val defaultUsername = "system"
   val defaultPassword = "oracle"
   val defaultSharedMemory = 10240000000L //1 GB
 
-  case class Def(dockerImageName: String = defaultDockerImageName,
+  case class Def(dockerImageName: String,
                  username: String = defaultUsername,
                  password: String = defaultPassword,
                  containerSharedMemory: Long = defaultSharedMemory)
