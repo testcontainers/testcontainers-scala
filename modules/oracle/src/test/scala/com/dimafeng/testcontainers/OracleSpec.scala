@@ -6,7 +6,7 @@ import org.scalatest.FlatSpec
 
 class OracleSpec extends FlatSpec with ForAllTestContainer {
 
-  override val container: OracleContainer = new OracleContainer()
+  override val container: OracleContainer = OracleContainer("oracleinanutshell/oracle-xe-11g")
 
   "Oracle container" should "be started" in {
     Class.forName(container.driverClassName)
