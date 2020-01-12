@@ -62,6 +62,35 @@ object DockerComposeContainer {
             tailChildContainers: Boolean = false,
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty): DockerComposeContainer =
     new DockerComposeContainer(composeFiles, exposedServices, identifier, scaledServices, pull, localCompose, env, tailChildContainers, logConsumers)
+
+  case class Def(
+    composeFiles: ComposeFile,
+    exposedServices: Seq[ExposedService] = Seq.empty,
+    identifier: String = DockerComposeContainer.randomIdentifier,
+    scaledServices: Seq[ScaledService] = Seq.empty,
+    pull: Boolean = true,
+    localCompose: Boolean = true,
+    env: Map[String, String] = Map.empty,
+    tailChildContainers: Boolean = false,
+    logConsumers: Seq[ServiceLogConsumer] = Seq.empty
+  ) extends ContainerDef {
+
+    override type Container = DockerComposeContainer
+
+    override def createContainer(): DockerComposeContainer = {
+      DockerComposeContainer(
+        composeFiles,
+        exposedServices,
+        identifier,
+        scaledServices,
+        pull,
+        localCompose,
+        env,
+        tailChildContainers,
+        logConsumers
+      )
+    }
+  }
 }
 
 class DockerComposeContainer(composeFiles: ComposeFile,

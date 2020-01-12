@@ -408,6 +408,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.34.3**
+    * Support of the new API in the `DockerComposeContainer`: added `DockerComposeContainer.Def`.
+
 * **0.34.2**
     * New `OracleContainer`. It is in the `testcontainers-scala-oracle-xe` package.
 
