@@ -50,6 +50,7 @@ lazy val root = (project in file("."))
     scalatest,
     scalatestSelenium,
     moduleMysql,
+    moduleNeo4j,
     modulePostgres,
     moduleOracle,
     moduleCassandra,
@@ -194,6 +195,14 @@ lazy val moduleMysql = (project in file("modules/mysql"))
   .settings(
     name := "testcontainers-scala-mysql",
     libraryDependencies ++= Dependencies.moduleMysql.value
+  )
+
+lazy val moduleNeo4j = (project in file("modules/neo4j"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-neo4j",
+    libraryDependencies ++= Dependencies.moduleNeo4j.value
   )
 
 lazy val modulePostgres = (project in file("modules/postgres"))

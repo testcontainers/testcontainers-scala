@@ -16,6 +16,7 @@ object Dependencies {
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.0.8"
   private val mysqlConnectorVersion = "5.1.42"
+  private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "19.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
   private val postgresqlDriverVersion = "9.4.1212"
@@ -64,6 +65,13 @@ object Dependencies {
     )
   )
 
+  val moduleNeo4j = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "neo4j" % testcontainersVersion
+    ) ++ TEST(
+      "org.neo4j.driver" % "neo4j-java-driver" % neo4jConnectorVersion
+    )
+  )
   val modulePostgres = Def.setting(
     COMPILE(
       "org.testcontainers" % "postgresql" % testcontainersVersion
