@@ -4,7 +4,8 @@ import org.testcontainers.vault.{VaultContainer => JavaVaultContainer}
 
 class VaultContainer(dockerImageNameOverride: Option[String] = None,
                      vaultToken: Option[String] = None,
-                     vaultPort: Option[Int]) extends SingleContainer[JavaVaultContainer[_]] {
+                     @deprecated vaultPort: Option[Int] = None,
+                     secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[_]] {
 
   val vaultContainer: JavaVaultContainer[Nothing] = {
     if (dockerImageNameOverride.isEmpty) {
@@ -16,26 +17,38 @@ class VaultContainer(dockerImageNameOverride: Option[String] = None,
 
   if (vaultToken.isDefined) vaultContainer.withVaultToken(vaultToken.get)
   if (vaultPort.isDefined) vaultContainer.withVaultPort(vaultPort.get)
+  secrets.foreach { x =>
+    vaultContainer.withSecretInVault(x.path, x.firstSecret, x.secrets: _*)
+  }
 
   override val container: JavaVaultContainer[_] = vaultContainer
 }
 
 object VaultContainer {
 
-  val defaultDockerImageName = "vault:0.7.0"
+  val defaultDockerImageName = "vault:1.1.3"
+
+  case class Secrets(
+    path: String,
+    firstSecret: String,
+    secrets: Seq[String]
+  )
 
   def apply(dockerImageNameOverride: String = null,
             vaultToken: String = null,
-            vaultPort: Option[Int] = None): VaultContainer = new VaultContainer(
+            @deprecated vaultPort: Option[Int] = None,
+            secrets: Option[VaultContainer.Secrets] = None): VaultContainer = new VaultContainer(
     Option(dockerImageNameOverride),
     Option(vaultToken),
-    vaultPort
+    vaultPort,
+    secrets
   )
 
   case class Def(
     dockerImageName: String = defaultDockerImageName,
     vaultToken: Option[String] = None,
-    vaultPort: Option[Int] = None
+    @deprecated vaultPort: Option[Int] = None,
+    secrets: Option[VaultContainer.Secrets] = None
   ) extends ContainerDef {
 
     override type Container = VaultContainer

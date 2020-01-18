@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers
 
+import com.datastax.driver.core.Cluster
 import org.testcontainers.containers.{CassandraContainer => JavaCassandraContainer}
 
 class CassandraContainer(dockerImageNameOverride: Option[String] = None,
@@ -20,6 +21,12 @@ class CassandraContainer(dockerImageNameOverride: Option[String] = None,
   if (jmxReporting) cassandraContainer.withJmxReporting(jmxReporting)
 
   override val container: JavaCassandraContainer[_] = cassandraContainer
+
+  def cluster: Cluster = cassandraContainer.getCluster
+
+  def username: String = cassandraContainer.getUsername
+
+  def password: String = cassandraContainer.getPassword
 }
 
 

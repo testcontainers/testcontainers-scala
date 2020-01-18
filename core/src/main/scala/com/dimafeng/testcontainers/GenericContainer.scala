@@ -5,6 +5,9 @@ import java.util.concurrent.Future
 import com.dimafeng.testcontainers.GenericContainer.DockerImage
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.containers.{BindMode, GenericContainer => JavaGenericContainer}
+import org.testcontainers.images.ImagePullPolicy
+
+import scala.collection.JavaConverters._
 
 class GenericContainer(
   override val underlyingUnsafeContainer: JavaGenericContainer[_]
@@ -18,7 +21,10 @@ class GenericContainer(
     env: Map[String, String] = Map(),
     command: Seq[String] = Seq(),
     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-    waitStrategy: Option[WaitStrategy] = None
+    waitStrategy: Option[WaitStrategy] = None,
+    labels: Map[String, String] = Map.empty,
+    tmpFsMapping: Map[String, String] = Map.empty,
+    imagePullPolicy: Option[ImagePullPolicy] = None
   ) = this({
     val underlying: JavaGenericContainer[_] = dockerImage match {
       case DockerImage(Left(imageFromDockerfile)) => new JavaGenericContainer(imageFromDockerfile)
@@ -34,6 +40,16 @@ class GenericContainer(
     }
     classpathResourceMapping.foreach(Function.tupled(underlying.withClasspathResourceMapping))
     waitStrategy.foreach(underlying.waitingFor)
+
+    if (labels.nonEmpty) {
+      underlying.withLabels(labels.asJava)
+    }
+
+    if (tmpFsMapping.nonEmpty) {
+      underlying.withTmpFs(tmpFsMapping.asJava)
+    }
+
+    imagePullPolicy.foreach(underlying.withImagePullPolicy)
 
     underlying
   })
@@ -57,8 +73,11 @@ object GenericContainer {
             env: Map[String, String] = Map(),
             command: Seq[String] = Seq(),
             classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-            waitStrategy: WaitStrategy = null): GenericContainer =
-    new GenericContainer(dockerImage, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy))
+            waitStrategy: WaitStrategy = null,
+            labels: Map[String, String] = Map.empty,
+            tmpFsMapping: Map[String, String] = Map.empty,
+            imagePullPolicy: ImagePullPolicy = null): GenericContainer =
+    new GenericContainer(dockerImage, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy), labels, tmpFsMapping)
 
   abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef {
     override type Container = C

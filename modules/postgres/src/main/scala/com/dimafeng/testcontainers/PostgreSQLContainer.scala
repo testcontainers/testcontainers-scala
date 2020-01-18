@@ -2,11 +2,13 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
 
-class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None,
-                          databaseName: Option[String] = None,
-                          pgUsername: Option[String] = None,
-                          pgPassword: Option[String] = None,
-                          mountPostgresDataToTmpfs: Boolean = false) extends SingleContainer[JavaPostgreSQLContainer[_]] {
+class PostgreSQLContainer(
+  dockerImageNameOverride: Option[String] = None,
+  databaseName: Option[String] = None,
+  pgUsername: Option[String] = None,
+  pgPassword: Option[String] = None,
+  mountPostgresDataToTmpfs: Boolean = false
+) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
 
@@ -29,14 +31,6 @@ class PostgreSQLContainer(dockerImageNameOverride: Option[String] = None,
     tmpfsMount.put("/var/lib/postgresql/data", "rw")
     container.withTmpFs(tmpfsMount)
   }
-
-  def driverClassName: String = container.getDriverClassName
-
-  def jdbcUrl: String = container.getJdbcUrl
-
-  def username: String = container.getUsername
-
-  def password: String = container.getPassword
 
   def testQueryString: String = container.getTestQueryString
 }

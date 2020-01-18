@@ -104,6 +104,25 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-kafka` — module with the Kafka container.
 * `testcontainers-scala-vault` — module with the Vault container.
 * `testcontainers-scala-oracle-xe` — module with the Oracle container.
+* `testcontainers-scala-neo4j` — module with the Neo4J server container.
+* `testcontainers-scala-mssqlserver` — module with the MsSQL server container.
+* `testcontainers-scala-clickhouse` — module with the ClickHouse container.
+* `testcontainers-scala-cockroachdb` — module with the CockroachDB container.
+* `testcontainers-scala-couchbase` — module with the Couchbase container.
+* `testcontainers-scala-db2` — module with the DB2 container.
+* `testcontainers-scala-dynalite` — module with the Dynalite container.
+* `testcontainers-scala-elasticsearch` — module with the Elastic search container.
+* `testcontainers-scala-influxdb` — module with the InfluxDB container.
+* `testcontainers-scala-localstack` — module with the Localstack container.
+* `testcontainers-scala-mariadb` — module with the MariaDB container.
+* `testcontainers-scala-mockserver` — module with the MockServer container.
+* `testcontainers-scala-nginx` — module with the Nginx container.
+* `testcontainers-scala-pulsar` — module with the Pulsar container.
+* `testcontainers-scala-rabbitmq` — module with the RabbitMQ container.
+* `testcontainers-scala-toxiproxy` — module with the ToxiProxy container.
+
+Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
+You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).
 
 ## Container types
 
@@ -407,6 +426,47 @@ object NginxContainer {
 If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
 
 ## Release notes
+
+* **0.35.0**
+
+    From this release testcontainers-scala supports all testcontainers-java containers and methods. If you find missing parts — don't hesitate to create an issue!
+    * testcontainers-java updated to 1.12.4.
+    * Added missing containers from the testcontainers-java.  Here is the full list of new containers:
+        * `testcontainers-scala-neo4j`
+        * `testcontainers-scala-mssqlserver`
+        * `testcontainers-scala-clickhouse`
+        * `testcontainers-scala-cockroachdb`
+        * `testcontainers-scala-couchbase`
+        * `testcontainers-scala-db2`
+        * `testcontainers-scala-dynalite`
+        * `testcontainers-scala-elasticsearch`
+        * `testcontainers-scala-influxdb`
+        * `testcontainers-scala-localstack`
+        * `testcontainers-scala-mariadb`
+        * `testcontainers-scala-mockserver`
+        * `testcontainers-scala-nginx`
+        * `testcontainers-scala-pulsar`
+        * `testcontainers-scala-rabbitmq`
+        * `testcontainers-scala-toxiproxy  `
+    * Added missing methods to the `SingleContainer`:
+        * `envMap`
+        * `boundPortNumbers`
+        * `copyToFileContainerPathMap`
+        * `labels`
+        * `shmSize`
+        * `testHostIpAddress`
+        * `tmpFsMapping`
+        * `logs`
+        * `livenessCheckPortNumbers`
+    * Added missing parameters to the `GenericContainer` constructor:
+        * `labels`
+        * `tmpFsMapping`
+        * `imagePullPolicy`
+    * Added missing methods to the `CassandraContainer`:
+        * `cluster`
+        * `username`
+        * `password`
+
 
 * **0.34.3**
     * Support of the new API in the `DockerComposeContainer`: added `DockerComposeContainer.Def`.
