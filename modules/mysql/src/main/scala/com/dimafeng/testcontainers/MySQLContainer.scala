@@ -7,7 +7,7 @@ class MySQLContainer(configurationOverride: Option[String] = None,
                      databaseName: Option[String] = None,
                      mysqlUsername: Option[String] = None,
                      mysqlPassword: Option[String] = None)
-  extends SingleContainer[JavaMySQLContainer[_]] {
+  extends SingleContainer[JavaMySQLContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMySQLContainer[_] = mysqlImageVersion
     .map(new JavaMySQLContainer(_))
@@ -19,15 +19,7 @@ class MySQLContainer(configurationOverride: Option[String] = None,
 
   configurationOverride.foreach(container.withConfigurationOverride)
 
-  def driverClassName: String = container.getDriverClassName
-
-  def jdbcUrl: String = container.getJdbcUrl
-
-  def password: String = container.getPassword
-
   def testQueryString: String = container.getTestQueryString
-
-  def username: String = container.getUsername
 
 }
 

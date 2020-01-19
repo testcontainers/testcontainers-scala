@@ -12,6 +12,7 @@ import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => JavaGenericContainer}
 import org.testcontainers.lifecycle.Startable
+import org.testcontainers.utility.MountableFile
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
@@ -57,6 +58,8 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def env: Seq[String] = container.getEnv.asScala.toSeq
 
+  def envMap: Map[String, String] = container.getEnvMap.asScala.toMap
+
   def exposedPorts: Seq[Int] = container.getExposedPorts.asScala.toSeq.map(_.intValue())
 
   def extraHosts: Seq[String] = container.getExtraHosts.asScala.toSeq
@@ -75,6 +78,8 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
   def mappedPort(port: Int): Int = container.getMappedPort(port)
 
   def portBindings: Seq[String] = container.getPortBindings.asScala.toSeq
+
+  def boundPortNumbers: Seq[Int] = container.getBoundPortNumbers.asScala.toSeq.map(_.intValue())
 
   def networkMode: String = container.getNetworkMode
 
@@ -99,6 +104,25 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
   def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala.toSeq
 
   def createContainerCmdModifiers: Set[Consumer[CreateContainerCmd]] = container.getCreateContainerCmdModifiers.asScala.toSet
+
+  def copyToFileContainerPathMap: Map[MountableFile, String] = container.getCopyToFileContainerPathMap.asScala.toMap
+
+  def labels: Map[String, String] = container.getLabels.asScala.toMap
+
+  def shmSize: Long = container.getShmSize
+
+  def testHostIpAddress: String = container.getTestHostIpAddress
+
+  def tmpFsMapping: Map[String, String] = container.getTmpFsMapping.asScala.toMap
+
+  def logs: String = container.getLogs
+
+  def logs(outputType: OutputFrame.OutputType, outputTypes: OutputFrame.OutputType*): String =
+    container.getLogs((outputType +: outputTypes): _*)
+
+  def livenessCheckPortNumbers: Set[Int] = container.getLivenessCheckPortNumbers.asScala.toSet.map { x: java.lang.Integer =>
+    x.intValue()
+  }
 
   def configure(configProvider: T => Unit): this.type = {
     configProvider(container)

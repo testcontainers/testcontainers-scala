@@ -49,6 +49,7 @@ lazy val root = (project in file("."))
     core,
     scalatest,
     scalatestSelenium,
+    jdbc,
     moduleMysql,
     moduleNeo4j,
     modulePostgres,
@@ -56,6 +57,21 @@ lazy val root = (project in file("."))
     moduleCassandra,
     moduleKafka,
     moduleVault,
+    moduleMssqlserver,
+    moduleClickhouse,
+    moduleCockroachdb,
+    moduleCouchbase,
+    moduleDb2,
+    moduleDynalite,
+    moduleElasticsearch,
+    moduleInfluxdb,
+    moduleLocalstack,
+    moduleMariadb,
+    moduleMockserver,
+    moduleNginx,
+    modulePulsar,
+    moduleRabbitmq,
+    moduleToxiproxy,
     allOld
   )
   .settings(noPublishSettings)
@@ -189,8 +205,16 @@ lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium
     libraryDependencies ++= Dependencies.scalatestSelenium.value
   )
 
-lazy val moduleMysql = (project in file("modules/mysql"))
+lazy val jdbc = (project in file("modules/jdbc"))
   .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-jdbc",
+    libraryDependencies ++= Dependencies.jdbc.value
+  )
+
+lazy val moduleMysql = (project in file("modules/mysql"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mysql",
@@ -206,7 +230,7 @@ lazy val moduleNeo4j = (project in file("modules/neo4j"))
   )
 
 lazy val modulePostgres = (project in file("modules/postgres"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-postgresql",
@@ -214,7 +238,7 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   )
 
 lazy val moduleOracle = (project in file("modules/oracle"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-oracle-xe",
@@ -243,6 +267,126 @@ lazy val moduleVault = (project in file("modules/vault"))
   .settings(
     name := "testcontainers-scala-vault",
     libraryDependencies ++= Dependencies.moduleVault.value
+  )
+
+lazy val moduleMssqlserver = (project in file("modules/mssqlserver"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-mssqlserver",
+    libraryDependencies ++= Dependencies.moduleMssqlserver.value
+  )
+
+lazy val moduleClickhouse = (project in file("modules/clickhouse"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-clickhouse",
+    libraryDependencies ++= Dependencies.moduleClickhouse.value
+  )
+
+lazy val moduleCockroachdb = (project in file("modules/cockroachdb"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-cockroachdb",
+    libraryDependencies ++= Dependencies.moduleCockroachdb.value
+  )
+
+lazy val moduleCouchbase = (project in file("modules/couchbase"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-couchbase",
+    libraryDependencies ++= Dependencies.moduleCouchbase.value
+  )
+
+lazy val moduleDb2 = (project in file("modules/db2"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-db2",
+    libraryDependencies ++= Dependencies.moduleDb2.value
+  )
+
+lazy val moduleDynalite = (project in file("modules/dynalite"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-dynalite",
+    libraryDependencies ++= Dependencies.moduleDynalite.value
+  )
+
+lazy val moduleElasticsearch = (project in file("modules/elasticsearch"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-elasticsearch",
+    libraryDependencies ++= Dependencies.moduleElasticsearch.value
+  )
+
+lazy val moduleInfluxdb = (project in file("modules/influxdb"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-influxdb",
+    libraryDependencies ++= Dependencies.moduleInfluxdb.value
+  )
+
+lazy val moduleLocalstack = (project in file("modules/localstack"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-localstack",
+    libraryDependencies ++= Dependencies.moduleLocalstack.value
+  )
+
+lazy val moduleMariadb = (project in file("modules/mariadb"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-mariadb",
+    libraryDependencies ++= Dependencies.moduleMariadb.value
+  )
+
+lazy val moduleMockserver = (project in file("modules/mockserver"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-mockserver",
+    libraryDependencies ++= Dependencies.moduleMockserver.value
+  )
+
+lazy val moduleNginx = (project in file("modules/nginx"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-nginx",
+    libraryDependencies ++= Dependencies.moduleNginx.value
+  )
+
+lazy val modulePulsar = (project in file("modules/pulsar"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-pulsar",
+    libraryDependencies ++= Dependencies.modulePulsar.value
+  )
+
+lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-rabbitmq",
+    libraryDependencies ++= Dependencies.moduleRabbitmq.value
+  )
+
+lazy val moduleToxiproxy = (project in file("modules/toxiproxy"))
+  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-toxiproxy",
+    libraryDependencies ++= Dependencies.moduleToxiproxy.value
   )
 
 lazy val microsite = (project in file("docs"))

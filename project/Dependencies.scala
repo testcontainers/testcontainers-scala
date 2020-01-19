@@ -11,7 +11,7 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.12.3"
+  private val testcontainersVersion = "1.12.4"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.0.8"
@@ -23,6 +23,7 @@ object Dependencies {
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "2.27.0"
   private val restAssuredVersion = "4.0.0"
+  private val awsVersion = "1.11.479"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -54,6 +55,12 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion
+    )
+  )
+
+  val jdbc = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "jdbc" % testcontainersVersion
     )
   )
 
@@ -109,6 +116,102 @@ object Dependencies {
       "org.testcontainers" % "vault" % testcontainersVersion
     ) ++ TEST(
       "io.rest-assured" % "scala-support" % restAssuredVersion
+    )
+  )
+
+  val moduleMssqlserver = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "mssqlserver" % testcontainersVersion
+    )
+  )
+
+  val moduleClickhouse = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "clickhouse" % testcontainersVersion
+    )
+  )
+
+  val moduleCockroachdb = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "cockroachdb" % testcontainersVersion
+    )
+  )
+
+  val moduleCouchbase = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "couchbase" % testcontainersVersion
+    )
+  )
+
+  val moduleDb2 = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "db2" % testcontainersVersion
+    )
+  )
+
+  val moduleDynalite = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "dynalite" % testcontainersVersion
+    ) ++ PROVIDED(
+      "com.amazonaws" % "aws-java-sdk-dynamodb" % awsVersion
+    )
+  )
+
+  val moduleElasticsearch = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "elasticsearch" % testcontainersVersion
+    )
+  )
+
+  val moduleInfluxdb = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "influxdb" % testcontainersVersion
+    ) ++ PROVIDED(
+      "org.influxdb" % "influxdb-java" % "2.17"
+    )
+  )
+
+  val moduleLocalstack = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "localstack" % testcontainersVersion
+    ) ++ PROVIDED(
+      "com.amazonaws" % "aws-java-sdk-s3" % awsVersion
+    )
+  )
+
+  val moduleMariadb = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "mariadb" % testcontainersVersion
+    )
+  )
+
+  val moduleMockserver = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "mockserver" % testcontainersVersion
+    )
+  )
+
+  val moduleNginx = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "nginx" % testcontainersVersion
+    )
+  )
+
+  val modulePulsar = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "pulsar" % testcontainersVersion
+    )
+  )
+
+  val moduleRabbitmq = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "rabbitmq" % testcontainersVersion
+    )
+  )
+
+  val moduleToxiproxy = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "toxiproxy" % testcontainersVersion
     )
   )
 }
