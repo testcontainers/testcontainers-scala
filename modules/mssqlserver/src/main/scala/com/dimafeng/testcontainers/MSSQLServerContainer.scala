@@ -2,9 +2,9 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MSSQLServerContainer => JavaMSSQLServerContainer}
 
-class MSSQLServerContainer(
+case class MSSQLServerContainer(
   dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
-  dbPassword: String = MSSQLServerContainer.defaultPassword,
+  dbPassword: String = MSSQLServerContainer.defaultPassword
 ) extends SingleContainer[JavaMSSQLServerContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMSSQLServerContainer[_] = {
@@ -23,7 +23,7 @@ object MSSQLServerContainer {
 
   case class Def(
     dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
-    password: String = MSSQLServerContainer.defaultPassword,
+    password: String = MSSQLServerContainer.defaultPassword
   ) extends ContainerDef {
 
     override type Container = MSSQLServerContainer

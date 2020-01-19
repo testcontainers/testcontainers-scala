@@ -2,16 +2,16 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{Db2Container => JavaDb2Container}
 
-class Db2Container(
+case class Db2Container(
   dockerImageName: String = Db2Container.defaultDockerImageName,
-  databaseName: String = Db2Container.defaultDatabaseName,
+  dbName: String = Db2Container.defaultDatabaseName,
   dbUsername: String = Db2Container.defaultUsername,
   dbPassword: String = Db2Container.defaultPassword
 ) extends SingleContainer[JavaDb2Container] with JdbcDatabaseContainer {
 
   override val container: JavaDb2Container = {
     val c = new JavaDb2Container(dockerImageName)
-    c.withDatabaseName(databaseName)
+    c.withDatabaseName(dbName)
     c.withUsername(username)
     c.withPassword(password)
     c.acceptLicense()
@@ -28,7 +28,7 @@ object Db2Container {
 
   case class Def(
     dockerImageName: String = Db2Container.defaultDockerImageName,
-    databaseName: String = Db2Container.defaultDatabaseName,
+    dbName: String = Db2Container.defaultDatabaseName,
     dbUsername: String = Db2Container.defaultUsername,
     dbPassword: String = Db2Container.defaultPassword
   ) extends ContainerDef {
@@ -38,7 +38,7 @@ object Db2Container {
     override def createContainer(): Db2Container = {
       new Db2Container(
         dockerImageName,
-        databaseName,
+        dbName,
         dbUsername,
         dbPassword
       )

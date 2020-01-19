@@ -4,7 +4,7 @@ import com.amazonaws.auth.AWSCredentialsProvider
 import com.amazonaws.client.builder.AwsClientBuilder
 import org.testcontainers.containers.localstack.{LocalStackContainer => JavaLocalStackContainer}
 
-class LocalStackContainer(
+case class LocalStackContainer(
   tag: String = LocalStackContainer.defaultTag,
   services: Seq[LocalStackContainer.Service] = Seq.empty
 ) extends SingleContainer[JavaLocalStackContainer] {

@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import org.influxdb.InfluxDB
 import org.testcontainers.containers.{InfluxDBContainer => JavaInfluxDBContainer}
 
-class InfluxDBContainer(
+case class InfluxDBContainer(
   tag: String = InfluxDBContainer.defaultTag,
   database: String = InfluxDBContainer.defaultDatabase,
   admin: String = InfluxDBContainer.defaultAdmin,

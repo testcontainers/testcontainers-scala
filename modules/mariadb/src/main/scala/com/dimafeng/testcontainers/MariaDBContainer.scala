@@ -2,11 +2,11 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MariaDBContainer => JavaMariaDBContainer}
 
-class MariaDBContainer(
+case class MariaDBContainer(
   dockerImageName: String = MariaDBContainer.defaultDockerImageName,
-  databaseName: String = MariaDBContainer.defaultDatabaseName,
-  username: String = MariaDBContainer.defaultUsername,
-  password: String = MariaDBContainer.defaultPassword,
+  dbName: String = MariaDBContainer.defaultDatabaseName,
+  dbUsername: String = MariaDBContainer.defaultUsername,
+  dbPassword: String = MariaDBContainer.defaultPassword,
   configurationOverride: Option[String] = None
 ) extends SingleContainer[JavaMariaDBContainer[_]] with JdbcDatabaseContainer {
 
@@ -31,10 +31,10 @@ object MariaDBContainer {
   val defaultPassword = "test"
 
   case class Def(
-    dockerImageName: String = defaultDockerImageName,
-    databaseName: String = defaultDatabaseName,
-    username: String = defaultUsername,
-    password: String = defaultPassword,
+    dockerImageName: String = MariaDBContainer.defaultDockerImageName,
+    dbName: String = MariaDBContainer.defaultDatabaseName,
+    dbUsername: String = MariaDBContainer.defaultUsername,
+    dbPassword: String = MariaDBContainer.defaultPassword,
     configurationOverride: Option[String] = None
   ) extends ContainerDef {
 
@@ -43,9 +43,9 @@ object MariaDBContainer {
     override def createContainer(): MariaDBContainer = {
       new MariaDBContainer(
         dockerImageName,
-        databaseName,
-        username,
-        password,
+        dbName,
+        dbUsername,
+        dbPassword,
         configurationOverride
       )
     }

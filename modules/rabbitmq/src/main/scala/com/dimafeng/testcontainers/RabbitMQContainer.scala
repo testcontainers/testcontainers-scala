@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import org.testcontainers.containers.{RabbitMQContainer => JavaRabbitMQContainer}
 import org.testcontainers.utility.MountableFile
 
-class RabbitMQContainer(
+case class RabbitMQContainer(
   dockerImageName: String = RabbitMQContainer.defaultDockerImageName,
   adminPassword: String = RabbitMQContainer.defaultAdminPassword,
   queues: Seq[RabbitMQContainer.Queue] = Seq.empty,
@@ -20,7 +20,7 @@ class RabbitMQContainer(
   ssl: Option[RabbitMQContainer.SslConfig] = None,
   rabbitMqConfig: Option[MountableFile] = None,
   rabbitMqConfigErlang: Option[MountableFile] = None,
-  rabbitMqConfigSysctl: Option[MountableFile] = None,
+  rabbitMqConfigSysctl: Option[MountableFile] = None
 ) extends SingleContainer[JavaRabbitMQContainer] {
 
   import scala.collection.JavaConverters._

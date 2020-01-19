@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import com.couchbase.client.java.cluster.{BucketSettings, UserSettings}
 import org.testcontainers.couchbase.{CouchbaseContainer => JavaCouchbaseContainer}
 
-class CouchbaseContainer(
+case class CouchbaseContainer(
   dockerImageName: String = CouchbaseContainer.defaultDockerImageName,
   buckets: Seq[CouchbaseContainer.Bucket] = Seq.empty,
   clusterUsername: String = CouchbaseContainer.defaultUsername,
@@ -14,7 +14,7 @@ class CouchbaseContainer(
   query: Boolean = CouchbaseContainer.defaultQuery,
   index: Boolean = CouchbaseContainer.defaultIndex,
   primaryIndex: Boolean = CouchbaseContainer.defaultPrimaryIndex,
-  fts: Boolean = CouchbaseContainer.defaultFts,
+  fts: Boolean = CouchbaseContainer.defaultFts
 ) extends SingleContainer[JavaCouchbaseContainer] {
 
   import CouchbaseContainer._
@@ -73,7 +73,7 @@ object CouchbaseContainer {
     query: Boolean = CouchbaseContainer.defaultQuery,
     index: Boolean = CouchbaseContainer.defaultIndex,
     primaryIndex: Boolean = CouchbaseContainer.defaultPrimaryIndex,
-    fts: Boolean = CouchbaseContainer.defaultFts,
+    fts: Boolean = CouchbaseContainer.defaultFts
   ) extends ContainerDef {
 
     override type Container = CouchbaseContainer
@@ -90,7 +90,7 @@ object CouchbaseContainer {
         query,
         index,
         primaryIndex,
-        fts,
+        fts
       )
     }
   }

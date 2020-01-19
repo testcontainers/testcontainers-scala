@@ -2,9 +2,9 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{ClickHouseContainer => JavaClickHouseContainer}
 
-class ClickHouseContainer(
+case class ClickHouseContainer(
   dockerImageName: String = ClickHouseContainer.defaultDockerImageName,
-  dbPassword: String = ClickHouseContainer.defaultPassword,
+  dbPassword: String = ClickHouseContainer.defaultPassword
 ) extends SingleContainer[JavaClickHouseContainer] with JdbcDatabaseContainer {
 
   override val container: JavaClickHouseContainer = {
@@ -23,7 +23,7 @@ object ClickHouseContainer {
 
   case class Def(
     dockerImageName: String = ClickHouseContainer.defaultDockerImageName,
-    password: String = ClickHouseContainer.defaultPassword,
+    password: String = ClickHouseContainer.defaultPassword
   ) extends ContainerDef {
 
     override type Container = ClickHouseContainer

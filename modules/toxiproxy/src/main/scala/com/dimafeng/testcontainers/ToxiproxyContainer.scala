@@ -2,8 +2,8 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{ToxiproxyContainer => JavaToxiproxyContainer}
 
-class ToxiproxyContainer(
-  dockerImageName: String = ToxiproxyContainer.defaultDockerImageName,
+case class ToxiproxyContainer(
+  dockerImageName: String = ToxiproxyContainer.defaultDockerImageName
 ) extends SingleContainer[JavaToxiproxyContainer] {
 
   import ToxiproxyContainer._
@@ -22,7 +22,7 @@ object ToxiproxyContainer {
   type ContainerProxy = JavaToxiproxyContainer.ContainerProxy
 
   case class Def(
-    dockerImageName: String = ToxiproxyContainer.defaultDockerImageName,
+    dockerImageName: String = ToxiproxyContainer.defaultDockerImageName
   ) extends ContainerDef {
 
     override type Container = ToxiproxyContainer

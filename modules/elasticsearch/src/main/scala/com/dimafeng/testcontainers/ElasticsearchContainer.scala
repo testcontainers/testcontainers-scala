@@ -4,8 +4,8 @@ import java.net.InetSocketAddress
 
 import org.testcontainers.elasticsearch.{ElasticsearchContainer => JavaElasticsearchContainer}
 
-class ElasticsearchContainer(
-  dockerImageName: String = ElasticsearchContainer.defaultDockerImageName,
+case class ElasticsearchContainer(
+  dockerImageName: String = ElasticsearchContainer.defaultDockerImageName
 ) extends SingleContainer[JavaElasticsearchContainer] {
 
   override val container: JavaElasticsearchContainer = new JavaElasticsearchContainer(dockerImageName)
@@ -22,14 +22,14 @@ object ElasticsearchContainer {
   val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
   case class Def(
-    dockerImageName: String = ElasticsearchContainer.defaultDockerImageName,
+    dockerImageName: String = ElasticsearchContainer.defaultDockerImageName
   ) extends ContainerDef {
 
     override type Container = ElasticsearchContainer
 
     override def createContainer(): ElasticsearchContainer = {
       new ElasticsearchContainer(
-        dockerImageName,
+        dockerImageName
       )
     }
   }

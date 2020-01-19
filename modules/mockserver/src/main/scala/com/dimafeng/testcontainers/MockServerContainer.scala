@@ -2,8 +2,8 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MockServerContainer => JavaMockServerContainer}
 
-class MockServerContainer(
-  version: String = MockServerContainer.defaultVersion,
+case class MockServerContainer(
+  version: String = MockServerContainer.defaultVersion
 ) extends SingleContainer[JavaMockServerContainer] {
 
   override val container: JavaMockServerContainer = new JavaMockServerContainer(version)
@@ -18,7 +18,7 @@ object MockServerContainer {
   val defaultVersion = JavaMockServerContainer.VERSION
 
   case class Def(
-    version: String = MockServerContainer.defaultVersion,
+    version: String = MockServerContainer.defaultVersion
   ) extends ContainerDef {
 
     override type Container = MockServerContainer

@@ -2,8 +2,8 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{CockroachContainer => JavaCockroachContainer}
 
-class CockroachContainer(
-  dockerImageName: String = CockroachContainer.defaultDockerImageName,
+case class CockroachContainer(
+  dockerImageName: String = CockroachContainer.defaultDockerImageName
 ) extends SingleContainer[JavaCockroachContainer] with JdbcDatabaseContainer {
 
   override val container: JavaCockroachContainer = new JavaCockroachContainer(dockerImageName)
@@ -16,14 +16,14 @@ object CockroachContainer {
   val defaultDockerImageName = s"${JavaCockroachContainer.IMAGE}:${JavaCockroachContainer.IMAGE_TAG}"
 
   case class Def(
-    dockerImageName: String = CockroachContainer.defaultDockerImageName,
+    dockerImageName: String = CockroachContainer.defaultDockerImageName
   ) extends ContainerDef {
 
     override type Container = CockroachContainer
 
     override def createContainer(): CockroachContainer = {
       new CockroachContainer(
-        dockerImageName = dockerImageName,
+        dockerImageName = dockerImageName
       )
     }
   }

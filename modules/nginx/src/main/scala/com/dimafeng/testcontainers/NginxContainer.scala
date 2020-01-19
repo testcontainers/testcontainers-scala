@@ -4,8 +4,8 @@ import java.net.URL
 
 import org.testcontainers.containers.{NginxContainer => JavaNginxContainer}
 
-class NginxContainer(
-  customContent: Option[String] = None,
+case class NginxContainer(
+  customContent: Option[String] = None
 ) extends SingleContainer[JavaNginxContainer[_]] {
 
   override val container: JavaNginxContainer[_] = {

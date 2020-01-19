@@ -2,8 +2,8 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PulsarContainer => JavaPulsarContainer}
 
-class PulsarContainer(
-  tag: String = PulsarContainer.defaultTag,
+case class PulsarContainer(
+  tag: String = PulsarContainer.defaultTag
 ) extends SingleContainer[JavaPulsarContainer] {
 
   override val container: JavaPulsarContainer = new JavaPulsarContainer(tag)
@@ -18,7 +18,7 @@ object PulsarContainer {
   val defaultTag = "2.2.0"
 
   case class Def(
-    tag: String = PulsarContainer.defaultTag,
+    tag: String = PulsarContainer.defaultTag
   ) extends ContainerDef {
 
     override type Container = PulsarContainer
