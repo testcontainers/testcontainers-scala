@@ -12,9 +12,9 @@ case class MariaDBContainer(
 
   override val container: JavaMariaDBContainer[_] = {
     val c = new JavaMariaDBContainer(dockerImageName)
-    c.withDatabaseName(databaseName)
-    c.withUsername(username)
-    c.withPassword(password)
+    c.withDatabaseName(dbName)
+    c.withUsername(dbUsername)
+    c.withPassword(dbPassword)
     configurationOverride.foreach(c.withConfigurationOverride)
     c
   }
