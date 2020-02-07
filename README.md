@@ -427,6 +427,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.35.1**
+    * MariaDB NPE fix #106
+
 * **0.35.0**
 
     From this release testcontainers-scala supports all testcontainers-java containers and methods. If you find missing parts — don't hesitate to create an issue!
