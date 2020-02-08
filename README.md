@@ -427,6 +427,13 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.35.2**
+    * testcontainers-java updated to 1.12.5.
+    * Added methods to the `SingleContainer`:
+        * `execInContainer`
+        * `copyFileToContainer`
+        * `copyFileFromContainer`
+
 * **0.35.1**
     * MariaDB NPE fix #106
 

@@ -1,5 +1,7 @@
 package com.dimafeng.testcontainers
 
+import java.io.InputStream
+import java.nio.charset.Charset
 import java.util.function.Consumer
 
 import com.dimafeng.testcontainers.lifecycle.Stoppable
@@ -10,9 +12,10 @@ import org.junit.runner.Description
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => JavaGenericContainer}
+import org.testcontainers.containers.{Container, FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => JavaGenericContainer}
+import org.testcontainers.images.builder.Transferable
 import org.testcontainers.lifecycle.Startable
-import org.testcontainers.utility.MountableFile
+import org.testcontainers.utility.{MountableFile, ThrowingFunction}
 
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
@@ -122,6 +125,32 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def livenessCheckPortNumbers: Set[Int] = container.getLivenessCheckPortNumbers.asScala.toSet.map { x: java.lang.Integer =>
     x.intValue()
+  }
+
+  def execInContainer(commands: String*): Container.ExecResult = {
+    container.execInContainer(commands: _*)
+  }
+
+  def execInContainer(outputCharset: Charset, commands: String*): Container.ExecResult = {
+    container.execInContainer(outputCharset, commands: _*)
+  }
+
+  def copyFileToContainer(mountableFile: MountableFile, containerPath: String): Unit = {
+    container.copyFileToContainer(mountableFile, containerPath)
+  }
+
+  def copyFileToContainer(transferable: Transferable, containerPath: String): Unit = {
+    container.copyFileToContainer(transferable, containerPath)
+  }
+
+  def copyFileFromContainer(containerPath: String, destinationPath: String): Unit = {
+    container.copyFileFromContainer(containerPath, destinationPath)
+  }
+
+  def copyFileFromContainer[T](containerPath: String, f: InputStream => T): T = {
+    container.copyFileFromContainer(containerPath, new ThrowingFunction[InputStream, T] {
+      override def apply(inputStream: InputStream): T = f(inputStream)
+    })
   }
 
   def configure(configProvider: T => Unit): this.type = {
