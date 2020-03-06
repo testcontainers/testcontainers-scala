@@ -427,6 +427,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.35.3**
+    * Removed `dbPassword` parameter from the `ClickHouseContainer`. Looks like this parameter was added accidentally (java container doesn't support it).
+
 * **0.35.2**
     * testcontainers-java updated to 1.12.5.
     * Added methods to the `SingleContainer`:
