@@ -72,6 +72,8 @@ lazy val root = (project in file("."))
     modulePulsar,
     moduleRabbitmq,
     moduleToxiproxy,
+    moduleOrientdb,
+    modulePresto,
     allOld
   )
   .settings(noPublishSettings)
@@ -206,7 +208,7 @@ lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium
   )
 
 lazy val jdbc = (project in file("modules/jdbc"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-jdbc",
@@ -214,7 +216,7 @@ lazy val jdbc = (project in file("modules/jdbc"))
   )
 
 lazy val moduleMysql = (project in file("modules/mysql"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mysql",
@@ -222,7 +224,7 @@ lazy val moduleMysql = (project in file("modules/mysql"))
   )
 
 lazy val moduleNeo4j = (project in file("modules/neo4j"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-neo4j",
@@ -230,7 +232,7 @@ lazy val moduleNeo4j = (project in file("modules/neo4j"))
   )
 
 lazy val modulePostgres = (project in file("modules/postgres"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-postgresql",
@@ -238,7 +240,7 @@ lazy val modulePostgres = (project in file("modules/postgres"))
   )
 
 lazy val moduleOracle = (project in file("modules/oracle"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-oracle-xe",
@@ -246,7 +248,7 @@ lazy val moduleOracle = (project in file("modules/oracle"))
   )
 
 lazy val moduleCassandra = (project in file("modules/cassandra"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-cassandra",
@@ -254,7 +256,7 @@ lazy val moduleCassandra = (project in file("modules/cassandra"))
   )
 
 lazy val moduleKafka = (project in file("modules/kafka"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-kafka",
@@ -262,7 +264,7 @@ lazy val moduleKafka = (project in file("modules/kafka"))
   )
 
 lazy val moduleVault = (project in file("modules/vault"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-vault",
@@ -270,7 +272,7 @@ lazy val moduleVault = (project in file("modules/vault"))
   )
 
 lazy val moduleMssqlserver = (project in file("modules/mssqlserver"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mssqlserver",
@@ -278,7 +280,7 @@ lazy val moduleMssqlserver = (project in file("modules/mssqlserver"))
   )
 
 lazy val moduleClickhouse = (project in file("modules/clickhouse"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(scalatest % "test->test", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-clickhouse",
@@ -286,7 +288,7 @@ lazy val moduleClickhouse = (project in file("modules/clickhouse"))
   )
 
 lazy val moduleCockroachdb = (project in file("modules/cockroachdb"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-cockroachdb",
@@ -294,7 +296,7 @@ lazy val moduleCockroachdb = (project in file("modules/cockroachdb"))
   )
 
 lazy val moduleCouchbase = (project in file("modules/couchbase"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-couchbase",
@@ -302,7 +304,7 @@ lazy val moduleCouchbase = (project in file("modules/couchbase"))
   )
 
 lazy val moduleDb2 = (project in file("modules/db2"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-db2",
@@ -310,7 +312,7 @@ lazy val moduleDb2 = (project in file("modules/db2"))
   )
 
 lazy val moduleDynalite = (project in file("modules/dynalite"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-dynalite",
@@ -318,7 +320,7 @@ lazy val moduleDynalite = (project in file("modules/dynalite"))
   )
 
 lazy val moduleElasticsearch = (project in file("modules/elasticsearch"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-elasticsearch",
@@ -326,7 +328,7 @@ lazy val moduleElasticsearch = (project in file("modules/elasticsearch"))
   )
 
 lazy val moduleInfluxdb = (project in file("modules/influxdb"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-influxdb",
@@ -334,7 +336,7 @@ lazy val moduleInfluxdb = (project in file("modules/influxdb"))
   )
 
 lazy val moduleLocalstack = (project in file("modules/localstack"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-localstack",
@@ -342,7 +344,7 @@ lazy val moduleLocalstack = (project in file("modules/localstack"))
   )
 
 lazy val moduleMariadb = (project in file("modules/mariadb"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mariadb",
@@ -350,7 +352,7 @@ lazy val moduleMariadb = (project in file("modules/mariadb"))
   )
 
 lazy val moduleMockserver = (project in file("modules/mockserver"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mockserver",
@@ -358,7 +360,7 @@ lazy val moduleMockserver = (project in file("modules/mockserver"))
   )
 
 lazy val moduleNginx = (project in file("modules/nginx"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-nginx",
@@ -366,7 +368,7 @@ lazy val moduleNginx = (project in file("modules/nginx"))
   )
 
 lazy val modulePulsar = (project in file("modules/pulsar"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-pulsar",
@@ -374,7 +376,7 @@ lazy val modulePulsar = (project in file("modules/pulsar"))
   )
 
 lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-rabbitmq",
@@ -382,11 +384,27 @@ lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
   )
 
 lazy val moduleToxiproxy = (project in file("modules/toxiproxy"))
-  .dependsOn(scalatest % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-toxiproxy",
     libraryDependencies ++= Dependencies.moduleToxiproxy.value
+  )
+
+lazy val moduleOrientdb = (project in file("modules/orientdb"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-orientdb",
+    libraryDependencies ++= Dependencies.moduleOrientdb.value
+  )
+
+lazy val modulePresto = (project in file("modules/presto"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-presto",
+    libraryDependencies ++= Dependencies.modulePresto.value
   )
 
 lazy val microsite = (project in file("docs"))

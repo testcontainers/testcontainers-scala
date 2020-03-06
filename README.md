@@ -120,6 +120,8 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-pulsar` — module with the Pulsar container.
 * `testcontainers-scala-rabbitmq` — module with the RabbitMQ container.
 * `testcontainers-scala-toxiproxy` — module with the ToxiProxy container.
+* `testcontainers-scala-orientdb` — module with the OrientDB container.
+* `testcontainers-scala-presto` — module with the Presto container.
 
 Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
 You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).
@@ -427,7 +429,12 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
-* **0.35.3**
+* **0.36.0**
+    * testcontainers-java updated to 1.13.0:
+        * Added `OrientDBContainer`.
+        * Added `PrestoContainer`.
+        * Added `DockerComposeContainer.getContainerByServiceName` method.
+    * Change module dependencies for container modules. They now depend on the core module instead of scalatest module.
     * Removed `dbPassword` parameter from the `ClickHouseContainer`. Looks like this parameter was added accidentally (java container doesn't support it).
 
 * **0.35.2**
