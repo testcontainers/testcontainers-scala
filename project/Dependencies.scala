@@ -128,6 +128,8 @@ object Dependencies {
   val moduleClickhouse = Def.setting(
     COMPILE(
       "org.testcontainers" % "clickhouse" % testcontainersVersion
+    ) ++ TEST(
+      "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.2.4",
     )
   )
 

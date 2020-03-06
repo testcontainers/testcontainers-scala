@@ -3,15 +3,10 @@ package com.dimafeng.testcontainers
 import org.testcontainers.containers.{ClickHouseContainer => JavaClickHouseContainer}
 
 case class ClickHouseContainer(
-  dockerImageName: String = ClickHouseContainer.defaultDockerImageName,
-  dbPassword: String = ClickHouseContainer.defaultPassword
+  dockerImageName: String = ClickHouseContainer.defaultDockerImageName
 ) extends SingleContainer[JavaClickHouseContainer] with JdbcDatabaseContainer {
 
-  override val container: JavaClickHouseContainer = {
-    val c = new JavaClickHouseContainer(dockerImageName)
-    c.withPassword(dbPassword)
-    c
-  }
+  override val container: JavaClickHouseContainer = new JavaClickHouseContainer(dockerImageName)
 
   def testQueryString: String = container.getTestQueryString
 }
@@ -19,19 +14,16 @@ case class ClickHouseContainer(
 object ClickHouseContainer {
 
   val defaultDockerImageName = s"${JavaClickHouseContainer.IMAGE}:${JavaClickHouseContainer.DEFAULT_TAG}"
-  val defaultPassword = ""
 
   case class Def(
-    dockerImageName: String = ClickHouseContainer.defaultDockerImageName,
-    password: String = ClickHouseContainer.defaultPassword
+    dockerImageName: String = ClickHouseContainer.defaultDockerImageName
   ) extends ContainerDef {
 
     override type Container = ClickHouseContainer
 
     override def createContainer(): ClickHouseContainer = {
       new ClickHouseContainer(
-        dockerImageName = dockerImageName,
-        dbPassword = password
+        dockerImageName = dockerImageName
       )
     }
   }
