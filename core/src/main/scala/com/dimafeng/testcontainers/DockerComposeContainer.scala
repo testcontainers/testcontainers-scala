@@ -7,7 +7,7 @@ import java.util.function.Consumer
 import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
-import org.testcontainers.containers.{DockerComposeContainer => JavaDockerComposeContainer}
+import org.testcontainers.containers.{ContainerState, DockerComposeContainer => JavaDockerComposeContainer}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
@@ -137,6 +137,11 @@ class DockerComposeContainer(composeFiles: ComposeFile,
   def getServiceHost(serviceName: String, servicePort: Int): String = container.getServiceHost(serviceName, servicePort)
 
   def getServicePort(serviceName: String, servicePort: Int): Int = container.getServicePort(serviceName, servicePort)
+
+  def getContainerByServiceName(serviceName: String): Option[ContainerState] = {
+    val res = container.getContainerByServiceName(serviceName)
+    if (res.isPresent) Some(res.get()) else None
+  }
 
   override def start(): Unit = container.start()
 
