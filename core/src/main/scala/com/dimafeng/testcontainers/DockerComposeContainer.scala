@@ -26,6 +26,8 @@ final case class ScaledService(name: String, numInstances: Int)
 
 final case class ServiceLogConsumer(serviceName: String, consumer: Consumer[OutputFrame])
 
+final case class WaitingForService(serviceName: String, waitStrategy: WaitStrategy)
+
 object DockerComposeContainer {
   val ID_LENGTH = 6
 
@@ -60,20 +62,31 @@ object DockerComposeContainer {
             localCompose: Boolean = true,
             env: Map[String, String] = Map.empty,
             tailChildContainers: Boolean = false,
-            logConsumers: Seq[ServiceLogConsumer] = Seq.empty): DockerComposeContainer =
-    new DockerComposeContainer(composeFiles, exposedServices, identifier, scaledServices, pull, localCompose, env, tailChildContainers, logConsumers)
+            logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
+            waitingFor: Option[WaitingForService] = None): DockerComposeContainer =
+    new DockerComposeContainer(composeFiles,
+      exposedServices,
+      identifier,
+      scaledServices,
+      pull,
+      localCompose,
+      env,
+      tailChildContainers,
+      logConsumers,
+      waitingFor)
 
   case class Def(
-    composeFiles: ComposeFile,
-    exposedServices: Seq[ExposedService] = Seq.empty,
-    identifier: String = DockerComposeContainer.randomIdentifier,
-    scaledServices: Seq[ScaledService] = Seq.empty,
-    pull: Boolean = true,
-    localCompose: Boolean = true,
-    env: Map[String, String] = Map.empty,
-    tailChildContainers: Boolean = false,
-    logConsumers: Seq[ServiceLogConsumer] = Seq.empty
-  ) extends ContainerDef {
+                  composeFiles: ComposeFile,
+                  exposedServices: Seq[ExposedService] = Seq.empty,
+                  identifier: String = DockerComposeContainer.randomIdentifier,
+                  scaledServices: Seq[ScaledService] = Seq.empty,
+                  pull: Boolean = true,
+                  localCompose: Boolean = true,
+                  env: Map[String, String] = Map.empty,
+                  tailChildContainers: Boolean = false,
+                  logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
+                  waitingFor: Option[WaitingForService] = None
+                ) extends ContainerDef {
 
     override type Container = DockerComposeContainer
 
@@ -87,10 +100,12 @@ object DockerComposeContainer {
         localCompose,
         env,
         tailChildContainers,
-        logConsumers
+        logConsumers,
+        waitingFor
       )
     }
   }
+
 }
 
 class DockerComposeContainer(composeFiles: ComposeFile,
@@ -101,7 +116,8 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              localCompose: Boolean = true,
                              env: Map[String, String] = Map.empty,
                              tailChildContainers: Boolean = false,
-                             logConsumers: Seq[ServiceLogConsumer] = Seq.empty)
+                             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
+                             waitingFor: Option[WaitingForService] = None)
   extends TestContainerProxy[JavaDockerComposeContainer[_]] {
 
   override val container: JavaDockerComposeContainer[_] = {
@@ -121,6 +137,10 @@ class DockerComposeContainer(composeFiles: ComposeFile,
     scaledServices.foreach { service =>
       container.withScaledService(service.name, service.numInstances)
     }
+
+    waitingFor.map(waitingForService =>
+      container.waitingFor(waitingForService.serviceName, waitingForService.waitStrategy)
+    )
 
     container.withPull(pull)
     container.withLocalCompose(localCompose)
