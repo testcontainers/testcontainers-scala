@@ -21,7 +21,7 @@ object Dependencies {
   private val cassandraDriverVersion = "4.0.1"
   private val postgresqlDriverVersion = "9.4.1212"
   private val kafkaDriverVersion = "2.2.0"
-  private val mockitoVersion = "2.27.0"
+  private val mockitoVersion = "3.3.3"
   private val restAssuredVersion = "4.0.0"
   private val awsVersion = "1.11.479"
 
