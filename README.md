@@ -429,6 +429,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.36.1**
+    * Added `.waitingFor()` to `DockerComposeContainer`
+    
 * **0.36.0**
     * testcontainers-java updated to 1.13.0:
         * Added `OrientDBContainer`.
