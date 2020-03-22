@@ -26,7 +26,7 @@ case class RabbitMQContainer(
   import scala.collection.JavaConverters._
 
   override val container: JavaRabbitMQContainer = {
-    val c = new JavaRabbitMQContainer()
+    val c = new JavaRabbitMQContainer(dockerImageName)
 
     c.withAdminPassword(adminPassword)
 
