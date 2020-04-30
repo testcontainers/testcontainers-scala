@@ -97,6 +97,7 @@ Here is the full list of the currently available modules:
   It contains some basic building blocks of the library and no integration with any test frameworks. 
   You probably will not use it directly, because all other modules depend on it.
 * `testcontainers-scala-scalatest` — Scalatest integration module.
+* `testcontainers-scala-munit` — MUnit integration module.
 * `testcontainers-scala-scalatest-selenium` — module to use the Selenium container with the Scalatest.
 * `testcontainers-scala-mysql` — module with the MySQL container.
 * `testcontainers-scala-postgresql` — module with the PostgreSQL container.
