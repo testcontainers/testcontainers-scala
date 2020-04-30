@@ -20,6 +20,10 @@ import munit.Suite
  *     }
  *   }
  * }
+ *
+ * Notes:
+ * - If you override beforeEach() without calling super.beforeEach() your container won't start
+ * - If you override afterEach() without calling super.afterEach() your container won't stop
  * }}}
  */
 trait TestContainerForEach extends TestContainersForEach { self: Suite =>

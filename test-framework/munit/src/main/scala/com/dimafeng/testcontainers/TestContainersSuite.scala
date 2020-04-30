@@ -42,16 +42,20 @@ trait TestContainersSuite { self: Suite =>
   /**
    * To use containers inside your test bodies you need to use `withContainers` function:
    * {{{
-   * it should "test" in withContainers { mysqlContainer =>
-   *   // Inside your test body you can do with your container whatever you want to
-   *   assert(mysqlContainer.jdbcUrl.nonEmpty)
+   * test("test") {
+   *   withContainers { mysqlContainer =>
+   *     // Inside your test body you can do with your container whatever you want to
+   *     assert(mysqlContainer.jdbcUrl.nonEmpty)
+   *   }
    * }
    * }}}
    *
    * `withContainers` also supports multiple containers:
    * {{{
-   * it should "test" in withContainers { case mysqlContainer and pgContainer =>
-   *   // test body
+   * test("test") {
+   *   withContainers { case mysqlContainer and pgContainer =>
+   *     // test body
+   *   }
    * }
    * }}}
    *
