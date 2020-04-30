@@ -47,6 +47,7 @@ lazy val noPublishSettings = Seq(
 lazy val root = (project in file("."))
   .aggregate(
     core,
+    munit,
     scalatest,
     scalatestSelenium,
     jdbc,
@@ -98,6 +99,7 @@ lazy val allOld = (project in file("allOld"))
   .dependsOn(
     core,
     scalatest,
+    munit,
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
@@ -197,6 +199,15 @@ lazy val scalatest = (project in file("test-framework/scalatest"))
   .settings(
     name := "testcontainers-scala-scalatest",
     libraryDependencies ++= Dependencies.scalatest.value
+  )
+
+lazy val munit = (project in file("test-framework/munit"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(testFrameworks += new TestFramework("munit.Framework"))
+  .settings(
+    name := "testcontainers-scala-munit",
+    libraryDependencies ++= Dependencies.munit.value
   )
 
 lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium"))

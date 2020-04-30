@@ -15,6 +15,8 @@ object Dependencies {
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.0.8"
+  private val junitVersion = "4.13"
+  private val munitVersion = "0.7.4"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "19.3.0.0"
@@ -37,7 +39,7 @@ object Dependencies {
     ) ++ PROVIDED(
       "org.slf4j" % "slf4j-simple" % slf4jVersion
     ) ++ TEST(
-      "junit" % "junit" % "4.12",
+      "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.postgresql" % "postgresql" % postgresqlDriverVersion,
@@ -48,6 +50,12 @@ object Dependencies {
   val scalatest = Def.setting(
     PROVIDED(
       "org.scalatest" %% "scalatest" % scalaTestVersion
+    )
+  )
+
+  val munit = Def.setting(
+    PROVIDED(
+      "org.scalameta" %% "munit" % munitVersion
     )
   )
 
