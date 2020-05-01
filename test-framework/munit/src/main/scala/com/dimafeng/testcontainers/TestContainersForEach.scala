@@ -53,7 +53,7 @@ trait TestContainersForEach extends TestContainersSuite { self: Suite =>
   }
 
   override def afterEach(context: AfterEach): Unit = {
-    startedContainers.foreach(afterTest(_, None)) // TODO is there a way to understand if suite has failed in munit?
+    startedContainers.foreach(afterTest(_, None)) // TODO there is no way to retrieve test status in MUnit - https://github.com/scalameta/munit/issues/119
     startedContainers.foreach(stopContainers)
   }
 }
