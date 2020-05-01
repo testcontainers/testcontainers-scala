@@ -99,7 +99,6 @@ lazy val allOld = (project in file("allOld"))
   .dependsOn(
     core,
     scalatest,
-    munit,
     scalatestSelenium,
     moduleMysql,
     modulePostgres,
