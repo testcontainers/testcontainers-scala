@@ -32,8 +32,8 @@ import munit.Suite
  * }
  *
  * Notes:
- * - If you override beforeAll() without calling super.beforeAll() your container won't start
- * - If you override afterAll() without calling super.afterAll() your container won't stop
+ * - If you override beforeAll() without calling super.beforeAll() your containers won't start
+ * - If you override afterAll() without calling super.afterAll() your containers won't stop
  * }}}
  */
 trait TestContainersForAll extends TestContainersSuite { self: Suite =>
