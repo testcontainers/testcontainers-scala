@@ -1,8 +1,9 @@
-package com.dimafeng.testcontainers
+package com.dimafeng.testcontainers.munit
 
 import java.util.Optional
 
-import com.dimafeng.testcontainers.SampleContainer.SampleJavaContainer
+import com.dimafeng.testcontainers.{ContainerDef, SingleContainer}
+import com.dimafeng.testcontainers.munit.SampleContainer.SampleJavaContainer
 import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 import org.testcontainers.lifecycle.{TestDescription, TestLifecycleAware => JavaTestLifecycleAware}

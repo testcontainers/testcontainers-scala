@@ -1,9 +1,10 @@
-package com.dimafeng.testcontainers
+package com.dimafeng.testcontainers.munit
 
 import java.util.Optional
 
-import com.dimafeng.testcontainers.SampleContainer.SampleJavaContainer
-import com.dimafeng.testcontainers.TestContainerForAllSpec._
+import com.dimafeng.testcontainers.ContainerDef
+import com.dimafeng.testcontainers.munit.SampleContainer.SampleJavaContainer
+import com.dimafeng.testcontainers.munit.TestContainerForAllSpec._
 import munit.{FunSuite, MUnitRunner, Suite}
 import org.junit.runner.notification.RunNotifier
 import org.mockito.ArgumentMatchers.any

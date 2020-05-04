@@ -1,13 +1,14 @@
-package com.dimafeng.testcontainers
+package com.dimafeng.testcontainers.munit
 
+import com.dimafeng.testcontainers.ContainerDef
 import munit.Suite
 
 /**
- * Starts a single container before all tests and stops it after all tests
+ * Starts a single container before each test and stops it after each test
  *
  * Example:
  * {{{
- * class MysqlSpec extends FunSuite with TestContainerForAll {
+ * class MysqlSpec extends FunSuite with TestContainerForEach {
  *
  *   // You need to override `containerDef` with needed container definition
  *   override val containerDef = MySQLContainer.Def()
@@ -22,11 +23,11 @@ import munit.Suite
  * }
  *
  * Notes:
- * - If you override beforeAll() without calling super.beforeAll() your container won't start
- * - If you override afterAll() without calling super.afterAll() your container won't stop
+ * - If you override beforeEach() without calling super.beforeEach() your container won't start
+ * - If you override afterEach() without calling super.afterEach() your container won't stop
  * }}}
  */
-trait TestContainerForAll extends TestContainersForAll { self: Suite =>
+trait TestContainerForEach extends TestContainersForEach { self: Suite =>
   val containerDef: ContainerDef
 
   final override type Containers = containerDef.Container

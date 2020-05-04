@@ -1,9 +1,9 @@
-package com.dimafeng.testcontainers
+package com.dimafeng.testcontainers.munit
 
-import com.dimafeng.testcontainers.TestContainersSuite.IllegalWithContainersCall
 import com.dimafeng.testcontainers.lifecycle.{Andable, TestLifecycleAware}
-import org.junit.runner.{Description => JunitDescription}
+import com.dimafeng.testcontainers.munit.TestContainersSuite.IllegalWithContainersCall
 import munit.Suite
+import org.junit.runner.{Description => JunitDescription}
 import org.testcontainers.lifecycle.TestDescription
 
 trait TestContainersSuite { self: Suite =>
