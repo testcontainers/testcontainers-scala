@@ -25,6 +25,11 @@ For scalatest users:
 libraryDependencies += "com.dimafeng" %% "testcontainers-scala-scalatest" % testcontainersScalaVersion % "test"
 ```
 
+For MUnit users:
+```scala
+libraryDependencies += "com.dimafeng" %% "testcontainers-scala-munit" % testcontainersScalaVersion % "test"
+```
+
 ## Requirements
 
 * JDK >= 1.8
@@ -97,6 +102,7 @@ Here is the full list of the currently available modules:
   It contains some basic building blocks of the library and no integration with any test frameworks. 
   You probably will not use it directly, because all other modules depend on it.
 * `testcontainers-scala-scalatest` — Scalatest integration module.
+* `testcontainers-scala-munit` — MUnit integration module.
 * `testcontainers-scala-scalatest-selenium` — module to use the Selenium container with the Scalatest.
 * `testcontainers-scala-mysql` — module with the MySQL container.
 * `testcontainers-scala-postgresql` — module with the PostgreSQL container.
@@ -425,9 +431,78 @@ object NginxContainer {
     2. If your test contains multiple containers, replace `ForAllTestContainer` with `TestContainersForAll`
 4. Fix all compilation errors using compiler messages and examples above.
 
+### MUnit usage
+
+Similarly to Scalatest, you can use one of the four traits:
+1. `TestContainerForAll` — will start a single container before all tests and stop after all tests.
+2. `TestContainerForEach` — will start a single container before each test and stop after each test.
+3. `TestContainersForAll` — will start multiple containers before all tests and stop after all tests.
+4. `TestContainersForEach` — will start multiple containers before each test and stop after each test.
+
+#### Single container in tests
+
+If you want to use a single container for all tests in your suite:
+```scala
+class MysqlSpec extends FunSuite with TestContainerForAll {
+
+  // You need to override `containerDef` with needed container definition
+  override val containerDef = MySQLContainer.Def()
+
+  // To use containers in tests you need to use `withContainers` function
+  test("test case name") {
+    withContainers { mysqlContainer =>
+      // Inside your test body you can do with your container whatever you want to
+      assert(mysqlContainer.jdbcUrl.nonEmpty)
+    }
+  }
+}
+```
+
+If you want to use a single container for each test in your suite just use code above with `TestContainerForEach` trait instead of `TestContainerForAll`.
+
+#### Multiple containers in tests
+
+If you want to use multiple containers for all tests in your suite:
+```scala
+class ExampleSpec extends FunSuite with TestContainersForAll {
+
+  // First of all, you need to declare, which containers you want to use
+  override type Containers = MySQLContainer and PostgreSQLContainer
+
+  // After that, you need to describe, how you want to start them,
+  // In this method you can use any intermediate logic.
+  // You can pass parameters between containers, for example.
+  override def startContainers(): Containers = {
+    val container1 = MySQLContainer.Def().start()
+    val container2 = PostgreSQLContainer.Def().start()
+    container1 and container2
+  }
+
+  // `withContainers` function supports multiple containers:
+  test("test") {
+    withContainers { case mysqlContainer and pgContainer =>
+      // Inside your test body you can do with your containers whatever you want to
+      assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
+    }
+  }
+}
+```
+
+If you want to use a single container for each test in your suite just use code above with `TestContainersForEach` trait instead of `TestContainersForAll`.
+
+#### Notes on MUnit usage
+- If you use `*ForAll` trait and override beforeAll() without calling super.beforeAll() your containers won't start.
+- If you use `*ForAll` trait and override afterAll() without calling super.afterAll() your containers won't stop.
+- If you use `*ForEach` trait and override beforeEach() without calling super.beforeEach() your containers won't start.
+- If you use `*ForEach` trait and override afterEach() without calling super.afterEach() your containers won't stop.
+- [Currently,](https://github.com/scalameta/munit/issues/119) there is no way to retrieve test status in MUnit `afterEach` block, so `afterTest` hook will never contain an error. 
+
 If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
 
 ## Release notes
+
+* **0.37.0**
+    * Added MUnit integration.
 
 * **0.36.1**
     * Added `.waitingFor()` to `DockerComposeContainer`
