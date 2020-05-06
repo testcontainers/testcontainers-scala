@@ -490,6 +490,76 @@ class ExampleSpec extends FunSuite with TestContainersForAll {
 
 If you want to use a single container for each test in your suite just use code above with `TestContainersForEach` trait instead of `TestContainersForAll`.
 
+#### Start/Stop hooks
+You have the option to override `afterContainersStart` and `beforeContainersStop` methods.
+
+##### Example with single container
+```scala
+class MySpec extends FlatSpec with TestContainerForAll {
+
+  override val containerDef: ContainerDef =
+    PostgreSQLContainer.Def("postgres:12")
+
+  override def afterContainersStart(container: Containers): Unit = {
+    super.afterContainersStart(container)
+
+    container match {
+      case _: PostgreSQLContainer => println("your logic here")
+    }
+  }
+
+  override def beforeContainersStop(container: Containers): Unit = {
+    super.beforeContainersStop(container)
+
+    container match {
+      case _: PostgreSQLContainer => println("your logic here")
+    }
+  }
+
+ it should "work" in withContainers { 
+   case pgContainer: PostgreSQLContainer =>
+     assert(pgContainer.jdbcUrl.nonEmpty) 
+  }
+}
+```
+
+##### Example with multiple containers
+```scala
+class MySpec extends FlatSpec with TestContainersForAll {
+
+  override type Containers = MySQLContainer and PostgreSQLContainer
+
+  override def startContainers(): Containers = {
+    val container1 = MySQLContainer.Def().start()
+    val container2 = PostgreSQLContainer.Def().start()
+
+    container1 and container2
+  }
+
+  override def afterContainersStart(containers: Containers): Unit = {
+    super.afterContainersStart(containers)
+
+    containers match {
+      case mySqlContainer and pgContainer => println("your logic here")
+    }
+  }
+
+  override def beforeContainersStop(containers: Containers): Unit = {
+    super.beforeContainersStop(containers)
+
+    containers match {
+      case mySqlContainer and pgContainer => println("your logic here")
+    }
+  }
+
+  it should "work" in withContainers {
+    case mysqlContainer and pgContainer =>
+      assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
+  }
+
+}
+```
+
 #### Notes on MUnit usage
 - If you use `*ForAll` trait and override beforeAll() without calling super.beforeAll() your containers won't start.
 - If you use `*ForAll` trait and override afterAll() without calling super.afterAll() your containers won't stop.
