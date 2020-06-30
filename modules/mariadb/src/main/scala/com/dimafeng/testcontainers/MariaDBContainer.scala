@@ -7,15 +7,23 @@ case class MariaDBContainer(
   dbName: String = MariaDBContainer.defaultDatabaseName,
   dbUsername: String = MariaDBContainer.defaultUsername,
   dbPassword: String = MariaDBContainer.defaultPassword,
-  configurationOverride: Option[String] = None
+  configurationOverride: Option[String] = None,
+  urlParams: Map[String, String] = Map.empty,
+  commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
 ) extends SingleContainer[JavaMariaDBContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMariaDBContainer[_] = {
     val c = new JavaMariaDBContainer(dockerImageName)
+
     c.withDatabaseName(dbName)
     c.withUsername(dbUsername)
     c.withPassword(dbPassword)
     configurationOverride.foreach(c.withConfigurationOverride)
+    urlParams.foreach { case (key, value) =>
+      c.withUrlParam(key, value)
+    }
+    commonJdbcParams.applyTo(c)
+
     c
   }
 
@@ -35,7 +43,9 @@ object MariaDBContainer {
     dbName: String = MariaDBContainer.defaultDatabaseName,
     dbUsername: String = MariaDBContainer.defaultUsername,
     dbPassword: String = MariaDBContainer.defaultPassword,
-    configurationOverride: Option[String] = None
+    configurationOverride: Option[String] = None,
+    urlParams: Map[String, String] = Map.empty,
+    commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
   ) extends ContainerDef {
 
     override type Container = MariaDBContainer
@@ -46,7 +56,9 @@ object MariaDBContainer {
         dbName,
         dbUsername,
         dbPassword,
-        configurationOverride
+        configurationOverride,
+        urlParams,
+        commonJdbcParams
       )
     }
   }
