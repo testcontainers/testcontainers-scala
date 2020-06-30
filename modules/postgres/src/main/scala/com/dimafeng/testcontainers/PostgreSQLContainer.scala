@@ -7,29 +7,39 @@ class PostgreSQLContainer(
   databaseName: Option[String] = None,
   pgUsername: Option[String] = None,
   pgPassword: Option[String] = None,
-  mountPostgresDataToTmpfs: Boolean = false
+  mountPostgresDataToTmpfs: Boolean = false,
+  urlParams: Map[String, String] = Map.empty,
+  commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
 ) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
 
-  override val container: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
+  override val container: JavaPostgreSQLContainer[_] = {
+    val c = dockerImageNameOverride match {
+      case Some(imageNameOverride) =>
+        new JavaPostgreSQLContainer(imageNameOverride)
+      case None =>
+        new JavaPostgreSQLContainer()
+    }
 
-    case Some(imageNameOverride) =>
-      new JavaPostgreSQLContainer(imageNameOverride)
+    databaseName.map(c.withDatabaseName)
+    pgUsername.map(c.withUsername)
+    pgPassword.map(c.withPassword)
 
-    case None =>
-      new JavaPostgreSQLContainer()
-  }
+    // as suggested in https://github.com/testcontainers/testcontainers-java/issues/1256
+    // mounting the postgres data directory to an in-memory docker volume (https://docs.docker.com/storage/tmpfs/)
+    // can improve performance
+    if (mountPostgresDataToTmpfs){
+      val tmpfsMount = new java.util.HashMap[String, String]()
+      tmpfsMount.put("/var/lib/postgresql/data", "rw")
+      c.withTmpFs(tmpfsMount)
+    }
 
-  databaseName.map(container.withDatabaseName)
-  pgUsername.map(container.withUsername)
-  pgPassword.map(container.withPassword)
+    urlParams.foreach { case (key, value) =>
+      c.withUrlParam(key, value)
+    }
 
-  // as suggested in https://github.com/testcontainers/testcontainers-java/issues/1256
-  // mounting the postgres data directory to an in-memory docker volume (https://docs.docker.com/storage/tmpfs/)
-  // can improve performance
-  if (mountPostgresDataToTmpfs){
-    val tmpfsMount = new java.util.HashMap[String, String]()
-    tmpfsMount.put("/var/lib/postgresql/data", "rw")
-    container.withTmpFs(tmpfsMount)
+    commonJdbcParams.applyTo(c)
+
+    c
   }
 
   def testQueryString: String = container.getTestQueryString
@@ -42,12 +52,13 @@ object PostgreSQLContainer {
   val defaultUsername = "test"
   val defaultPassword = "test"
 
-  def apply(dockerImageNameOverride: String = null,
-            databaseName: String = null,
-            username: String = null,
-            password: String = null,
-            mountPostgresDataToTmpfs: Boolean = false
-           ): PostgreSQLContainer =
+  def apply(
+    dockerImageNameOverride: String = null,
+    databaseName: String = null,
+    username: String = null,
+    password: String = null,
+    mountPostgresDataToTmpfs: Boolean = false
+  ): PostgreSQLContainer =
     new PostgreSQLContainer(
       Option(dockerImageNameOverride),
       Option(databaseName),
@@ -61,7 +72,9 @@ object PostgreSQLContainer {
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,
-    mountPostgresDataToTmpfs: Boolean = false
+    mountPostgresDataToTmpfs: Boolean = false,
+    urlParams: Map[String, String] = Map.empty,
+    commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
   ) extends ContainerDef {
 
     override type Container = PostgreSQLContainer
@@ -72,7 +85,9 @@ object PostgreSQLContainer {
         databaseName = Some(databaseName),
         pgUsername = Some(username),
         pgPassword = Some(password),
-        mountPostgresDataToTmpfs = mountPostgresDataToTmpfs
+        mountPostgresDataToTmpfs = mountPostgresDataToTmpfs,
+        urlParams = urlParams,
+        commonJdbcParams = commonJdbcParams
       )
     }
   }
