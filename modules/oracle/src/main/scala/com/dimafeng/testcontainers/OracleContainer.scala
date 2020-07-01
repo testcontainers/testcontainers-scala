@@ -2,6 +2,8 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{OracleContainer => JavaOracleContainer}
 
+import scala.concurrent.duration._
+
 /**
   * @param dockerImageName Oracle doesn't have any official distribution of XE,
   *                        so we don't provide any default `dockerImageName`.
@@ -12,14 +14,18 @@ case class OracleContainer(
   dockerImageName: String,
   oraUsername: String = OracleContainer.defaultUsername,
   oraPassword: String = OracleContainer.defaultPassword,
-  containerSharedMemory: Long = OracleContainer.defaultSharedMemory
+  containerSharedMemory: Long = OracleContainer.defaultSharedMemory,
+  commonJdbcParams: JdbcDatabaseContainer.CommonParams = OracleContainer.defaultCommonJdbcParams
 ) extends SingleContainer[JavaOracleContainer] {
 
-  override val container: JavaOracleContainer =
-    new JavaOracleContainer(dockerImageName)
+  override val container: JavaOracleContainer = {
+    val c = new JavaOracleContainer(dockerImageName)
       .withSharedMemorySize(containerSharedMemory)
       .withUsername(oraUsername)
       .withPassword(oraPassword)
+    commonJdbcParams.applyTo(c)
+    c
+  }
 
   def driverClassName: String = container.getDriverClassName
 
@@ -38,12 +44,17 @@ object OracleContainer {
   val defaultUsername = "system"
   val defaultPassword = "oracle"
   val defaultSharedMemory = 10240000000L //1 GB
+  val defaultCommonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams().copy(
+    startupTimeout = 240.seconds
+  )
 
-  case class Def(dockerImageName: String,
-                 username: String = defaultUsername,
-                 password: String = defaultPassword,
-                 containerSharedMemory: Long = defaultSharedMemory)
-      extends ContainerDef {
+  case class Def(
+    dockerImageName: String,
+    username: String = defaultUsername,
+    password: String = defaultPassword,
+    containerSharedMemory: Long = defaultSharedMemory,
+    commonJdbcParams: JdbcDatabaseContainer.CommonParams = OracleContainer.defaultCommonJdbcParams
+  ) extends ContainerDef {
 
     override type Container = OracleContainer
 
@@ -52,7 +63,8 @@ object OracleContainer {
         dockerImageName = dockerImageName,
         oraUsername = username,
         oraPassword = password,
-        containerSharedMemory = containerSharedMemory
+        containerSharedMemory = containerSharedMemory,
+        commonJdbcParams = commonJdbcParams,
       )
     }
   }
