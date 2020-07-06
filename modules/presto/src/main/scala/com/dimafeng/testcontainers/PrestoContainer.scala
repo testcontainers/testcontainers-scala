@@ -7,15 +7,13 @@ import org.testcontainers.containers.{PrestoContainer => JavaPrestoContainer}
 case class PrestoContainer(
   dockerImageName: String = PrestoContainer.defaultDockerImageName,
   dbUsername: String = PrestoContainer.defaultDbUsername,
-  dbName: String = PrestoContainer.defaultDbName,
-  commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
+  dbName: String = PrestoContainer.defaultDbName
 ) extends SingleContainer[JavaPrestoContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaPrestoContainer[_] = {
     val c = new JavaPrestoContainer(dockerImageName)
     c.withUsername(dbUsername)
     c.withDatabaseName(dbName)
-    commonJdbcParams.applyTo(c)
     c
   }
 
@@ -33,8 +31,7 @@ object PrestoContainer {
   case class Def(
     dockerImageName: String = PrestoContainer.defaultDockerImageName,
     dbUsername: String = PrestoContainer.defaultDbUsername,
-    dbName: String = PrestoContainer.defaultDbName,
-    commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
+    dbName: String = PrestoContainer.defaultDbName
   ) extends ContainerDef {
 
     override type Container = PrestoContainer
@@ -43,8 +40,7 @@ object PrestoContainer {
       new PrestoContainer(
         dockerImageName,
         dbUsername,
-        dbName,
-        commonJdbcParams
+        dbName
       )
     }
   }

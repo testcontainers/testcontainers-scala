@@ -2,34 +2,22 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MySQLContainer => JavaMySQLContainer}
 
-class MySQLContainer(
-  configurationOverride: Option[String] = None,
-  mysqlImageVersion: Option[String] = None,
-  databaseName: Option[String] = None,
-  mysqlUsername: Option[String] = None,
-  mysqlPassword: Option[String] = None,
-  urlParams: Map[String, String] = Map.empty,
-  commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaMySQLContainer[_]] with JdbcDatabaseContainer {
+class MySQLContainer(configurationOverride: Option[String] = None,
+                     mysqlImageVersion: Option[String] = None,
+                     databaseName: Option[String] = None,
+                     mysqlUsername: Option[String] = None,
+                     mysqlPassword: Option[String] = None)
+  extends SingleContainer[JavaMySQLContainer[_]] with JdbcDatabaseContainer {
 
-  override val container: JavaMySQLContainer[_] = {
-    val c = mysqlImageVersion
-      .map(new JavaMySQLContainer(_))
-      .getOrElse(new JavaMySQLContainer(MySQLContainer.DEFAULT_MYSQL_VERSION))
+  override val container: JavaMySQLContainer[_] = mysqlImageVersion
+    .map(new JavaMySQLContainer(_))
+    .getOrElse(new JavaMySQLContainer(MySQLContainer.DEFAULT_MYSQL_VERSION))
 
-    databaseName.map(c.withDatabaseName)
-    mysqlUsername.map(c.withUsername)
-    mysqlPassword.map(c.withPassword)
+  databaseName.map(container.withDatabaseName)
+  mysqlUsername.map(container.withUsername)
+  mysqlPassword.map(container.withPassword)
 
-    configurationOverride.foreach(c.withConfigurationOverride)
-    urlParams.foreach { case (key, value) =>
-      c.withUrlParam(key, value)
-    }
-
-    commonJdbcParams.applyTo(c)
-
-    c
-  }
+  configurationOverride.foreach(container.withConfigurationOverride)
 
   def testQueryString: String = container.getTestQueryString
 
@@ -44,13 +32,11 @@ object MySQLContainer {
 
   val DEFAULT_MYSQL_VERSION = defaultDockerImageName
 
-  def apply(
-    configurationOverride: String = null,
-    mysqlImageVersion: String = null,
-    databaseName: String = null,
-    username: String = null,
-    password: String = null,
-  ): MySQLContainer =
+  def apply(configurationOverride: String = null,
+            mysqlImageVersion: String = null,
+            databaseName: String = null,
+            username: String = null,
+            password: String = null): MySQLContainer =
     new MySQLContainer(Option(configurationOverride),
       Option(mysqlImageVersion),
       Option(databaseName),
@@ -62,9 +48,7 @@ object MySQLContainer {
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,
-    configurationOverride: Option[String] = None,
-    urlParams: Map[String, String] = Map.empty,
-    commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
+    configurationOverride: Option[String] = None
   ) extends ContainerDef {
 
     override type Container = MySQLContainer
@@ -75,9 +59,7 @@ object MySQLContainer {
         databaseName = Some(databaseName),
         mysqlUsername = Some(username),
         mysqlPassword = Some(password),
-        configurationOverride = configurationOverride,
-        urlParams = urlParams,
-        commonJdbcParams = commonJdbcParams
+        configurationOverride = configurationOverride
       )
     }
   }

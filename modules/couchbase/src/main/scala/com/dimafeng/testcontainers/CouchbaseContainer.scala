@@ -1,17 +1,20 @@
 package com.dimafeng.testcontainers
 
-import java.util.EnumSet
-
-import org.testcontainers.couchbase.{CouchbaseService, BucketDefinition => JavaBucketDefinition, CouchbaseContainer => JavaCouchbaseContainer}
-
-import scala.collection.JavaConverters._
+import com.couchbase.client.java.cluster.{BucketSettings, UserSettings}
+import org.testcontainers.couchbase.{CouchbaseContainer => JavaCouchbaseContainer}
 
 case class CouchbaseContainer(
   dockerImageName: String = CouchbaseContainer.defaultDockerImageName,
-  buckets: Seq[CouchbaseContainer.BucketDefinition] = Seq.empty,
-  username: String = CouchbaseContainer.defaultUsername,
-  password: String = CouchbaseContainer.defaultPassword,
-  enabledServices: Set[CouchbaseService] = CouchbaseContainer.defaultEnabledServices
+  buckets: Seq[CouchbaseContainer.Bucket] = Seq.empty,
+  clusterUsername: String = CouchbaseContainer.defaultUsername,
+  clusterPassword: String = CouchbaseContainer.defaultPassword,
+  memoryQuota: String = CouchbaseContainer.defaultMemoryQuota,
+  indexMemoryQuota: String = CouchbaseContainer.defaultIndexMemoryQuota,
+  keyValue: Boolean = CouchbaseContainer.defaultKeyValue,
+  query: Boolean = CouchbaseContainer.defaultQuery,
+  index: Boolean = CouchbaseContainer.defaultIndex,
+  primaryIndex: Boolean = CouchbaseContainer.defaultPrimaryIndex,
+  fts: Boolean = CouchbaseContainer.defaultFts
 ) extends SingleContainer[JavaCouchbaseContainer] {
 
   import CouchbaseContainer._
@@ -19,47 +22,58 @@ case class CouchbaseContainer(
   override val container: JavaCouchbaseContainer = {
     val c = new JavaCouchbaseContainer(dockerImageName)
 
-    buckets.foreach { bucket: BucketDefinition =>
-      val javaBucket = new JavaBucketDefinition(bucket.name)
-        .withQuota(bucket.quota)
-        .withPrimaryIndex(bucket.hasPrimaryIndex)
-      c.withBucket(javaBucket)
+    buckets.foreach {
+      case Bucket(bucketSettings, Some(userSettings)) => c.withNewBucket(bucketSettings, userSettings)
+      case Bucket(bucketSettings, None) => c.withNewBucket(bucketSettings)
     }
 
-    c.withCredentials(username, password)
-    c.withEnabledServices(enabledServices.toSeq: _*)
+    c.withClusterAdmin(clusterUsername, clusterPassword)
+    c.withMemoryQuota(memoryQuota)
+    c.withIndexMemoryQuota(indexMemoryQuota)
+    c.withKeyValue(keyValue)
+    c.withQuery(query)
+    c.withIndex(index)
+    c.withPrimaryIndex(primaryIndex)
+    c.withFts(fts)
 
     c
   }
 
+  def initCluster(): Unit = container.initCluster()
 
-  def bootstrapCarrierDirectPort: Int = container.getBootstrapCarrierDirectPort
+  def createBucket(bucketSettings: BucketSettings, userSettings: UserSettings, primaryIndex: Boolean): Unit =
+    container.createBucket(bucketSettings, userSettings, primaryIndex)
 
-  def bootstrapHttpDirectPort: Int = container.getBootstrapHttpDirectPort
-
-  def connectionString: String = container.getConnectionString
+  def callCouchbaseRestAPI(url: String, payload: String): Unit = container.callCouchbaseRestAPI(url, payload)
 }
 
 object CouchbaseContainer {
 
-  val defaultImage = "couchbase/server"
-  val defaultTag = "6.5.1"
-  val defaultDockerImageName = s"$defaultImage:$defaultTag"
+  val defaultDockerImageName = s"${JavaCouchbaseContainer.DOCKER_IMAGE_NAME}${JavaCouchbaseContainer.VERSION}"
   val defaultUsername = "Administrator"
   val defaultPassword = "password"
-  val defaultEnabledServices: Set[CouchbaseService] = EnumSet.allOf(classOf[CouchbaseService]).asScala.toSet
+  val defaultMemoryQuota = "300"
+  val defaultIndexMemoryQuota = "300"
+  val defaultKeyValue = true
+  val defaultQuery = true
+  val defaultIndex = true
+  val defaultPrimaryIndex = true
+  val defaultFts = false
 
-  val defaultQuota = 100
-  val defaultHasPrimaryIndex = true
-
-  case class BucketDefinition(name: String, quota: Int = defaultQuota, hasPrimaryIndex: Boolean = defaultHasPrimaryIndex)
+  case class Bucket(bucketSettings: BucketSettings, userSettings: Option[UserSettings])
 
   case class Def(
     dockerImageName: String = CouchbaseContainer.defaultDockerImageName,
-    buckets: Seq[CouchbaseContainer.BucketDefinition] = Seq.empty,
-    username: String = CouchbaseContainer.defaultUsername,
-    password: String = CouchbaseContainer.defaultPassword,
-    enabledServices: Set[CouchbaseService] = CouchbaseContainer.defaultEnabledServices
+    buckets: Seq[CouchbaseContainer.Bucket] = Seq.empty,
+    clusterUsername: String = CouchbaseContainer.defaultUsername,
+    clusterPassword: String = CouchbaseContainer.defaultPassword,
+    memoryQuota: String = CouchbaseContainer.defaultMemoryQuota,
+    indexMemoryQuota: String = CouchbaseContainer.defaultIndexMemoryQuota,
+    keyValue: Boolean = CouchbaseContainer.defaultKeyValue,
+    query: Boolean = CouchbaseContainer.defaultQuery,
+    index: Boolean = CouchbaseContainer.defaultIndex,
+    primaryIndex: Boolean = CouchbaseContainer.defaultPrimaryIndex,
+    fts: Boolean = CouchbaseContainer.defaultFts
   ) extends ContainerDef {
 
     override type Container = CouchbaseContainer
@@ -68,9 +82,15 @@ object CouchbaseContainer {
       new CouchbaseContainer(
         dockerImageName,
         buckets,
-        username,
-        password,
-        enabledServices
+        clusterUsername,
+        clusterPassword,
+        memoryQuota,
+        indexMemoryQuota,
+        keyValue,
+        query,
+        index,
+        primaryIndex,
+        fts
       )
     }
   }
