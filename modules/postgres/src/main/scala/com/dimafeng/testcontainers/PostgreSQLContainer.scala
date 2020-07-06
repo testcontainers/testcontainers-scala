@@ -1,6 +1,9 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
+import scala.collection.JavaConverters._
+import org.testcontainers.containers.{PostgreSQLContainer => OTCPostgreSQLContainer}
+
 
 class PostgreSQLContainer(
   dockerImageNameOverride: Option[String] = None,
@@ -9,6 +12,13 @@ class PostgreSQLContainer(
   pgPassword: Option[String] = None,
   mountPostgresDataToTmpfs: Boolean = false
 ) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
+
+  def jdbcUrlWithIp: String =  {
+
+    val ip = container.getContainerInfo.getNetworkSettings.getNetworks.asScala.values.head.getIpAddress
+    s"jdbc:postgresql://$ip:${OTCPostgreSQLContainer.POSTGRESQL_PORT}/${databaseName}"
+
+  }
 
   override val container: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
 
