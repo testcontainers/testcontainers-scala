@@ -5,7 +5,7 @@ lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
   scalaVersion in ThisBuild := "2.12.11",
-  crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.3"),
+  crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.2"),
 
   parallelExecution in ThisBuild := false,
   fork := true,
@@ -75,8 +75,6 @@ lazy val root = (project in file("."))
     moduleToxiproxy,
     moduleOrientdb,
     modulePresto,
-    moduleMongodb,
-    moduleSolr,
     allOld
   )
   .settings(noPublishSettings)
@@ -417,22 +415,6 @@ lazy val modulePresto = (project in file("modules/presto"))
   .settings(
     name := "testcontainers-scala-presto",
     libraryDependencies ++= Dependencies.modulePresto.value
-  )
-
-lazy val moduleMongodb = (project in file("modules/mongodb"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
-  .settings(commonSettings: _*)
-  .settings(
-    name := "testcontainers-scala-mongodb",
-    libraryDependencies ++= Dependencies.moduleMongodb.value
-  )
-
-lazy val moduleSolr = (project in file("modules/solr"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
-  .settings(commonSettings: _*)
-  .settings(
-    name := "testcontainers-scala-solr",
-    libraryDependencies ++= Dependencies.moduleSolr.value
   )
 
 lazy val microsite = (project in file("docs"))

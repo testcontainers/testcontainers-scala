@@ -57,8 +57,6 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def containerIpAddress: String = container.getContainerIpAddress
 
-  def host: String = container.getHost
-
   def containerName: String = container.getContainerName
 
   def env: Seq[String] = container.getEnv.asScala.toSeq

@@ -2,24 +2,14 @@ package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MSSQLServerContainer => JavaMSSQLServerContainer}
 
-import scala.concurrent.duration._
-
 case class MSSQLServerContainer(
   dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
-  dbPassword: String = MSSQLServerContainer.defaultPassword,
-  urlParams: Map[String, String] = Map.empty,
-  commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams
+  dbPassword: String = MSSQLServerContainer.defaultPassword
 ) extends SingleContainer[JavaMSSQLServerContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMSSQLServerContainer[_] = {
     val c = new JavaMSSQLServerContainer(dockerImageName)
-
     c.withPassword(dbPassword)
-    urlParams.foreach { case (key, value) =>
-      c.withUrlParam(key, value)
-    }
-    commonJdbcParams.applyTo(c)
-
     c
   }
 
@@ -30,16 +20,10 @@ object MSSQLServerContainer {
 
   val defaultDockerImageName = s"${JavaMSSQLServerContainer.IMAGE}:${JavaMSSQLServerContainer.DEFAULT_TAG}"
   val defaultPassword = "A_Str0ng_Required_Password"
-  val defaultCommonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams().copy(
-    startupTimeout = 240.seconds,
-    connectTimeout = 240.seconds
-  )
 
   case class Def(
     dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
-    password: String = MSSQLServerContainer.defaultPassword,
-    urlParams: Map[String, String] = Map.empty,
-    commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams
+    password: String = MSSQLServerContainer.defaultPassword
   ) extends ContainerDef {
 
     override type Container = MSSQLServerContainer
@@ -47,9 +31,7 @@ object MSSQLServerContainer {
     override def createContainer(): MSSQLServerContainer = {
       new MSSQLServerContainer(
         dockerImageName = dockerImageName,
-        dbPassword = password,
-        urlParams = urlParams,
-        commonJdbcParams = commonJdbcParams
+        dbPassword = password
       )
     }
   }
