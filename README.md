@@ -128,8 +128,6 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-toxiproxy` — module with the ToxiProxy container.
 * `testcontainers-scala-orientdb` — module with the OrientDB container.
 * `testcontainers-scala-presto` — module with the Presto container.
-* `testcontainers-scala-mongodb` — module with the MongoDB container.
-* `testcontainers-scala-solr` — module with the Solr container.
 
 Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
 You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).
@@ -572,16 +570,6 @@ class MySpec extends FlatSpec with TestContainersForAll {
 If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
 
 ## Release notes
-
-* **0.38.0**
-    * testcontainers-java updated to 1.14.3:
-        * Added `MongoDBContainer`.
-        * Added `SolrContainer`.
-        * Added `urlParams` constructor parameter to `CockroachContainer`, `Db2Container`, `MariaDBContainer`, `MSSQLServerContainer`, `MySQLContainer` and `PostgreSQLContainer`.
-        * Added `host` method to containers. This method will replace `containerIpAddress` in the future.
-        * `CouchbaseContainer` was rewritten. This change is not backward compatible.
-        * Added `vhost` parameter to `RabbitMQContainer.Exchange`.
-    * Added `commonJdbcParams` constructor parameter to `CockroachContainer`, `Db2Container`, `MariaDBContainer`, `MSSQLServerContainer`, `MySQLContainer`, `PostgreSQLContainer`, `OracleContainer` and `PrestoContainer`. It contains common options for JDBC containers.
 
 * **0.37.0**
     * Added MUnit integration.

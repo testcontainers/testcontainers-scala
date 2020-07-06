@@ -35,12 +35,7 @@ case class RabbitMQContainer(
     }
 
     exchanges.foreach { x =>
-      x.vhost match {
-        case Some(vhost) =>
-          c.withExchange(vhost, x.name, x.exchangeType, x.autoDelete, x.internal, x.durable, toJavaArguments(x.arguments))
-        case None =>
-          c.withExchange(x.name, x.exchangeType, x.autoDelete, x.internal, x.durable, toJavaArguments(x.arguments))
-      }
+      c.withExchange(x.name, x.exchangeType, x.autoDelete, x.internal, x.durable, toJavaArguments(x.arguments))
     }
 
     bindings.foreach { x =>
@@ -134,8 +129,7 @@ object RabbitMQContainer {
     autoDelete: Boolean = false,
     internal: Boolean = false,
     durable: Boolean = true,
-    arguments: Map[String, String] = Map.empty,
-    vhost: Option[String] = None
+    arguments: Map[String, String] = Map.empty
   )
 
   case class Binding(
