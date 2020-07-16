@@ -13,7 +13,7 @@ case class MariaDBContainer(
 ) extends SingleContainer[JavaMariaDBContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMariaDBContainer[_] = {
-    val c = new JavaMariaDBContainer(dockerImageName)
+    val c: JavaMariaDBContainer[_] = new JavaMariaDBContainer(dockerImageName)
 
     c.withDatabaseName(dbName)
     c.withUsername(dbUsername)

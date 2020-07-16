@@ -9,7 +9,7 @@ case class NginxContainer(
 ) extends SingleContainer[JavaNginxContainer[_]] {
 
   override val container: JavaNginxContainer[_] = {
-    val c = new JavaNginxContainer()
+    val c: JavaNginxContainer[_] = new JavaNginxContainer()
     customContent.foreach(c.withCustomContent)
     c
   }

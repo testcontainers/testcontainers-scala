@@ -12,7 +12,7 @@ case class PrestoContainer(
 ) extends SingleContainer[JavaPrestoContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaPrestoContainer[_] = {
-    val c = new JavaPrestoContainer(dockerImageName)
+    val c: JavaPrestoContainer[_] = new JavaPrestoContainer(dockerImageName)
     c.withUsername(dbUsername)
     c.withDatabaseName(dbName)
     commonJdbcParams.applyTo(c)

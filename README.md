@@ -573,6 +573,17 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.38.1**
+    * Fixed class cast exception in the next containers:
+        * InfluxDBContainer
+        * MariaDBContainer
+        * MSSQLServerContainer
+        * MySQLContainer
+        * NginxContainer
+        * PostgreSQLContainer
+        * PrestoContainer
+        * VaultContainer
+
 * **0.38.0**
     * testcontainers-java updated to 1.14.3:
         * Added `MongoDBContainer`.

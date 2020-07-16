@@ -14,7 +14,7 @@ case class InfluxDBContainer(
 ) extends SingleContainer[JavaInfluxDBContainer[_]] {
 
   override val container: JavaInfluxDBContainer[_] = {
-    val c = new JavaInfluxDBContainer(tag)
+    val c: JavaInfluxDBContainer[_] = new JavaInfluxDBContainer(tag)
     c.withDatabase(database)
     c.withAdmin(admin)
     c.withAdminPassword(adminPassword)

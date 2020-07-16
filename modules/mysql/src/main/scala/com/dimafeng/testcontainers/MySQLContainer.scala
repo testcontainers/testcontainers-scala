@@ -13,7 +13,7 @@ class MySQLContainer(
 ) extends SingleContainer[JavaMySQLContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMySQLContainer[_] = {
-    val c = mysqlImageVersion
+    val c: JavaMySQLContainer[_] = mysqlImageVersion
       .map(new JavaMySQLContainer(_))
       .getOrElse(new JavaMySQLContainer(MySQLContainer.DEFAULT_MYSQL_VERSION))
 
