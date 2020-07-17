@@ -7,7 +7,7 @@ class VaultContainer(dockerImageNameOverride: Option[String] = None,
                      @deprecated vaultPort: Option[Int] = None,
                      secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[_]] {
 
-  val vaultContainer: JavaVaultContainer[Nothing] = {
+  val vaultContainer: JavaVaultContainer[_] = {
     if (dockerImageNameOverride.isEmpty) {
       new JavaVaultContainer()
     } else {

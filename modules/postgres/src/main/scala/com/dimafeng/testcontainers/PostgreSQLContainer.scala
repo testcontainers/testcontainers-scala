@@ -13,16 +13,16 @@ class PostgreSQLContainer(
 ) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaPostgreSQLContainer[_] = {
-    val c = dockerImageNameOverride match {
+    val c: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
       case Some(imageNameOverride) =>
         new JavaPostgreSQLContainer(imageNameOverride)
       case None =>
         new JavaPostgreSQLContainer()
     }
 
-    databaseName.map(c.withDatabaseName)
-    pgUsername.map(c.withUsername)
-    pgPassword.map(c.withPassword)
+    databaseName.foreach(c.withDatabaseName)
+    pgUsername.foreach(c.withUsername)
+    pgPassword.foreach(c.withPassword)
 
     // as suggested in https://github.com/testcontainers/testcontainers-java/issues/1256
     // mounting the postgres data directory to an in-memory docker volume (https://docs.docker.com/storage/tmpfs/)

@@ -12,7 +12,7 @@ case class MSSQLServerContainer(
 ) extends SingleContainer[JavaMSSQLServerContainer[_]] with JdbcDatabaseContainer {
 
   override val container: JavaMSSQLServerContainer[_] = {
-    val c = new JavaMSSQLServerContainer(dockerImageName)
+    val c: JavaMSSQLServerContainer[_] = new JavaMSSQLServerContainer(dockerImageName)
 
     c.withPassword(dbPassword)
     urlParams.foreach { case (key, value) =>
