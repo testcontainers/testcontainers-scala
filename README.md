@@ -46,6 +46,12 @@ libraryDependencies ++= Seq(
 )
 ```
 
+Next, add the following line to run tests in a separate JVM from sbt. This allows for graceful shutdown of containers once the tests have finished running.
+
+```scala
+Test / fork := true,
+```
+
 There are two ScalaTest aware traits:
 * `ForEachTestContainer` starts a new container(s) before each test case and then stops and removes it.
 * `ForAllTestContainer` starts and stops a container only once for all test cases within the spec.
