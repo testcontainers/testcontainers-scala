@@ -420,7 +420,7 @@ lazy val modulePresto = (project in file("modules/presto"))
   )
 
 lazy val moduleMongodb = (project in file("modules/mongodb"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc, scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-mongodb",
