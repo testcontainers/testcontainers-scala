@@ -9,8 +9,8 @@ services:
   - docker
 
 script:
-  - ./sbt +test
-  - ./sbt "project microsite" makeMicrosite
+  - sbt +test
+  - sbt "project microsite" makeMicrosite
 
 cache:
   directories:
