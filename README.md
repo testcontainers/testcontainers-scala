@@ -579,6 +579,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.38.3**
+    * Fixed `MongoDBContainer` default version
+
 * **0.38.1**
     * Fixed class cast exception in the next containers:
         * InfluxDBContainer
