@@ -18,8 +18,12 @@ case class SolrContainer(
 
     c.withZookeeper(zookeeper)
     c.withCollection(collectionName)
-    c.withConfiguration(configurationName, configuration)
-    c.withSchema(schema)
+    if (configurationName != null || configuration != null) {
+      c.withConfiguration(configurationName, configuration)
+    }
+    if (schema != null) {
+      c.withSchema(schema)
+    }
 
     c
   }
