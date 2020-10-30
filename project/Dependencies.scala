@@ -25,7 +25,8 @@ object Dependencies {
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "3.3.3"
   private val restAssuredVersion = "4.0.0"
-  private val awsVersion = "1.11.479"
+  private val awsV1Version = "1.11.479"
+  private val awsV2Version = "2.15.7"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -163,7 +164,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "dynalite" % testcontainersVersion
     ) ++ PROVIDED(
-      "com.amazonaws" % "aws-java-sdk-dynamodb" % awsVersion
+      "com.amazonaws" % "aws-java-sdk-dynamodb" % awsV1Version
     )
   )
 
@@ -185,7 +186,15 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "localstack" % testcontainersVersion
     ) ++ PROVIDED(
-      "com.amazonaws" % "aws-java-sdk-s3" % awsVersion
+      "com.amazonaws" % "aws-java-sdk-s3" % awsV1Version
+    )
+  )
+
+  val moduleLocalstackV2 = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "localstack" % testcontainersVersion
+    ) ++ PROVIDED(
+      "software.amazon.awssdk" % "s3" % awsV2Version
     )
   )
 

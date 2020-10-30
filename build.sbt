@@ -67,6 +67,7 @@ lazy val root = (project in file("."))
     moduleElasticsearch,
     moduleInfluxdb,
     moduleLocalstack,
+    moduleLocalstackV2,
     moduleMariadb,
     moduleMockserver,
     moduleNginx,
@@ -353,6 +354,14 @@ lazy val moduleLocalstack = (project in file("modules/localstack"))
   .settings(
     name := "testcontainers-scala-localstack",
     libraryDependencies ++= Dependencies.moduleLocalstack.value
+  )
+
+lazy val moduleLocalstackV2 = (project in file("modules/localstackV2"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-localstack-v2",
+    libraryDependencies ++= Dependencies.moduleLocalstackV2.value
   )
 
 lazy val moduleMariadb = (project in file("modules/mariadb"))
