@@ -579,6 +579,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.38.5**
+    * Added `LocalStackV2Container`
+
 * **0.38.4**
     * Fixed `SolrContainer` configuration nullability
 
