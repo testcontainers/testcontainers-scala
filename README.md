@@ -579,6 +579,10 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.38.6**
+    * testcontainers-java updated to 1.15.0:
+        * Include fix for "Can not connect to Ryuk" on macOS with Docker for Mac 2.4.0.0 (https://github.com/testcontainers/testcontainers-java/issues/3166)
+
 * **0.38.5**
     * Added `LocalStackV2Container`
 
