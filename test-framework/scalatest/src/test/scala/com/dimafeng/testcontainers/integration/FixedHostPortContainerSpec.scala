@@ -4,13 +4,13 @@ import java.net.URL
 
 import com.dimafeng.testcontainers.{FixedHostPortGenericContainer, ForAllTestContainer}
 import org.scalatest.FlatSpec
-import org.testcontainers.containers.wait.Wait
+import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
 
 import scala.io.Source
 
 class FixedHostPortContainerSpec extends FlatSpec with ForAllTestContainer {
   override val container = FixedHostPortGenericContainer("nginx:latest",
-    waitStrategy = Wait.forHttp("/"),
+    waitStrategy = new HttpWaitStrategy().forPath("/"),
     exposedHostPort = 8090,
     exposedContainerPort = 80
   )

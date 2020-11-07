@@ -104,8 +104,6 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def dockerClient: DockerClient = container.getDockerClient
 
-  def dockerDaemonInfo: Info = container.getDockerDaemonInfo
-
   def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala.toSeq
 
   def createContainerCmdModifiers: Set[Consumer[CreateContainerCmd]] = container.getCreateContainerCmdModifiers.asScala.toSet
