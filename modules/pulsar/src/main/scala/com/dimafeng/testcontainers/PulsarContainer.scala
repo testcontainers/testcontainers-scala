@@ -1,31 +1,46 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PulsarContainer => JavaPulsarContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class PulsarContainer(
-  tag: String = PulsarContainer.defaultTag
+  dockerImageName: DockerImageName = DockerImageName.parse(PulsarContainer.defaultDockerImageName)
 ) extends SingleContainer[JavaPulsarContainer] {
 
-  override val container: JavaPulsarContainer = new JavaPulsarContainer(tag)
+  @deprecated("Use `DockerImageName` for `dockerImageName` instead")
+  def this(
+    tag: String
+  ) {
+    this(
+      DockerImageName.parse(PulsarContainer.defaultImage).withTag(tag)
+    )
+  }
+
+  override val container: JavaPulsarContainer = new JavaPulsarContainer(dockerImageName)
 
   def pulsarBrokerUrl(): String = container.getPulsarBrokerUrl
 
   def httpServiceUrl(): String = container.getHttpServiceUrl
+
+  @deprecated("Use `dockerImageName.getVersionPart` instead")
+  def tag: String = dockerImageName.getVersionPart
 }
 
 object PulsarContainer {
 
+  val defaultImage = "apachepulsar/pulsar"
   val defaultTag = "2.2.0"
+  val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
   case class Def(
-    tag: String = PulsarContainer.defaultTag
+    dockerImageName: DockerImageName = DockerImageName.parse(PulsarContainer.defaultDockerImageName)
   ) extends ContainerDef {
 
     override type Container = PulsarContainer
 
     override def createContainer(): PulsarContainer = {
       new PulsarContainer(
-        tag
+        dockerImageName
       )
     }
   }

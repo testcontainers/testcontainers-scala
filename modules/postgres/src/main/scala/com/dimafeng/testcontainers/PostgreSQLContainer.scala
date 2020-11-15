@@ -4,18 +4,18 @@ import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLConta
 import org.testcontainers.utility.DockerImageName
 
 class PostgreSQLContainer(
-  dockerImageNameOverride: Option[DockerImageName] = None,
-  databaseName: Option[String] = None,
-  pgUsername: Option[String] = None,
-  pgPassword: Option[String] = None,
-  mountPostgresDataToTmpfs: Boolean = false,
-  urlParams: Map[String, String] = Map.empty,
-  commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
+  dockerImageName: DockerImageName,
+  databaseName: Option[String],
+  pgUsername: Option[String],
+  pgPassword: Option[String],
+  mountPostgresDataToTmpfs: Boolean,
+  urlParams: Map[String, String],
+  commonJdbcParams: JdbcDatabaseContainer.CommonParams
 ) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
 
   @deprecated("Use `DockerImageName` for `dockerImageNameOverride` instead")
   def this(
-    dockerImageNameOverride: Option[String],
+    dockerImageNameOverride: Option[String] = None,
     databaseName: Option[String] = None,
     pgUsername: Option[String] = None,
     pgPassword: Option[String] = None,
@@ -24,7 +24,8 @@ class PostgreSQLContainer(
     commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
   ) {
     this(
-      dockerImageNameOverride.map(DockerImageName.parse),
+      dockerImageNameOverride.map(DockerImageName.parse)
+        .getOrElse(DockerImageName.parse(PostgreSQLContainer.defaultDockerImageName)),
       databaseName,
       pgUsername,
       pgPassword,
@@ -35,12 +36,7 @@ class PostgreSQLContainer(
   }
 
   override val container: JavaPostgreSQLContainer[_] = {
-    val c: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
-      case Some(imageNameOverride) =>
-        new JavaPostgreSQLContainer(imageNameOverride)
-      case None =>
-        new JavaPostgreSQLContainer()
-    }
+    val c: JavaPostgreSQLContainer[_] = new JavaPostgreSQLContainer(dockerImageName)
 
     databaseName.foreach(c.withDatabaseName)
     pgUsername.foreach(c.withUsername)
@@ -75,7 +71,7 @@ object PostgreSQLContainer {
   val defaultPassword = "test"
 
   def apply(
-    dockerImageNameOverride: DockerImageName = null,
+    dockerImageNameOverride: String = null,
     databaseName: String = null,
     username: String = null,
     password: String = null,
@@ -86,22 +82,9 @@ object PostgreSQLContainer {
       Option(databaseName),
       Option(username),
       Option(password),
-      mountPostgresDataToTmpfs
-    )
-
-  def apply(
-    dockerImageNameOverride: String,
-    databaseName: String = null,
-    username: String = null,
-    password: String = null,
-    mountPostgresDataToTmpfs: Boolean = false
-  ): PostgreSQLContainer =
-    new PostgreSQLContainer(
-      Option(dockerImageNameOverride).map(DockerImageName.parse),
-      Option(databaseName),
-      Option(username),
-      Option(password),
-      mountPostgresDataToTmpfs
+      mountPostgresDataToTmpfs,
+      Map.empty[String, String],
+      JdbcDatabaseContainer.CommonParams()
     )
 
   case class Def(
@@ -118,7 +101,7 @@ object PostgreSQLContainer {
 
     override def createContainer(): PostgreSQLContainer = {
       new PostgreSQLContainer(
-        dockerImageNameOverride = Some(dockerImageName),
+        dockerImageName = dockerImageName,
         databaseName = Some(databaseName),
         pgUsername = Some(username),
         pgPassword = Some(password),
@@ -127,26 +110,5 @@ object PostgreSQLContainer {
         commonJdbcParams = commonJdbcParams
       )
     }
-  }
-
-  object Def {
-    def apply(
-      dockerImageName: String,
-      databaseName: String = defaultDatabaseName,
-      username: String = defaultUsername,
-      password: String = defaultPassword,
-      mountPostgresDataToTmpfs: Boolean = false,
-      urlParams: Map[String, String] = Map.empty,
-      commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-    ): Def =
-      Def(
-        dockerImageName = DockerImageName.parse(dockerImageName),
-        databaseName = databaseName,
-        username = username,
-        password = password,
-        mountPostgresDataToTmpfs = mountPostgresDataToTmpfs,
-        urlParams = urlParams,
-        commonJdbcParams = commonJdbcParams
-      )
   }
 }
