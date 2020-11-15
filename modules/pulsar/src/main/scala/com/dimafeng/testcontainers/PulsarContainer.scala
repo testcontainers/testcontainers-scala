@@ -4,12 +4,12 @@ import org.testcontainers.containers.{PulsarContainer => JavaPulsarContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class PulsarContainer(
-  dockerImageName: DockerImageName = DockerImageName.parse(PulsarContainer.defaultDockerImageName)
+  dockerImageName: DockerImageName
 ) extends SingleContainer[JavaPulsarContainer] {
 
   @deprecated("Use `DockerImageName` for `dockerImageName` instead")
   def this(
-    tag: String
+    tag: String = PulsarContainer.defaultTag
   ) {
     this(
       DockerImageName.parse(PulsarContainer.defaultImage).withTag(tag)
