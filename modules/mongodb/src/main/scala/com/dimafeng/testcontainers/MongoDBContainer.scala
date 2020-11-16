@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MongoDBContainer => JavaMongoDBContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class MongoDBContainer(
-  tag: Option[String] = None
+  tag: Option[DockerImageName] = None
 ) extends SingleContainer[JavaMongoDBContainer] {
 
   override val container: JavaMongoDBContainer = tag match {
@@ -16,10 +17,10 @@ case class MongoDBContainer(
 
 object MongoDBContainer {
 
-  def apply(tag: String): MongoDBContainer = new MongoDBContainer(Option(tag))
+  def apply(tag: DockerImageName): MongoDBContainer = new MongoDBContainer(Option(tag))
 
   case class Def(
-    tag: String = null
+    tag: DockerImageName = null
   ) extends ContainerDef {
 
     override type Container = MongoDBContainer
