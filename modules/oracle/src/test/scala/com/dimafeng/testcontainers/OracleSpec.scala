@@ -2,6 +2,7 @@ package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
 
+import com.dimafeng.testcontainers.implicits._
 import org.scalatest.FlatSpec
 
 class OracleSpec extends FlatSpec with ForAllTestContainer {

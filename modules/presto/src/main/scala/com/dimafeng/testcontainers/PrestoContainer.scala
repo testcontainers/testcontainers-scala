@@ -3,9 +3,10 @@ package com.dimafeng.testcontainers
 import java.sql.Connection
 
 import org.testcontainers.containers.{PrestoContainer => JavaPrestoContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class PrestoContainer(
-  dockerImageName: String = PrestoContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(PrestoContainer.defaultDockerImageName),
   dbUsername: String = PrestoContainer.defaultDbUsername,
   dbName: String = PrestoContainer.defaultDbName,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
@@ -31,7 +32,7 @@ object PrestoContainer {
   val defaultDbName = ""
 
   case class Def(
-    dockerImageName: String = PrestoContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(PrestoContainer.defaultDockerImageName),
     dbUsername: String = PrestoContainer.defaultDbUsername,
     dbName: String = PrestoContainer.defaultDbName,
     commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()

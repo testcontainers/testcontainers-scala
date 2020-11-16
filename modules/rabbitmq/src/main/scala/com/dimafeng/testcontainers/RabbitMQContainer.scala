@@ -1,10 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{RabbitMQContainer => JavaRabbitMQContainer}
-import org.testcontainers.utility.MountableFile
+import org.testcontainers.utility.{DockerImageName, MountableFile}
 
 case class RabbitMQContainer(
-  dockerImageName: String = RabbitMQContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
   adminPassword: String = RabbitMQContainer.defaultAdminPassword,
   queues: Seq[RabbitMQContainer.Queue] = Seq.empty,
   exchanges: Seq[RabbitMQContainer.Exchange] = Seq.empty,

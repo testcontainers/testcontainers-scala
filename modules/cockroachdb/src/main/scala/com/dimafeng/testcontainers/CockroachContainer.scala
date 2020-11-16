@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{CockroachContainer => JavaCockroachContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class CockroachContainer(
-  dockerImageName: String = CockroachContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(CockroachContainer.defaultDockerImageName),
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
 ) extends SingleContainer[JavaCockroachContainer] with JdbcDatabaseContainer {
@@ -28,7 +29,7 @@ object CockroachContainer {
   val defaultDockerImageName = s"${JavaCockroachContainer.IMAGE}:${JavaCockroachContainer.IMAGE_TAG}"
 
   case class Def(
-    dockerImageName: String = CockroachContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(CockroachContainer.defaultDockerImageName),
     urlParams: Map[String, String] = Map.empty,
     commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
   ) extends ContainerDef {

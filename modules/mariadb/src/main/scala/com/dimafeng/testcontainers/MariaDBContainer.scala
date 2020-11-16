@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MariaDBContainer => JavaMariaDBContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class MariaDBContainer(
-  dockerImageName: String = MariaDBContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(MariaDBContainer.defaultDockerImageName),
   dbName: String = MariaDBContainer.defaultDatabaseName,
   dbUsername: String = MariaDBContainer.defaultUsername,
   dbPassword: String = MariaDBContainer.defaultPassword,
@@ -39,7 +40,7 @@ object MariaDBContainer {
   val defaultPassword = "test"
 
   case class Def(
-    dockerImageName: String = MariaDBContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(MariaDBContainer.defaultDockerImageName),
     dbName: String = MariaDBContainer.defaultDatabaseName,
     dbUsername: String = MariaDBContainer.defaultUsername,
     dbPassword: String = MariaDBContainer.defaultPassword,

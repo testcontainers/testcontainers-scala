@@ -1,11 +1,12 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MSSQLServerContainer => JavaMSSQLServerContainer}
+import org.testcontainers.utility.DockerImageName
 
 import scala.concurrent.duration._
 
 case class MSSQLServerContainer(
-  dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(MSSQLServerContainer.defaultDockerImageName),
   dbPassword: String = MSSQLServerContainer.defaultPassword,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams
@@ -36,7 +37,7 @@ object MSSQLServerContainer {
   )
 
   case class Def(
-    dockerImageName: String = MSSQLServerContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(MSSQLServerContainer.defaultDockerImageName),
     password: String = MSSQLServerContainer.defaultPassword,
     urlParams: Map[String, String] = Map.empty,
     commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams

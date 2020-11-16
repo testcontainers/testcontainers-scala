@@ -1,10 +1,11 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{MySQLContainer => JavaMySQLContainer}
+import org.testcontainers.utility.DockerImageName
 
 class MySQLContainer(
   configurationOverride: Option[String] = None,
-  mysqlImageVersion: Option[String] = None,
+  mysqlImageVersion: Option[DockerImageName] = None,
   databaseName: Option[String] = None,
   mysqlUsername: Option[String] = None,
   mysqlPassword: Option[String] = None,
@@ -46,7 +47,7 @@ object MySQLContainer {
 
   def apply(
     configurationOverride: String = null,
-    mysqlImageVersion: String = null,
+    mysqlImageVersion: DockerImageName = null,
     databaseName: String = null,
     username: String = null,
     password: String = null
@@ -61,7 +62,7 @@ object MySQLContainer {
   }
 
   case class Def(
-    dockerImageName: String = defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,

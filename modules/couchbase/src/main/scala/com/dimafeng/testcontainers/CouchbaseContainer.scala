@@ -3,11 +3,12 @@ package com.dimafeng.testcontainers
 import java.util.EnumSet
 
 import org.testcontainers.couchbase.{CouchbaseService, BucketDefinition => JavaBucketDefinition, CouchbaseContainer => JavaCouchbaseContainer}
+import org.testcontainers.utility.DockerImageName
 
 import scala.collection.JavaConverters._
 
 case class CouchbaseContainer(
-  dockerImageName: String = CouchbaseContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(CouchbaseContainer.defaultDockerImageName),
   buckets: Seq[CouchbaseContainer.BucketDefinition] = Seq.empty,
   username: String = CouchbaseContainer.defaultUsername,
   password: String = CouchbaseContainer.defaultPassword,
@@ -55,7 +56,7 @@ object CouchbaseContainer {
   case class BucketDefinition(name: String, quota: Int = defaultQuota, hasPrimaryIndex: Boolean = defaultHasPrimaryIndex)
 
   case class Def(
-    dockerImageName: String = CouchbaseContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(CouchbaseContainer.defaultDockerImageName),
     buckets: Seq[CouchbaseContainer.BucketDefinition] = Seq.empty,
     username: String = CouchbaseContainer.defaultUsername,
     password: String = CouchbaseContainer.defaultPassword,
