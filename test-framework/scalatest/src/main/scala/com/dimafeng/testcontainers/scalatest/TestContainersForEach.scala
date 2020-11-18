@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers.scalatest
 
+import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import org.scalatest.{Args, Status, Suite}
 
 /**
@@ -30,7 +31,8 @@ import org.scalatest.{Args, Status, Suite}
   * }
   * }}}
   */
-trait TestContainersForEach extends TestContainersSuite { self: Suite =>
+trait TestContainersForEach extends TestContainersSuite
+  with DockerImageNameConverters { self: Suite =>
 
   abstract protected override def runTest(testName: String, args: Args): Status = {
     val containers = startContainers()

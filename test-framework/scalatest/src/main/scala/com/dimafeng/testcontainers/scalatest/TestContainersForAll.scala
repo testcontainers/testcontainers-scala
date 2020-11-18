@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers.scalatest
 
+import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import org.scalatest.{Args, CompositeStatus, Status, Suite}
 
 /**
@@ -30,7 +31,8 @@ import org.scalatest.{Args, CompositeStatus, Status, Suite}
   * }
   * }}}
   */
-trait TestContainersForAll extends TestContainersSuite { self: Suite =>
+trait TestContainersForAll extends TestContainersSuite
+  with DockerImageNameConverters { self: Suite =>
 
   abstract override def run(testName: Option[String], args: Args): Status = {
     if (expectedTestCount(args.filter) == 0) {

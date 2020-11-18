@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers.integration
 
 import com.dimafeng.testcontainers.{Container, ForAllTestContainer, MongoDBContainer, MultipleContainers}
-import com.dimafeng.testcontainers.implicits._
 import org.scalatest.{FlatSpec, Matchers}
 
 class MongoSpec extends FlatSpec with ForAllTestContainer with Matchers {

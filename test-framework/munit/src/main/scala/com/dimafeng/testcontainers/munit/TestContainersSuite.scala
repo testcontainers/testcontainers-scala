@@ -1,12 +1,13 @@
 package com.dimafeng.testcontainers.munit
 
+import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import com.dimafeng.testcontainers.lifecycle.{Andable, TestLifecycleAware}
 import com.dimafeng.testcontainers.munit.TestContainersSuite.IllegalWithContainersCall
 import munit.Suite
 import org.junit.runner.{Description => JunitDescription}
 import org.testcontainers.lifecycle.TestDescription
 
-trait TestContainersSuite { self: Suite =>
+trait TestContainersSuite extends DockerImageNameConverters { self: Suite =>
   /**
    * To use testcontainers suites you need to declare,
    * which containers you want to use inside your tests.

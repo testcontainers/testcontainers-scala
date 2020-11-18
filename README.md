@@ -95,6 +95,34 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 This spec starts one container and both tests share the container's state.
 
+Most of available container classes allow you to provide custom image name or version
+instead of default one set in the library.
+
+In order to provide custom image name you need to pass `DockerImageName` object.
+
+```scala
+override val container = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
+```
+
+Starting from testcontainers-java 1.15.0 container classes execute image compatibility checks during initialization
+(for more details, see this [pull request](https://github.com/testcontainers/testcontainers-java/pull/3021)).
+If you want to use custom image that is compatible with selected container class implementation,
+it must be explicitly marked as compatible with default image.
+
+```scala
+override val container = MongoDBContainer(DockerImageName.parse("myregistry/mongo:4.0.10").asCompatibleSubstituteFor("mongo"))
+```
+
+Providing custom image name as `String` is currently deprecated.
+Implicit conversion method is available in ScalaTest and MUnit traits.
+
+```scala
+class MongoSpec extends FlatSpec with ForAllTestContainer {
+    //deprecated implicit conversion
+    override val container = MongoDBContainer("mongo:4.0.10")
+}
+```
+
 ## Modules
 
 Testcontainers-scala is modular. All modules has the same version. To depend on some module put this into your `build.sbt` file: 
@@ -224,7 +252,7 @@ The container can also be customized using the constructor parameters, this snip
 ```scala
 class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer(mysqlImageVersion = "mysql:5.7.18",
+  override val container = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.18"),
                                           databaseName = "testcontainer-scala",
                                           username = "scala",
                                           password = "scala")
@@ -506,7 +534,7 @@ You have the option to override `afterContainersStart` and `beforeContainersStop
 class MySpec extends FlatSpec with TestContainerForAll {
 
   override val containerDef: ContainerDef =
-    PostgreSQLContainer.Def("postgres:12")
+    PostgreSQLContainer.Def(DockerImageName.parse("postgres:12"))
 
   override def afterContainersStart(container: Containers): Unit = {
     super.afterContainersStart(container)
@@ -578,6 +606,9 @@ class MySpec extends FlatSpec with TestContainersForAll {
 If you have any questions or difficulties feel free to ask it in our [slack channel](https://testcontainers.slack.com/messages/CAFK4GL85).
 
 ## Release notes
+
+* **0.38.7**
+    * Addressed testcontainers-java image compatibility checks by changing `String` to `DockerImageName` in Container class constructors
 
 * **0.38.6**
     * testcontainers-java updated to 1.15.0:
