@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{Db2Container => JavaDb2Container}
+import org.testcontainers.utility.DockerImageName
 
 case class Db2Container(
-  dockerImageName: String = Db2Container.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(Db2Container.defaultDockerImageName),
   dbName: String = Db2Container.defaultDatabaseName,
   dbUsername: String = Db2Container.defaultUsername,
   dbPassword: String = Db2Container.defaultPassword,
@@ -37,7 +38,7 @@ object Db2Container {
   val defaultPassword = "foobar1234"
 
   case class Def(
-    dockerImageName: String = Db2Container.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(Db2Container.defaultDockerImageName),
     dbName: String = Db2Container.defaultDatabaseName,
     dbUsername: String = Db2Container.defaultUsername,
     dbPassword: String = Db2Container.defaultPassword,

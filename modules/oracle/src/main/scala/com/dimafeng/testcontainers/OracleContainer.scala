@@ -1,6 +1,7 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{OracleContainer => JavaOracleContainer}
+import org.testcontainers.utility.DockerImageName
 
 import scala.concurrent.duration._
 
@@ -11,7 +12,7 @@ import scala.concurrent.duration._
   *                        for instance "oracleinanutshell/oracle-xe-11g".
   */
 case class OracleContainer(
-  dockerImageName: String,
+  dockerImageName: DockerImageName,
   oraUsername: String = OracleContainer.defaultUsername,
   oraPassword: String = OracleContainer.defaultPassword,
   containerSharedMemory: Long = OracleContainer.defaultSharedMemory,
@@ -49,7 +50,7 @@ object OracleContainer {
   )
 
   case class Def(
-    dockerImageName: String,
+    dockerImageName: DockerImageName,
     username: String = defaultUsername,
     password: String = defaultPassword,
     containerSharedMemory: Long = defaultSharedMemory,

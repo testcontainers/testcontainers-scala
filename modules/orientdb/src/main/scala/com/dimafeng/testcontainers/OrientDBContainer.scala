@@ -2,9 +2,10 @@ package com.dimafeng.testcontainers
 
 import com.orientechnologies.orient.core.db.{ODatabaseSession, OrientDB}
 import org.testcontainers.containers.{OrientDBContainer => JavaOrientDBContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class OrientDBContainer(
-  dockerImageName: String = OrientDBContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
   databaseName: String = OrientDBContainer.defaultDatabaseName,
   serverPassword: String = OrientDBContainer.defaultServerPassword,
   scriptPath: Option[String] = None
@@ -38,7 +39,7 @@ object OrientDBContainer {
   val defaultServerPassword = "root"
 
   case class Def(
-    dockerImageName: String = OrientDBContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
     databaseName: String = OrientDBContainer.defaultDatabaseName,
     serverPassword: String = OrientDBContainer.defaultServerPassword,
     scriptPath: Option[String] = None

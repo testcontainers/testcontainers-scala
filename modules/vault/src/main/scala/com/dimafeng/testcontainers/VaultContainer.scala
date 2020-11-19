@@ -1,8 +1,9 @@
 package com.dimafeng.testcontainers;
 
+import org.testcontainers.utility.DockerImageName
 import org.testcontainers.vault.{VaultContainer => JavaVaultContainer}
 
-class VaultContainer(dockerImageNameOverride: Option[String] = None,
+class VaultContainer(dockerImageNameOverride: Option[DockerImageName] = None,
                      vaultToken: Option[String] = None,
                      @deprecated vaultPort: Option[Int] = None,
                      secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[_]] {
@@ -34,7 +35,7 @@ object VaultContainer {
     secrets: Seq[String]
   )
 
-  def apply(dockerImageNameOverride: String = null,
+  def apply(dockerImageNameOverride: DockerImageName = null,
             vaultToken: String = null,
             @deprecated vaultPort: Option[Int] = None,
             secrets: Option[VaultContainer.Secrets] = None): VaultContainer = new VaultContainer(
@@ -45,7 +46,7 @@ object VaultContainer {
   )
 
   case class Def(
-    dockerImageName: String = defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
     vaultToken: Option[String] = None,
     @deprecated vaultPort: Option[Int] = None,
     secrets: Option[VaultContainer.Secrets] = None

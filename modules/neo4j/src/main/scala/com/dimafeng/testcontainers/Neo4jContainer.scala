@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{Neo4jContainer => JavaNeo4jContainer}
+import org.testcontainers.utility.DockerImageName
 
 class Neo4jContainer(configurationOverride: Option[String] = None,
-                     neo4jImageVersion: Option[String] = None,
+                     neo4jImageVersion: Option[DockerImageName] = None,
                      neo4jPassword: Option[String] = None)
   extends SingleContainer[JavaNeo4jContainer[_]] {
 
@@ -29,14 +30,14 @@ object Neo4jContainer {
   val DEFAULT_NEO4J_VERSION = defaultDockerImageName
 
   def apply(configurationOverride: String = null,
-            neo4jImageVersion: String = null,
+            neo4jImageVersion: DockerImageName = null,
             password: String = null): Neo4jContainer =
     new Neo4jContainer(Option(configurationOverride),
       Option(neo4jImageVersion),
       Option(password))
 
   case class Def(
-    dockerImageName: String = defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
     password: String = defaultPassword,
     configurationOverride: Option[String] = None
   ) extends ContainerDef {

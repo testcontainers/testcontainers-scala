@@ -1,5 +1,6 @@
 package com.dimafeng.testcontainers
 
+import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.junit.runner.{Description => JunitDescription}
 import org.scalatest._
@@ -28,7 +29,7 @@ private[testcontainers] object TestContainers {
     description
   }
 
-  trait TestContainersSuite extends SuiteMixin { self: Suite =>
+  trait TestContainersSuite extends SuiteMixin with DockerImageNameConverters { self: Suite =>
 
     def container: Container
 

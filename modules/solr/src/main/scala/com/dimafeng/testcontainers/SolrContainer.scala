@@ -3,9 +3,10 @@ package com.dimafeng.testcontainers
 import java.net.URL
 
 import org.testcontainers.containers.{SolrContainerConfiguration, SolrContainer => JavaSolrContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class SolrContainer(
-  dockerImageName: String = SolrContainer.defaultDockerImageName,
+  dockerImageName: DockerImageName = DockerImageName.parse(SolrContainer.defaultDockerImageName),
   zookeeper: Boolean = SolrContainer.defaultConfig.isZookeeper,
   collectionName: String = SolrContainer.defaultConfig.getCollectionName,
   configurationName: String = SolrContainer.defaultConfig.getConfigurationName,
@@ -41,7 +42,7 @@ object SolrContainer {
   val defaultConfig = new SolrContainerConfiguration()
 
   case class Def(
-    dockerImageName: String = SolrContainer.defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(SolrContainer.defaultDockerImageName),
     zookeeper: Boolean = SolrContainer.defaultConfig.isZookeeper,
     collectionName: String = SolrContainer.defaultConfig.getCollectionName,
     configurationName: String = SolrContainer.defaultConfig.getConfigurationName,

@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
+import org.testcontainers.utility.DockerImageName
 
 class PostgreSQLContainer(
-  dockerImageNameOverride: Option[String] = None,
+  dockerImageNameOverride: Option[DockerImageName] = None,
   databaseName: Option[String] = None,
   pgUsername: Option[String] = None,
   pgPassword: Option[String] = None,
@@ -53,7 +54,7 @@ object PostgreSQLContainer {
   val defaultPassword = "test"
 
   def apply(
-    dockerImageNameOverride: String = null,
+    dockerImageNameOverride: DockerImageName = null,
     databaseName: String = null,
     username: String = null,
     password: String = null,
@@ -68,7 +69,7 @@ object PostgreSQLContainer {
     )
 
   case class Def(
-    dockerImageName: String = defaultDockerImageName,
+    dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,
