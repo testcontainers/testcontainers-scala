@@ -18,7 +18,7 @@ case class ToxiproxyContainer(
 
 object ToxiproxyContainer {
 
-  val defaultDockerImageName = "shopify/toxiproxy:2.1.0"
+  val defaultDockerImageName = "shopify/toxiproxy:2.1.4"
 
   type ContainerProxy = JavaToxiproxyContainer.ContainerProxy
 
