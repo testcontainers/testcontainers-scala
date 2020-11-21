@@ -405,7 +405,7 @@ lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
   )
 
 lazy val moduleToxiproxy = (project in file("modules/toxiproxy"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-toxiproxy",
