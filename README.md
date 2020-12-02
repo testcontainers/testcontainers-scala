@@ -74,6 +74,9 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 }
 ```
 
+Be sure to override `container` with a `val` not a `def`, otherwise you will start a new container each 
+time you call `container` and this is likely to fail your tests.
+
 This spec has a clean mysql database instance for each of its test cases.
 
 ```scala
