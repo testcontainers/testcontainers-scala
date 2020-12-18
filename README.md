@@ -610,6 +610,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.38.8**
+    * testcontainers-java updated to 1.15.1.
+
 * **0.38.7**
     * Addressed testcontainers-java image compatibility checks by changing `String` to `DockerImageName` in Container class constructors
 
