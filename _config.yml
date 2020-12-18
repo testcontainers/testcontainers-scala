@@ -1,0 +1,11 @@
+name: testcontainers-scala
+baseurl: /testcontainers-scala
+description: 'Docker containers for testing in scala '
+highlighter: rouge
+docs: true
+collections:
+  tut:
+    output: true
+version: 0.38.9-SNAPSHOT
+org: com.dimafeng
+markdown: kramdown
