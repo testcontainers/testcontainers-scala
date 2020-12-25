@@ -407,7 +407,7 @@ If you want to use multiple containers in your test:
 class ExampleSpec extends FlatSpec with TestContainersForAll {
 
   // First of all, you need to declare, which containers you want to use
-  override type Containers = MySQLContainer and PostgreSQLContainer
+  override type Containers = MySQLContainer and PostgreSQLContainer and DockerComposeContainer
 
   // After that, you need to describe, how you want to start them,
   // In this method you can use any intermediate logic.
@@ -415,11 +415,12 @@ class ExampleSpec extends FlatSpec with TestContainersForAll {
   override def startContainers(): Containers = {
     val container1 = MySQLContainer.Def().start()
     val container2 = PostgreSQLContainer.Def().start()
-    container1 and container2
+    val container3 = DockerComposeContainer.Def(ComposeFile(Left(new File("docker-compose.yml")))).start()
+    container1 and container2 and container3
   }
   
   // `withContainers` function supports multiple containers:
-  it should "test" in withContainers { case mysqlContainer and pgContainer =>
+  it should "test" in withContainers { case mysqlContainer and pgContainer and dcContainer =>
     // Inside your test body you can do with your containers whatever you want to
     assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
   }
@@ -506,7 +507,7 @@ If you want to use multiple containers for all tests in your suite:
 class ExampleSpec extends FunSuite with TestContainersForAll {
 
   // First of all, you need to declare, which containers you want to use
-  override type Containers = MySQLContainer and PostgreSQLContainer
+  override type Containers = MySQLContainer and PostgreSQLContainer and DockerComposeContainer
 
   // After that, you need to describe, how you want to start them,
   // In this method you can use any intermediate logic.
@@ -514,12 +515,13 @@ class ExampleSpec extends FunSuite with TestContainersForAll {
   override def startContainers(): Containers = {
     val container1 = MySQLContainer.Def().start()
     val container2 = PostgreSQLContainer.Def().start()
-    container1 and container2
+    val container3 = DockerComposeContainer.Def(ComposeFile(Left(new File("docker-compose.yml")))).start()
+    container1 and container2 and container3
   }
 
   // `withContainers` function supports multiple containers:
   test("test") {
-    withContainers { case mysqlContainer and pgContainer =>
+    withContainers { case mysqlContainer and pgContainer and dcContainer =>
       // Inside your test body you can do with your containers whatever you want to
       assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
     }
