@@ -458,5 +458,4 @@ lazy val microsite = (project in file("docs"))
     micrositeGithubRepo := "testcontainers-scala",
     micrositeBaseUrl := "/testcontainers-scala",
     ghpagesNoJekyll := false,
-    fork in tut := true
   )
