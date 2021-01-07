@@ -443,20 +443,3 @@ lazy val moduleSolr = (project in file("modules/solr"))
     name := "testcontainers-scala-solr",
     libraryDependencies ++= Dependencies.moduleSolr.value
   )
-
-lazy val microsite = (project in file("docs"))
-  .settings(moduleName := "docs")
-  .enablePlugins(MicrositesPlugin)
-  .settings(
-    micrositeName := "testcontainers-scala",
-    micrositeDescription := "Docker containers for testing in scala ",
-    micrositeAuthor := "dimafeng",
-    micrositeHighlightTheme := "atom-one-light",
-    micrositeHomepage := "https://github.com/testcontainers/testcontainers-scala",
-    micrositeDocumentationUrl := "docs.html",
-    micrositeGithubOwner := "testcontainers",
-    micrositeGithubRepo := "testcontainers-scala",
-    micrositeBaseUrl := "/testcontainers-scala",
-    ghpagesNoJekyll := false,
-    fork in tut := true
-  )
