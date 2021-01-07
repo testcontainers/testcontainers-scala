@@ -34,4 +34,4 @@ jobs:
           restore-keys: |
             cache-v1-
       - name: Compile and Test
-        run: ./sbt +test
+        run: sbt +test
