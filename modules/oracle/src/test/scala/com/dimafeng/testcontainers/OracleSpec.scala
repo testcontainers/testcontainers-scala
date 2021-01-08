@@ -9,6 +9,7 @@ class OracleSpec extends FlatSpec with ForAllTestContainer {
   override val container: OracleContainer = OracleContainer("oracleinanutshell/oracle-xe-11g")
 
   "Oracle container" should "be started" in {
+    System.setProperty("oracle.jdbc.timezoneAsRegion", "false")
     Class.forName(container.driverClassName)
     val connection = DriverManager.getConnection(
       container.jdbcUrl,
