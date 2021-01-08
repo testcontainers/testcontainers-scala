@@ -15,7 +15,7 @@ object Dependencies {
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.0.8"
-  private val junitVersion = "4.13"
+  private val junitVersion = "4.13.1"
   private val munitVersion = "0.7.4"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
