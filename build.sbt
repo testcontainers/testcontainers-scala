@@ -4,8 +4,8 @@ import ReleaseTransformations._
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
-  scalaVersion in ThisBuild := "2.12.11",
-  crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.4"),
+  scalaVersion in ThisBuild := "2.12.12",
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
 
   parallelExecution in ThisBuild := false,
   fork := true,
