@@ -1,8 +1,8 @@
 package com.dimafeng.testcontainers
 
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class ToxiproxySpec extends FlatSpec with ForAllTestContainer  {
+class ToxiproxySpec extends AnyFlatSpec with ForAllTestContainer  {
 
   override val container = ToxiproxyContainer()
 

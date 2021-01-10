@@ -1,9 +1,10 @@
 package com.dimafeng.testcontainers.integration
 
 import com.dimafeng.testcontainers.{Container, ForAllTestContainer, MongoDBContainer, MultipleContainers}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class MongoSpec extends FlatSpec with ForAllTestContainer with Matchers {
+class MongoSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   private val mongoDefault = MongoDBContainer()
   private val mongo = MongoDBContainer("mongo:4.0.10")

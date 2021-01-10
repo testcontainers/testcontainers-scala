@@ -62,7 +62,7 @@ To start using it, you just need to extend one of those traits and override a `c
 ```scala
 import com.dimafeng.testcontainers.{ForAllTestContainer, MySQLContainer}
 
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container = MySQLContainer()
 
@@ -82,7 +82,7 @@ This spec has a clean mysql database instance for each of its test cases.
 ```scala
 import org.testcontainers.containers.MySQLContainer
 
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
     override val container = MySQLContainer()
 
@@ -120,7 +120,7 @@ Providing custom image name as `String` is currently deprecated.
 Implicit conversion method is available in ScalaTest and MUnit traits.
 
 ```scala
-class MongoSpec extends FlatSpec with ForAllTestContainer {
+class MongoSpec extends AnyFlatSpec with ForAllTestContainer {
     //deprecated implicit conversion
     override val container = MongoDBContainer("mongo:4.0.10")
 }
@@ -179,7 +179,7 @@ The most flexible but less convenient container type is `GenericContainer`. This
 with custom configuration.
 
 ```scala
-class GenericContainerSpec extends FlatSpec with ForAllTestContainer {
+class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container = GenericContainer("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
@@ -196,7 +196,7 @@ class GenericContainerSpec extends FlatSpec with ForAllTestContainer {
 ### Docker Compose
 
 ```scala
-class ComposeSpec extends FlatSpec with ForAllTestContainer {
+class ComposeSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container = DockerComposeContainer(new File("src/test/resources/docker-compose.yml"), exposedServices = Seq(ExposedService("redis_1", 6379)))
 
   "DockerComposeContainer" should "retrieve non-0 port for any of services" in {
@@ -216,7 +216,7 @@ Before you can use this type of containers, you need to add the following depend
 Now you can write a test in this way:
 
 ```
-class SeleniumSpec extends FlatSpec with SeleniumTestContainerSuite with WebBrowser {
+class SeleniumSpec extends AnyFlatSpec with SeleniumTestContainerSuite with WebBrowser {
   override def desiredCapabilities = DesiredCapabilities.chrome()
 
   "Browser" should "show google" in {
@@ -239,7 +239,7 @@ Requires you to add this dependency:
 ```
 
 ```scala
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container = MySQLContainer()
 
@@ -253,7 +253,7 @@ class MysqlSpec extends FlatSpec with ForAllTestContainer {
 
 The container can also be customized using the constructor parameters, this snippet will initialize a docker container from a specific docker image, with a specific schema name and specific username/password
 ```scala
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.18"),
                                           databaseName = "testcontainer-scala",
@@ -277,7 +277,7 @@ Requires you to add this dependency:
 ```
 
 ```scala
-class PostgresqlSpec extends FlatSpec with ForAllTestContainer  {
+class PostgresqlSpec extends AnyFlatSpec with ForAllTestContainer  {
 
   override val container = PostgreSQLContainer()
 
@@ -340,7 +340,7 @@ override val container = MySQLContainer().configure { c =>
 If you want to execute your code after container start or before container stop you can override `afterStart()` and `beforeStop()` methods.
 
 ```scala
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   ...
 
@@ -385,7 +385,7 @@ You can use one of the four traits:
 
 If you want to use a single container in your test:
 ```scala
-class MysqlSpec extends FlatSpec with TestContainerForAll {
+class MysqlSpec extends AnyFlatSpec with TestContainerForAll {
 
   // You need to override `containerDef` with needed container definition
   override val containerDef = MySQLContainer.Def()
@@ -404,7 +404,7 @@ Usage of `TestContainerForEach` is not different from the example above.
 
 If you want to use multiple containers in your test:
 ```scala
-class ExampleSpec extends FlatSpec with TestContainersForAll {
+class ExampleSpec extends AnyFlatSpec with TestContainersForAll {
 
   // First of all, you need to declare, which containers you want to use
   override type Containers = MySQLContainer and PostgreSQLContainer and DockerComposeContainer
@@ -536,7 +536,7 @@ You have the option to override `afterContainersStart` and `beforeContainersStop
 
 ##### Example with single container
 ```scala
-class MySpec extends FlatSpec with TestContainerForAll {
+class MySpec extends AnyFlatSpec with TestContainerForAll {
 
   override val containerDef: ContainerDef =
     PostgreSQLContainer.Def(DockerImageName.parse("postgres:12"))
@@ -566,7 +566,7 @@ class MySpec extends FlatSpec with TestContainerForAll {
 
 ##### Example with multiple containers
 ```scala
-class MySpec extends FlatSpec with TestContainersForAll {
+class MySpec extends AnyFlatSpec with TestContainersForAll {
 
   override type Containers = MySQLContainer and PostgreSQLContainer
 

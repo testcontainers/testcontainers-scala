@@ -3,9 +3,9 @@ package com.dimafeng.testcontainers.integration
 import java.io.File
 
 import com.dimafeng.testcontainers.{DockerComposeContainer, ExposedService, ForAllTestContainer}
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class ComposeSpec extends FlatSpec with ForAllTestContainer {
+class ComposeSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container = DockerComposeContainer(
     new File(getClass.getClassLoader.getResource("docker-compose.yml").getPath),
     Seq(ExposedService("redis", 6379))

@@ -8,7 +8,7 @@ import org.scalatest.Suite
   *
   * Example:
   * {{{
-  * class MysqlSpec extends FlatSpec with TestContainerForAll {
+  * class MysqlSpec extends AnyFlatSpec with TestContainerForAll {
   *
   *   // You need to override `containerDef` with needed container definition
   *   override val containerDef = MySQLContainer.Def()
