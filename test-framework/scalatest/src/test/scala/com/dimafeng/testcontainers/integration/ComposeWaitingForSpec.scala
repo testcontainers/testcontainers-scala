@@ -4,10 +4,10 @@ import java.io.File
 import java.time.Duration.ofSeconds
 
 import com.dimafeng.testcontainers.{DockerComposeContainer, ForAllTestContainer, WaitingForService}
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.Wait
 
-class ComposeWaitingForSpec extends FlatSpec with ForAllTestContainer {
+class ComposeWaitingForSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container = DockerComposeContainer(
     Seq(new File(getClass.getClassLoader.getResource("docker-compose.yml").getPath)),
     waitingFor = Some(WaitingForService("redis", Wait.forLogMessage(".*Ready to accept connections\\n", 1)))
@@ -19,7 +19,7 @@ class ComposeWaitingForSpec extends FlatSpec with ForAllTestContainer {
   }
 }
 
-class ComposeWaitingForWithTimeoutSpec extends FlatSpec {
+class ComposeWaitingForWithTimeoutSpec extends AnyFlatSpec {
 
   "DockerComposeContainer" should "throw exception when timeout occurs" in {
     val waitStrategy = Wait.forLogMessage("this is never happen", 1)

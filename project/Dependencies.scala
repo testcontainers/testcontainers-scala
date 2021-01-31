@@ -14,7 +14,9 @@ object Dependencies {
   private val testcontainersVersion = "1.15.1"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
-  private val scalaTestVersion = "3.0.8"
+  private val scalaTestVersion = "3.2.3"
+  private val scalaTestMockitoVersion = "3.2.3.0"
+  private val scalaTestSeleniumVersion = "3.2.2.0"
   private val junitVersion = "4.13.1"
   private val munitVersion = "0.7.4"
   private val mysqlConnectorVersion = "5.1.42"
@@ -42,6 +44,8 @@ object Dependencies {
     ) ++ TEST(
       "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
+      "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
+      "org.scalatestplus" %% "selenium-3-141" % scalaTestSeleniumVersion,
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.postgresql" % "postgresql" % postgresqlDriverVersion,
       "org.mockito" % "mockito-core" % mockitoVersion

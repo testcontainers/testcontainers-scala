@@ -3,13 +3,13 @@ package com.dimafeng.testcontainers.integration
 import java.net.URL
 
 import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer}
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.images.builder.ImageFromDockerfile
 
 import scala.io.Source
 
-class GenericContainerSpec extends FlatSpec with ForAllTestContainer {
+class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container = GenericContainer("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")

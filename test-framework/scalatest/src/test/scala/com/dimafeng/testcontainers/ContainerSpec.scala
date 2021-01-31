@@ -7,7 +7,8 @@ import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{times, verify}
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}
-import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatest.{Args, Reporter}
+import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.lifecycle.{TestDescription, TestLifecycleAware => JavaTestLifecycleAware}
 
 class ContainerSpec extends BaseSpec[ForEachTestContainer] {
@@ -121,7 +122,7 @@ class ContainerSpec extends BaseSpec[ForEachTestContainer] {
 
 object ContainerSpec {
 
-  protected class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+  protected class TestSpec(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForEachTestContainer {
     override val container = _container
 
     it should "test" in {
@@ -129,7 +130,7 @@ object ContainerSpec {
     }
   }
 
-  protected class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+  protected class TestSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForEachTestContainer {
     override val container = _container
 
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
@@ -139,7 +140,7 @@ object ContainerSpec {
     }
   }
 
-  protected class MultipleTestsSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class MultipleTestsSpec(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForAllTestContainer {
     override val container = _container
 
     it should "test1" in {
@@ -151,7 +152,7 @@ object ContainerSpec {
     }
   }
 
-  protected class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class MultipleTestsSpecWithFailedAfterStart(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForAllTestContainer {
     override val container = _container
 
     override def afterStart(): Unit = throw new RuntimeException("something wrong in afterStart()")
@@ -165,7 +166,7 @@ object ContainerSpec {
     }
   }
 
-  protected class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends FlatSpec with ForAllTestContainer {
+  protected class TestSpecWithAllIgnored(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForAllTestContainer {
     override val container = _container
 
     it should "test" ignore {

@@ -1,10 +1,10 @@
 package com.dimafeng.testcontainers.lifecycle
 
-import org.scalatest.FreeSpec
+import org.scalatest.freespec.AnyFreeSpec
 
 import scala.collection.mutable
 
-class AndableTest extends FreeSpec {
+class AndableTest extends AnyFreeSpec {
 
   case class Cont1(i: Int, buffer: mutable.Buffer[Int] = mutable.Buffer.empty[Int]) extends Stoppable {
     override def stop(): Unit = buffer.append(i)

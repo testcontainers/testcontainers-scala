@@ -5,12 +5,12 @@ import java.net.URL
 import com.dimafeng.testcontainers.{GenericContainer, SingleContainer}
 import com.dimafeng.testcontainers.lifecycle.and
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.Wait
 
 import scala.io.Source
 
-class GenericContainerDefSpec extends FlatSpec with TestContainersForAll {
+class GenericContainerDefSpec extends AnyFlatSpec with TestContainersForAll {
 
   import GenericContainerDefSpec._
 

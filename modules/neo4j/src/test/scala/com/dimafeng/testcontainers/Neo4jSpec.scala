@@ -2,11 +2,11 @@ package com.dimafeng.testcontainers
 
 import org.neo4j.driver._
 
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
 
 
-class Neo4jSpec extends FlatSpec with ForAllTestContainer {
+class Neo4jSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container = Neo4jContainer()
 

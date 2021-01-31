@@ -6,7 +6,9 @@ import com.dimafeng.testcontainers.{BaseSpec, ContainerDef, SampleContainer, Sam
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{times, verify}
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}
-import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatest.{Args, Reporter}
+import org.scalatest.flatspec.AnyFlatSpec
+
 
 class TestContainerForAllSpec extends BaseSpec[TestContainerForAll] {
 
@@ -93,7 +95,7 @@ class TestContainerForAllSpec extends BaseSpec[TestContainerForAll] {
 object TestContainerForAllSpec {
 
   protected class TestSpec(testBody: => Unit, contDef: ContainerDef)
-    extends FlatSpec with TestContainerForAll {
+    extends AnyFlatSpec with TestContainerForAll {
 
     override val containerDef: ContainerDef = contDef
 
@@ -102,7 +104,7 @@ object TestContainerForAllSpec {
     }
   }
 
-  protected class MultipleTestsSpec(testBody: => Unit, contDef: ContainerDef) extends FlatSpec with TestContainerForAll {
+  protected class MultipleTestsSpec(testBody: => Unit, contDef: ContainerDef) extends AnyFlatSpec with TestContainerForAll {
 
     override val containerDef: ContainerDef = contDef
 
@@ -119,7 +121,7 @@ object TestContainerForAllSpec {
     testBody: => Unit,
     contDef: ContainerDef,
     beforeContStop: () => Unit
-  ) extends FlatSpec with TestContainerForAll {
+  ) extends AnyFlatSpec with TestContainerForAll {
 
     override val containerDef: ContainerDef = contDef
 
@@ -137,7 +139,7 @@ object TestContainerForAllSpec {
     }
   }
 
-  protected class TestSpecWithAllIgnored(testBody: => Unit, contDef: ContainerDef) extends FlatSpec with TestContainerForAll {
+  protected class TestSpecWithAllIgnored(testBody: => Unit, contDef: ContainerDef) extends AnyFlatSpec with TestContainerForAll {
 
     override val containerDef: ContainerDef = contDef
 

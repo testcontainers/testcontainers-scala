@@ -2,9 +2,9 @@ package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
 
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class MysqlSpec extends FlatSpec with ForAllTestContainer {
+class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container = MySQLContainer()
 

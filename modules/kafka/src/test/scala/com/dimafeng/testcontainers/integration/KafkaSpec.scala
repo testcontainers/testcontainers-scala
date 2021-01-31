@@ -1,13 +1,13 @@
 package com.dimafeng.testcontainers.integration
 
 import java.util.Properties
-
 import com.dimafeng.testcontainers.{ForAllTestContainer, KafkaContainer}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class KafkaSpec extends FlatSpec with ForAllTestContainer with Matchers {
+class KafkaSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   override val container = KafkaContainer()
 

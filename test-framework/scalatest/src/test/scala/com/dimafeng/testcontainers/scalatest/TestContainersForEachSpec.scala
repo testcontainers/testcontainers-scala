@@ -7,7 +7,8 @@ import com.dimafeng.testcontainers.{BaseSpec, SampleContainer, SampleJavaContain
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{times, verify}
 import org.mockito.{ArgumentCaptor, ArgumentMatchers, Mockito}
-import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatest.{Args, Reporter}
+import org.scalatest.flatspec.AnyFlatSpec
 
 class TestContainersForEachSpec extends BaseSpec[TestContainersForEach] {
 
@@ -166,7 +167,7 @@ object TestContainersForEachSpec {
     testBody: => Unit,
     container1: SampleJavaContainer,
     container2: SampleJavaContainer
-  ) extends FlatSpec with TestContainersForEach {
+  ) extends AnyFlatSpec with TestContainersForEach {
     override type Containers = SampleContainer and SampleContainer
 
     override def startContainers(): Containers = {

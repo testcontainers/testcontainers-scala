@@ -8,7 +8,7 @@ import org.scalatest.{Args, CompositeStatus, Status, Suite}
   *
   * Example:
   * {{{
-  * class ExampleSpec extends FlatSpec with TestContainersForAll {
+  * class ExampleSpec extends AnyFlatSpec with TestContainersForAll {
   *
   *   // First of all, you need to declare, which containers you want to use
   *   override type Containers = MySQLContainer and PostgreSQLContainer

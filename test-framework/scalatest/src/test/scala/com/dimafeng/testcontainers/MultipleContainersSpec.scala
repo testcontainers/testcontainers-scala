@@ -6,7 +6,9 @@ import com.dimafeng.testcontainers.MultipleContainersSpec.{InitializableContaine
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.verify
-import org.scalatest.{Args, FlatSpec, Reporter}
+import org.scalatest.{Args, Reporter}
+import org.scalatest.flatspec.AnyFlatSpec
+
 import org.scalatestplus.mockito.MockitoSugar
 
 class MultipleContainersSpec extends BaseSpec[ForEachTestContainer] {
@@ -64,7 +66,7 @@ object MultipleContainersSpec {
     override implicit val container: SampleJavaContainer = mock[SampleJavaContainer]
   }
 
-  protected class TestSpec(testBody: => Unit, _container: Container) extends FlatSpec with ForEachTestContainer {
+  protected class TestSpec(testBody: => Unit, _container: Container) extends AnyFlatSpec with ForEachTestContainer {
     override val container = _container
 
     it should "test" in {

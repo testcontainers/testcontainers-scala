@@ -1,9 +1,9 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.scalatest.TestContainerForAll
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class ClickHouseContainerSpec extends FlatSpec with TestContainerForAll {
+class ClickHouseContainerSpec extends AnyFlatSpec with TestContainerForAll {
 
   override val containerDef: ClickHouseContainer.Def = ClickHouseContainer.Def()
 

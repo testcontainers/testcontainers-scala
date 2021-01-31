@@ -2,9 +2,9 @@ package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
 
-import org.scalatest.FlatSpec
+import org.scalatest.flatspec.AnyFlatSpec
 
-class OracleSpec extends FlatSpec with ForAllTestContainer {
+class OracleSpec extends AnyFlatSpec with ForAllTestContainer {
 
   override val container: OracleContainer = OracleContainer("oracleinanutshell/oracle-xe-11g")
 
