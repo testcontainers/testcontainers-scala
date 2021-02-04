@@ -612,6 +612,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.0**
+    * Scalatest 3.2.3
+
 * **0.38.8**
     * testcontainers-java updated to 1.15.1.
 
