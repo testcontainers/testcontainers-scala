@@ -18,11 +18,11 @@ class FixedHostPortGenericContainer(imageName: String,
   if (exposedPorts.nonEmpty) {
     container.withExposedPorts(exposedPorts.map(int2Integer): _*)
   }
-  env.foreach(Function.tupled(container.withEnv))
+  env.foreach{case (k, v) => container.withEnv(k, v)}
   if (command.nonEmpty) {
     container.withCommand(command: _*)
   }
-  classpathResourceMapping.foreach(Function.tupled(container.withClasspathResourceMapping))
+  classpathResourceMapping.foreach{case (a, b, c) => container.withClasspathResourceMapping(a, b, c)}
   waitStrategy.foreach(container.waitingFor)
   container.withFixedExposedPort(exposedHostPort, exposedContainerPort)
 }

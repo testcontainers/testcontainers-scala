@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class ToxiproxySpec extends AnyFlatSpec with ForAllTestContainer  {
 
-  override val container = ToxiproxyContainer()
+  override val container: ToxiproxyContainer = ToxiproxyContainer()
 
   "Toxiproxy container" should "be started" in {
     assert(container.container.isRunning)

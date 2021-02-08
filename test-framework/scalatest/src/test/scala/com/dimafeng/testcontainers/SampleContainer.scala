@@ -6,7 +6,7 @@ import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer}
 import org.testcontainers.lifecycle.{TestDescription, TestLifecycleAware => JavaTestLifecycleAware}
 
-class SampleJavaContainer extends JavaGenericContainer with JavaTestLifecycleAware {
+class SampleJavaContainer extends JavaGenericContainer[SampleJavaContainer] with JavaTestLifecycleAware {
 
   override def beforeTest(description: TestDescription): Unit = {
     println("beforeTest")

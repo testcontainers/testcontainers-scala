@@ -10,7 +10,7 @@ import org.testcontainers.images.builder.ImageFromDockerfile
 import scala.io.Source
 
 class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = GenericContainer("nginx:latest",
+  override val container: GenericContainer = GenericContainer("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
   )
@@ -24,7 +24,7 @@ class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
 
 class GenericContainerDockerFileSpec extends GenericContainerSpec {
   private val imageFromDockerfile = new ImageFromDockerfile().withFileFromClasspath("Dockerfile", "generic-container-dockerfile")
-  override val container = GenericContainer(imageFromDockerfile,
+  override val container: GenericContainer = GenericContainer(imageFromDockerfile,
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
   )

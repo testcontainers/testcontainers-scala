@@ -64,7 +64,7 @@ import com.dimafeng.testcontainers.{ForAllTestContainer, MySQLContainer}
 
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer()
+  override val container: MySQLContainer = MySQLContainer()
 
   it should "do something" in {
     Class.forName(container.driverClassName)
@@ -84,7 +84,7 @@ import org.testcontainers.containers.MySQLContainer
 
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-    override val container = MySQLContainer()
+    override val container: MySQLContainer = MySQLContainer()
 
     it should "do something" in {
       ...
@@ -104,7 +104,7 @@ instead of default one set in the library.
 In order to provide custom image name you need to pass `DockerImageName` object.
 
 ```scala
-override val container = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
+override val container: MongoDBContainer = MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
 ```
 
 Starting from testcontainers-java 1.15.0 container classes execute image compatibility checks during initialization
@@ -113,7 +113,7 @@ If you want to use custom image that is compatible with selected container class
 it must be explicitly marked as compatible with default image.
 
 ```scala
-override val container = MongoDBContainer(DockerImageName.parse("myregistry/mongo:4.0.10").asCompatibleSubstituteFor("mongo"))
+override val container: MongoDBContainer = MongoDBContainer(DockerImageName.parse("myregistry/mongo:4.0.10").asCompatibleSubstituteFor("mongo"))
 ```
 
 Providing custom image name as `String` is currently deprecated.
@@ -122,7 +122,7 @@ Implicit conversion method is available in ScalaTest and MUnit traits.
 ```scala
 class MongoSpec extends AnyFlatSpec with ForAllTestContainer {
     //deprecated implicit conversion
-    override val container = MongoDBContainer("mongo:4.0.10")
+    override val container: MongoDBContainer = MongoDBContainer("mongo:4.0.10")
 }
 ```
 
@@ -180,7 +180,7 @@ with custom configuration.
 
 ```scala
 class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = GenericContainer("nginx:latest",
+  override val container: GenericContainer = GenericContainer("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
   )
@@ -197,7 +197,7 @@ class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
 
 ```scala
 class ComposeSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = DockerComposeContainer(new File("src/test/resources/docker-compose.yml"), exposedServices = Seq(ExposedService("redis_1", 6379)))
+  override val container: DockerComposeContainer = DockerComposeContainer(new File("src/test/resources/docker-compose.yml"), exposedServices = Seq(ExposedService("redis_1", 6379)))
 
   "DockerComposeContainer" should "retrieve non-0 port for any of services" in {
     assert(container.getServicePort("redis_1", 6379) > 0)
@@ -241,7 +241,7 @@ Requires you to add this dependency:
 ```scala
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer()
+  override val container: MySQLContainer = MySQLContainer()
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)
@@ -255,7 +255,7 @@ The container can also be customized using the constructor parameters, this snip
 ```scala
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.18"),
+  override val container: MySQLContainer = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.18"),
                                           databaseName = "testcontainer-scala",
                                           username = "scala",
                                           password = "scala")
@@ -279,7 +279,7 @@ Requires you to add this dependency:
 ```scala
 class PostgresqlSpec extends AnyFlatSpec with ForAllTestContainer  {
 
-  override val container = PostgreSQLContainer()
+  override val container: PostgreSQLContainer = PostgreSQLContainer()
 
   "PostgreSQL container" should "be started" in {
     Class.forName(container.driverClassName)
@@ -296,7 +296,7 @@ If you need to test more than one container in your test, you could use `Multipl
 val mySqlContainer = MySQLContainer()
 val genericContainer = GenericContainer(...)
 
-override val container = MultipleContainers(mySqlContainer, genericContainer)
+override val container: MultipleContainers = MultipleContainers(mySqlContainer, genericContainer)
 ```
 
 #### Dependent containers
@@ -307,7 +307,7 @@ If configuration of one container depends on runtime state of another one, you s
 lazy val container1 = Container1()
 lazy val container2 = Container2(container1.port)
 
-override val container = MultipleContainers(container1, container2)
+override val container: MultipleContainers = MultipleContainers(container1, container2)
 ```
 
 ### Fixed Host Port Containers
@@ -329,7 +329,7 @@ All container types have constructor methods with most popular parameters. In ca
 a method that provides an elegant way to tune the nested container. **It's not recommended to access inner container directly.**
 
 ```
-override val container = MySQLContainer().configure { c =>
+override val container: MySQLContainer = MySQLContainer().configure { c =>
     c.withNetwork(...)
     c.withStartupAttempts(...)
   }

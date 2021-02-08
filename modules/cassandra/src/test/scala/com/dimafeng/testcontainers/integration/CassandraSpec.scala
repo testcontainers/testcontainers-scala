@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 
 class CassandraSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
-  override val container = CassandraContainer()
+  override val container: CassandraContainer = CassandraContainer()
 
   "Cassandra container" should "be started" in {
 

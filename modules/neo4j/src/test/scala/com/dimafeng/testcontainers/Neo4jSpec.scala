@@ -8,11 +8,11 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class Neo4jSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container = Neo4jContainer()
+  override val container: Neo4jContainer = Neo4jContainer()
 
   "Neo4j container" should "be started" in {
 
-    val driver = GraphDatabase.driver(container.boltUrl, AuthTokens.basic(container.username, container.password))
+    val driver: Driver = GraphDatabase.driver(container.boltUrl, AuthTokens.basic(container.username, container.password))
 
     val session = driver.session()
 

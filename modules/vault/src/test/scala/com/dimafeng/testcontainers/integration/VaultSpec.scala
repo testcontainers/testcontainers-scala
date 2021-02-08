@@ -9,7 +9,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 class VaultSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   private val port = 8200
-  override val container = VaultContainer(vaultPort = Some(port))
+  override val container: VaultContainer = VaultContainer(vaultPort = Some(port))
 
   "Vault container" should "be started" in {
     given().

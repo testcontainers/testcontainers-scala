@@ -22,7 +22,7 @@ case class SampleContainer(sampleJavaContainer: SampleJavaContainer)
 }
 
 object SampleContainer {
-  class SampleJavaContainer extends JavaGenericContainer with JavaTestLifecycleAware {
+  class SampleJavaContainer extends JavaGenericContainer[SampleJavaContainer] with JavaTestLifecycleAware {
 
     override def beforeTest(description: TestDescription): Unit = {}
 

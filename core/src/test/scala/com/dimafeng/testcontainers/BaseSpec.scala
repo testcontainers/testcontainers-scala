@@ -5,11 +5,12 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatestplus.mockito.MockitoSugar
+import scala.reflect.ClassTag
 
-abstract class BaseSpec[T: Manifest]
+abstract class BaseSpec[T: ClassTag]
   extends AnyFlatSpec with Matchers with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll {
 
-  behavior of implicitly[Manifest[T]].runtimeClass.asInstanceOf[Class[T]].getSimpleName
+  behavior of implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getSimpleName
 
   override def beforeEach(): Unit = MockitoAnnotations.initMocks(this)
 }

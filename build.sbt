@@ -5,18 +5,26 @@ lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
   scalaVersion in ThisBuild := "2.12.12",
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4"),
+  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.4", "3.0.0-M3"),
 
   parallelExecution in ThisBuild := false,
   fork := true,
 
-  scalacOptions ++= Seq(
-    "-unchecked",
-    "-deprecation",
-    "-language:_",
-    "-target:jvm-1.8",
-    "-encoding", "UTF-8"
-  ),
+  scalacOptions ++= {
+    if (isDotty.value) Seq(    
+      "-unchecked",
+      "-deprecation",
+      "-language:_",
+      "-encoding", "UTF-8",  
+      "-source:3.0-migration"
+    ) else Seq(
+      "-unchecked",
+      "-deprecation",
+      "-language:_",
+      "-target:jvm-1.8",
+      "-encoding", "UTF-8"
+      )
+  },
 
   /**
     * Publishing
