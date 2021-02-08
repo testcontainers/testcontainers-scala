@@ -34,11 +34,11 @@ class GenericContainer(
     if (exposedPorts.nonEmpty) {
       underlying.withExposedPorts(exposedPorts.map(int2Integer): _*)
     }
-    env.foreach{case (k, v) => underlying.withEnv(k, v)}
+    env.foreach{ case (k, v) => underlying.withEnv(k, v) }
     if (command.nonEmpty) {
       underlying.withCommand(command: _*)
     }
-    classpathResourceMapping.foreach{case (a, b, c) => underlying.withClasspathResourceMapping(a, b, c)}
+    classpathResourceMapping.foreach{ case (r, c, m) => underlying.withClasspathResourceMapping(r, c, m) }
     waitStrategy.foreach(underlying.waitingFor)
 
     if (labels.nonEmpty) {
