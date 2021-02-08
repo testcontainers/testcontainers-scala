@@ -48,7 +48,7 @@ object Dependencies {
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
       "org.scalatestplus" %% "selenium-3-141" % (CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, _)) => scalaTestSeleniumVersion_scala212
+        case Some((2, _)) => scalaTestSeleniumVersion_scala2
         case _ => scalaTestSeleniumVersion_scala3
       }),
       "org.testcontainers" % "selenium" % testcontainersVersion,
