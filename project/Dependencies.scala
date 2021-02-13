@@ -1,4 +1,5 @@
 import sbt._
+import sbt.Keys.scalaVersion
 
 object Dependencies {
   private def COMPILE(modules: sbt.ModuleID*): Seq[sbt.ModuleID] = deps(None, modules: _*)
@@ -16,9 +17,10 @@ object Dependencies {
   private val slf4jVersion = "1.7.25"
   private val scalaTestVersion = "3.2.3"
   private val scalaTestMockitoVersion = "3.2.3.0"
-  private val scalaTestSeleniumVersion = "3.2.2.0"
+  private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
+  private val scalaTestSeleniumVersion_scala3 = "3.2.3.0"
   private val junitVersion = "4.13.1"
-  private val munitVersion = "0.7.4"
+  private val munitVersion = "0.7.21"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "19.3.0.0"
@@ -45,7 +47,10 @@ object Dependencies {
       "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
-      "org.scalatestplus" %% "selenium-3-141" % scalaTestSeleniumVersion,
+      "org.scalatestplus" %% "selenium-3-141" % (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, _)) => scalaTestSeleniumVersion_scala2
+        case _ => scalaTestSeleniumVersion_scala3
+      }),
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.postgresql" % "postgresql" % postgresqlDriverVersion,
       "org.mockito" % "mockito-core" % mockitoVersion

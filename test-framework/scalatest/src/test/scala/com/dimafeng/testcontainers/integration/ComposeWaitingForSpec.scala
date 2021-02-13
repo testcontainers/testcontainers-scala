@@ -8,7 +8,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.Wait
 
 class ComposeWaitingForSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = DockerComposeContainer(
+  override val container: DockerComposeContainer = DockerComposeContainer(
     Seq(new File(getClass.getClassLoader.getResource("docker-compose.yml").getPath)),
     waitingFor = Some(WaitingForService("redis", Wait.forLogMessage(".*Ready to accept connections\\n", 1)))
   )

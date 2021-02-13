@@ -6,7 +6,7 @@ import com.dimafeng.testcontainers.{DockerComposeContainer, ExposedService, ForA
 import org.scalatest.flatspec.AnyFlatSpec
 
 class ComposeSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = DockerComposeContainer(
+  override val container: DockerComposeContainer = DockerComposeContainer(
     new File(getClass.getClassLoader.getResource("docker-compose.yml").getPath),
     Seq(ExposedService("redis", 6379))
   )
@@ -17,7 +17,7 @@ class ComposeSpec extends AnyFlatSpec with ForAllTestContainer {
 }
 
 class ComposeSpecWithImplicitConversions extends ComposeSpec {
-  override val container = DockerComposeContainer(
+  override val container: DockerComposeContainer = DockerComposeContainer(
     Seq(new File(getClass.getClassLoader.getResource("docker-compose.yml").getPath)),
     exposedServices = Seq(ExposedService("redis", 6379))
   )

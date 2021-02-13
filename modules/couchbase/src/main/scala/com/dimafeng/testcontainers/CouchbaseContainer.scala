@@ -20,7 +20,7 @@ case class CouchbaseContainer(
   override val container: JavaCouchbaseContainer = {
     val c = new JavaCouchbaseContainer(dockerImageName)
 
-    buckets.foreach { bucket: BucketDefinition =>
+    buckets.foreach { (bucket: BucketDefinition) =>
       val javaBucket = new JavaBucketDefinition(bucket.name)
         .withQuota(bucket.quota)
         .withPrimaryIndex(bucket.hasPrimaryIndex)

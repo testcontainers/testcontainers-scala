@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class PostgresqlSpec extends AnyFlatSpec with ForAllTestContainer  {
 
-  override val container = PostgreSQLContainer()
+  override val container: PostgreSQLContainer = PostgreSQLContainer()
 
   "PostgreSQL container" should "be started" in {
     Class.forName(container.driverClassName)

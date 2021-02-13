@@ -123,7 +123,7 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
   def logs(outputType: OutputFrame.OutputType, outputTypes: OutputFrame.OutputType*): String =
     container.getLogs((outputType +: outputTypes): _*)
 
-  def livenessCheckPortNumbers: Set[Int] = container.getLivenessCheckPortNumbers.asScala.toSet.map { x: java.lang.Integer =>
+  def livenessCheckPortNumbers: Set[Int] = container.getLivenessCheckPortNumbers.asScala.toSet.map { (x: java.lang.Integer) =>
     x.intValue()
   }
 

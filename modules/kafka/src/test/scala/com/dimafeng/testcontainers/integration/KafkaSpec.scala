@@ -9,7 +9,7 @@ import org.scalatest.matchers.should.Matchers
 
 class KafkaSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
-  override val container = KafkaContainer()
+  override val container: KafkaContainer = KafkaContainer()
 
   "Kafka container" should "be started" in {
 

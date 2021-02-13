@@ -9,7 +9,7 @@ import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
 import scala.io.Source
 
 class FixedHostPortContainerSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container = FixedHostPortGenericContainer("nginx:latest",
+  override val container: FixedHostPortGenericContainer = FixedHostPortGenericContainer("nginx:latest",
     waitStrategy = new HttpWaitStrategy().forPath("/"),
     exposedHostPort = 8090,
     exposedContainerPort = 80

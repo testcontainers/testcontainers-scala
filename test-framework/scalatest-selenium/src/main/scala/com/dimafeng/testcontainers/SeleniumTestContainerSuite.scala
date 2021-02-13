@@ -18,7 +18,7 @@ trait SeleniumTestContainerSuite extends ForEachTestContainer {
 
   def recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null
 
-  val container = SeleniumContainer(desiredCapabilities, recordingMode)
+  val container: SeleniumContainer = SeleniumContainer(desiredCapabilities, recordingMode)
 
   implicit def webDriver: WebDriver = container.webDriver
 }
@@ -55,4 +55,3 @@ object SeleniumContainer {
   def apply(desiredCapabilities: DesiredCapabilities = null, recordingMode: (BrowserWebDriverContainer.VncRecordingMode, File) = null): SeleniumContainer =
     new SeleniumContainer(Option(desiredCapabilities), Option(recordingMode))
 }
-

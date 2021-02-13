@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container = MySQLContainer()
+  override val container: MySQLContainer = MySQLContainer()
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)

@@ -69,7 +69,7 @@ class LazyContainer[T <: Container](factory: => T) extends Container with TestLi
   lazy val container: T = factory
 
   @deprecated("Use `stop` instead")
-  override def finished()(implicit description: Description): Unit = container.finished
+  override def finished()(implicit description: Description): Unit = container.finished()
 
   @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
   override def failed(e: Throwable)(implicit description: Description): Unit = container.failed(e)
