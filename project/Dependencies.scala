@@ -15,12 +15,11 @@ object Dependencies {
   private val testcontainersVersion = "1.15.2"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.25"
-  private val scalaTestVersion = "3.2.5"
-  private val scalaTestMockitoVersion = "3.2.5.0"
-  private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
-  private val scalaTestSeleniumVersion_scala3 = "3.2.5.0"
+  private val scalaTestVersion = "3.2.7"
+  private val scalaTestMockitoVersion = "3.2.7.0"
+  private val scalaTestSeleniumVersion = "3.2.7.0"
   private val junitVersion = "4.13.1"
-  private val munitVersion = "0.7.22"
+  private val munitVersion = "0.7.23"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "19.3.0.0"
@@ -47,10 +46,7 @@ object Dependencies {
       "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
-      "org.scalatestplus" %% "selenium-3-141" % (CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, _)) => scalaTestSeleniumVersion_scala2
-        case _ => scalaTestSeleniumVersion_scala3
-      }),
+      "org.scalatestplus" %% "selenium-3-141" % scalaTestSeleniumVersion,
       "org.testcontainers" % "selenium" % testcontainersVersion,
       "org.postgresql" % "postgresql" % postgresqlDriverVersion,
       "org.mockito" % "mockito-core" % mockitoVersion
