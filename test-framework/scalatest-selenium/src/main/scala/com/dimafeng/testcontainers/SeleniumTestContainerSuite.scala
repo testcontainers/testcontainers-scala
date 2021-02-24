@@ -30,7 +30,7 @@ class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
 
   override val container: BrowserWebDriverContainer[_] = new BrowserWebDriverContainer()
   desiredCapabilities.foreach(container.withDesiredCapabilities)
-  recordingMode.foreach(Function.tupled(container.withRecordingMode))
+  recordingMode.foreach { case (recMode, recDir) => container.withRecordingMode(recMode, recDir) }
 
   def password: String = container.getPassword
 
