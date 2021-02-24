@@ -612,6 +612,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.2**
+    * Scala 3.0.0-RC1
+
 * **0.39.1**
     * Scala 3.0.0-M3
 
