@@ -612,14 +612,17 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.3**
+    * testcontainers-java updated to 1.15.2
+    
 * **0.39.2**
-    * Scala 3.0.0-RC1
+    * Scala updated to 3.0.0-RC1
 
 * **0.39.1**
-    * Scala 3.0.0-M3
+    * Scala updated to 3.0.0-M3
 
 * **0.39.0**
-    * Scalatest 3.2.3
+    * Scalatest updated to 3.2.3
 
 * **0.38.8**
     * testcontainers-java updated to 1.15.1.
