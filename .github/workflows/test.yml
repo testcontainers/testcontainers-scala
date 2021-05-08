@@ -11,7 +11,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         java:
-          - adopt@1.11
+          - 11
 #          - graalvm-ce-java11@20.3.0
     runs-on: ${{ matrix.os }}
     steps:
@@ -19,8 +19,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Java
-        uses: olafurpg/setup-scala@v10
+        uses: actions/setup-java@v2
         with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
           java-version: ${{ matrix.java }}
 
       - name: Restore cache
