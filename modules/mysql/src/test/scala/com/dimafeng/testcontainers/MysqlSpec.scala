@@ -6,7 +6,7 @@ import org.testcontainers.utility.DockerImageName
 
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container: MySQLContainer = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.3"))
+  override val container: MySQLContainer = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.34"))
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)
