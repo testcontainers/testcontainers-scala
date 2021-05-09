@@ -1,12 +1,12 @@
 package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
-
 import org.scalatest.flatspec.AnyFlatSpec
+import org.testcontainers.utility.DockerImageName
 
 class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container: MySQLContainer = MySQLContainer()
+  override val container: MySQLContainer = MySQLContainer(mysqlImageVersion = DockerImageName.parse("mysql:5.7.3"))
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)
