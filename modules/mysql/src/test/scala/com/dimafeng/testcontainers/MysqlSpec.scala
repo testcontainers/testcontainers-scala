@@ -10,7 +10,7 @@ class MysqlSpec extends AnyFlatSpec with ForAllTestContainer {
 
   "Mysql container" should "be started" in {
     Class.forName(container.driverClassName)
-    val connection = DriverManager.getConnection(container.jdbcUrl, container.username, container.password)
+    val connection = DriverManager.getConnection(container.jdbcUrl + "&useSSL=false", container.username, container.password)
 
     val prepareStatement = connection.prepareStatement("select 1")
     try {
