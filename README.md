@@ -165,6 +165,7 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-toxiproxy` — module with the ToxiProxy container.
 * `testcontainers-scala-orientdb` — module with the OrientDB container.
 * `testcontainers-scala-presto` — module with the Presto container.
+* `testcontainers-scala-trino` — module with the Trino container.
 * `testcontainers-scala-mongodb` — module with the MongoDB container.
 * `testcontainers-scala-solr` — module with the Solr container.
 

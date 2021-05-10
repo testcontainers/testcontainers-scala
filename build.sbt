@@ -84,6 +84,7 @@ lazy val root = (project in file("."))
     moduleToxiproxy,
     moduleOrientdb,
     modulePresto,
+    moduleTrino,
     moduleMongodb,
     moduleSolr,
     allOld
@@ -434,6 +435,14 @@ lazy val modulePresto = (project in file("modules/presto"))
   .settings(
     name := "testcontainers-scala-presto",
     libraryDependencies ++= Dependencies.modulePresto.value
+  )
+
+lazy val moduleTrino = (project in file("modules/trino"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", jdbc)
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-trino",
+    libraryDependencies ++= Dependencies.moduleTrino.value
   )
 
 lazy val moduleMongodb = (project in file("modules/mongodb"))
