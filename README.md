@@ -613,6 +613,9 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.4**
+    * Added `TrinoContainer`
+
 * **0.39.3**
     * testcontainers-java updated to 1.15.2
     
