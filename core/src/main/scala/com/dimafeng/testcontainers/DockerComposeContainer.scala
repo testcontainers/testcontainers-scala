@@ -12,6 +12,14 @@ import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
 
+sealed trait Services
+object Services {
+  case object All extends Services
+  final case class Specific(services: Seq[Service]) extends Services
+}
+
+final case class Service(name: String)
+
 object ExposedService {
   def apply(name: String, port: Int, instance: Int, waitStrategy: WaitStrategy): ExposedService =
     ExposedService(name, port, waitStrategy, Option(instance))
@@ -52,9 +60,10 @@ object DockerComposeContainer {
   @deprecated("Please use expanded `apply` method")
   def apply(composeFiles: ComposeFile,
             exposedService: Map[String, Int]): DockerComposeContainer =
-    new DockerComposeContainer(composeFiles, exposedService)
+    new DockerComposeContainer(composeFiles, Services.All, exposedService)
 
   def apply(composeFiles: ComposeFile,
+            services: Services = Services.All,
             exposedServices: Seq[ExposedService] = Seq.empty,
             identifier: String = DockerComposeContainer.randomIdentifier,
             scaledServices: Seq[ScaledService] = Seq.empty,
@@ -65,6 +74,7 @@ object DockerComposeContainer {
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
             waitingFor: Option[WaitingForService] = None): DockerComposeContainer =
     new DockerComposeContainer(composeFiles,
+      services,
       exposedServices,
       identifier,
       scaledServices,
@@ -77,6 +87,7 @@ object DockerComposeContainer {
 
   case class Def(
                   composeFiles: ComposeFile,
+                  services: Services = Services.All,
                   exposedServices: Seq[ExposedService] = Seq.empty,
                   identifier: String = DockerComposeContainer.randomIdentifier,
                   scaledServices: Seq[ScaledService] = Seq.empty,
@@ -93,6 +104,7 @@ object DockerComposeContainer {
     override def createContainer(): DockerComposeContainer = {
       DockerComposeContainer(
         composeFiles,
+        services,
         exposedServices,
         identifier,
         scaledServices,
@@ -109,6 +121,7 @@ object DockerComposeContainer {
 }
 
 class DockerComposeContainer(composeFiles: ComposeFile,
+                             services: Services = Services.All,
                              exposedServices: Seq[ExposedService] = Seq.empty,
                              identifier: String = DockerComposeContainer.randomIdentifier,
                              scaledServices: Seq[ScaledService] = Seq.empty,
@@ -125,6 +138,11 @@ class DockerComposeContainer(composeFiles: ComposeFile,
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })
+
+    services match {
+      case Services.Specific(services) => container.withServices(services.map(_.name) : _*)
+      case Services.All =>
+    }
 
     exposedServices.foreach { service =>
       if (service.instance.isDefined) {
