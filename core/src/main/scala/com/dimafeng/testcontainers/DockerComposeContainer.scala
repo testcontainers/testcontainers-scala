@@ -28,6 +28,14 @@ final case class ServiceLogConsumer(serviceName: String, consumer: Consumer[Outp
 
 final case class WaitingForService(serviceName: String, waitStrategy: WaitStrategy)
 
+sealed trait Services
+object Services {
+  case object All extends Services
+  final case class Specific(services: Seq[Service]) extends Services
+}
+
+final case class Service(name: String)
+
 object DockerComposeContainer {
   val ID_LENGTH = 6
 
@@ -63,7 +71,8 @@ object DockerComposeContainer {
             env: Map[String, String] = Map.empty,
             tailChildContainers: Boolean = false,
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-            waitingFor: Option[WaitingForService] = None): DockerComposeContainer =
+            waitingFor: Option[WaitingForService] = None,
+            services: Services = Services.All): DockerComposeContainer =
     new DockerComposeContainer(composeFiles,
       exposedServices,
       identifier,
@@ -73,7 +82,8 @@ object DockerComposeContainer {
       env,
       tailChildContainers,
       logConsumers,
-      waitingFor)
+      waitingFor,
+      services)
 
   case class Def(
                   composeFiles: ComposeFile,
@@ -85,7 +95,8 @@ object DockerComposeContainer {
                   env: Map[String, String] = Map.empty,
                   tailChildContainers: Boolean = false,
                   logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-                  waitingFor: Option[WaitingForService] = None
+                  waitingFor: Option[WaitingForService] = None,
+                  services: Services = Services.All
                 ) extends ContainerDef {
 
     override type Container = DockerComposeContainer
@@ -101,7 +112,8 @@ object DockerComposeContainer {
         env,
         tailChildContainers,
         logConsumers,
-        waitingFor
+        waitingFor,
+        services
       )
     }
   }
@@ -117,7 +129,8 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              env: Map[String, String] = Map.empty,
                              tailChildContainers: Boolean = false,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-                             waitingFor: Option[WaitingForService] = None)
+                             waitingFor: Option[WaitingForService] = None,
+                             services: Services = Services.All)
   extends TestContainerProxy[JavaDockerComposeContainer[_]] {
 
   override val container: JavaDockerComposeContainer[_] = {
@@ -125,6 +138,11 @@ class DockerComposeContainer(composeFiles: ComposeFile,
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })
+
+    services match {
+      case Services.Specific(services) => container.withServices(services.map(_.name) : _*)
+      case Services.All =>
+    }
 
     exposedServices.foreach { service =>
       if (service.instance.isDefined) {
