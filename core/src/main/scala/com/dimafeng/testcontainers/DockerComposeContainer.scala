@@ -12,14 +12,6 @@ import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
 
-sealed trait Services
-object Services {
-  case object All extends Services
-  final case class Specific(services: Seq[Service]) extends Services
-}
-
-final case class Service(name: String)
-
 object ExposedService {
   def apply(name: String, port: Int, instance: Int, waitStrategy: WaitStrategy): ExposedService =
     ExposedService(name, port, waitStrategy, Option(instance))
@@ -35,6 +27,14 @@ final case class ScaledService(name: String, numInstances: Int)
 final case class ServiceLogConsumer(serviceName: String, consumer: Consumer[OutputFrame])
 
 final case class WaitingForService(serviceName: String, waitStrategy: WaitStrategy)
+
+sealed trait Services
+object Services {
+  case object All extends Services
+  final case class Specific(services: Seq[Service]) extends Services
+}
+
+final case class Service(name: String)
 
 object DockerComposeContainer {
   val ID_LENGTH = 6
@@ -60,10 +60,9 @@ object DockerComposeContainer {
   @deprecated("Please use expanded `apply` method")
   def apply(composeFiles: ComposeFile,
             exposedService: Map[String, Int]): DockerComposeContainer =
-    new DockerComposeContainer(composeFiles, Services.All, exposedService)
+    new DockerComposeContainer(composeFiles, exposedService)
 
   def apply(composeFiles: ComposeFile,
-            services: Services = Services.All,
             exposedServices: Seq[ExposedService] = Seq.empty,
             identifier: String = DockerComposeContainer.randomIdentifier,
             scaledServices: Seq[ScaledService] = Seq.empty,
@@ -72,9 +71,9 @@ object DockerComposeContainer {
             env: Map[String, String] = Map.empty,
             tailChildContainers: Boolean = false,
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-            waitingFor: Option[WaitingForService] = None): DockerComposeContainer =
+            waitingFor: Option[WaitingForService] = None,
+            services: Services = Services.All): DockerComposeContainer =
     new DockerComposeContainer(composeFiles,
-      services,
       exposedServices,
       identifier,
       scaledServices,
@@ -83,11 +82,11 @@ object DockerComposeContainer {
       env,
       tailChildContainers,
       logConsumers,
-      waitingFor)
+      waitingFor,
+      services)
 
   case class Def(
                   composeFiles: ComposeFile,
-                  services: Services = Services.All,
                   exposedServices: Seq[ExposedService] = Seq.empty,
                   identifier: String = DockerComposeContainer.randomIdentifier,
                   scaledServices: Seq[ScaledService] = Seq.empty,
@@ -96,7 +95,8 @@ object DockerComposeContainer {
                   env: Map[String, String] = Map.empty,
                   tailChildContainers: Boolean = false,
                   logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-                  waitingFor: Option[WaitingForService] = None
+                  waitingFor: Option[WaitingForService] = None,
+                  services: Services = Services.All
                 ) extends ContainerDef {
 
     override type Container = DockerComposeContainer
@@ -104,7 +104,6 @@ object DockerComposeContainer {
     override def createContainer(): DockerComposeContainer = {
       DockerComposeContainer(
         composeFiles,
-        services,
         exposedServices,
         identifier,
         scaledServices,
@@ -113,7 +112,8 @@ object DockerComposeContainer {
         env,
         tailChildContainers,
         logConsumers,
-        waitingFor
+        waitingFor,
+        services
       )
     }
   }
@@ -121,7 +121,6 @@ object DockerComposeContainer {
 }
 
 class DockerComposeContainer(composeFiles: ComposeFile,
-                             services: Services = Services.All,
                              exposedServices: Seq[ExposedService] = Seq.empty,
                              identifier: String = DockerComposeContainer.randomIdentifier,
                              scaledServices: Seq[ScaledService] = Seq.empty,
@@ -130,7 +129,8 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              env: Map[String, String] = Map.empty,
                              tailChildContainers: Boolean = false,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
-                             waitingFor: Option[WaitingForService] = None)
+                             waitingFor: Option[WaitingForService] = None,
+                             services: Services = Services.All)
   extends TestContainerProxy[JavaDockerComposeContainer[_]] {
 
   override val container: JavaDockerComposeContainer[_] = {
