@@ -613,6 +613,10 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.5**
+    * Scala 3.0.0 support
+    * Added the ability to specify services for `DockerComposeContainer`
+
 * **0.39.4**
     * Added `TrinoContainer`
 
