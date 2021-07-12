@@ -23,7 +23,7 @@ case class LocalStackContainer(
 
 object LocalStackContainer {
 
-  val defaultTag = "0.9.4"
+  val defaultTag = "0.12.12"
 
   type Service = JavaLocalStackContainer.Service
 
