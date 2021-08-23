@@ -406,7 +406,7 @@ lazy val modulePulsar = (project in file("modules/pulsar"))
   )
 
 lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings: _*)
   .settings(
     name := "testcontainers-scala-rabbitmq",
