@@ -71,7 +71,7 @@ object RabbitMQSpec {
         exchangeType = "direct",
         arguments = Map.empty,
         vhost = Some("test-vhost")
-      ),
+      )
     ),
     bindings = Seq.empty,
     users = Seq(
