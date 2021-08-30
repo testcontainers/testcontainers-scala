@@ -30,6 +30,15 @@ case class RabbitMQContainer(
 
     c.withAdminPassword(adminPassword)
 
+    vhosts.foreach {
+      case RabbitMQContainer.VHost(name, Some(tracing)) => c.withVhost(name, tracing)
+      case RabbitMQContainer.VHost(name, None) => c.withVhost(name)
+    }
+
+    vhostsLimits.foreach { x =>
+      c.withVhostLimit(x.vhost, x.name, x.value)
+    }
+
     queues.foreach { x =>
       c.withQueue(x.name, x.autoDelete, x.durable, toJavaArguments(x.arguments))
     }
@@ -49,15 +58,6 @@ case class RabbitMQContainer(
 
     users.foreach { x =>
       if (x.tags.isEmpty) c.withUser(x.name, x.password) else c.withUser(x.name, x.password, x.tags.asJava)
-    }
-
-    vhosts.foreach {
-      case RabbitMQContainer.VHost(name, Some(tracing)) => c.withVhost(name, tracing)
-      case RabbitMQContainer.VHost(name, None) => c.withVhost(name)
-    }
-
-    vhostsLimits.foreach { x =>
-      c.withVhostLimit(x.vhost, x.name, x.value)
     }
 
     operatorPolicies.foreach { x =>

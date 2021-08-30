@@ -31,6 +31,7 @@ object Dependencies {
   private val restAssuredVersion = "4.0.0"
   private val awsV1Version = "1.11.479"
   private val awsV2Version = "2.15.7"
+  private val sttpVersion = "3.3.13"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -234,6 +235,10 @@ object Dependencies {
   val moduleRabbitmq = Def.setting(
     COMPILE(
       "org.testcontainers" % "rabbitmq" % testcontainersVersion
+    ) ++ TEST(
+      "org.scalatest" %% "scalatest" % scalaTestVersion
+    ) ++ PROVIDED(
+      "com.softwaremill.sttp.client3" %% "core" % sttpVersion
     )
   )
 
