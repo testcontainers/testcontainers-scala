@@ -6,6 +6,8 @@ import org.scalatest.matchers.should.Matchers
 import org.testcontainers.utility.DockerImageName
 import sttp.client3.{HttpURLConnectionBackend, UriContext, basicRequest}
 
+import scala.util.Either
+
 class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
   import RabbitMQSpec._
 
@@ -21,7 +23,10 @@ class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
         .get(uri"$baseUri/")
 
     val eitherContainerIsOnline =
-      request.send(httpClientBackend).body.map(_ => true)
+      request.send(httpClientBackend).body match {
+        case Right(_) => Right(true)
+        case e@Left(_) => e
+      }
 
     assertResult(Right(true))(eitherContainerIsOnline)
   }
@@ -35,7 +40,10 @@ class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
         .get(uri"$baseUri/api/exchanges")
 
     val eitherExchangeWasLoaded =
-      request.send(httpClientBackend).body.map(_.contains(testExchange))
+      request.send(httpClientBackend).body match {
+        case Right(v) => Right(v.contains(testExchange))
+        case e@Left(_) => e
+      }
 
     assertResult(Right(true))(eitherExchangeWasLoaded)
   }
@@ -47,10 +55,13 @@ class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
         .auth.basic(testUsername, testPassword)
         .get(uri"$baseUri/api/users")
 
-    val eitheruserWasLoaded =
-      request.send(httpClientBackend).body.map(_.contains(testUsername))
+    val eitherUserWasLoaded =
+      request.send(httpClientBackend).body match {
+        case Right(v) => Right(v.contains(testUsername))
+        case e@Left(_) => e
+      }
 
-    assertResult(Right(true))(eitheruserWasLoaded)
+    assertResult(Right(true))(eitherUserWasLoaded)
   }
 }
 
