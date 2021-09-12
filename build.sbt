@@ -39,7 +39,7 @@ val commonSettings = Seq(
   },
   publishMavenStyle := true,
   sonatypeProfileName := "testcontainers-scala",
-  sonatypeProjectHosting := Some(GitLabHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
+  sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
   licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT")),
   organization in ThisBuild := "com.dimafeng",
 
