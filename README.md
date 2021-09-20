@@ -613,6 +613,18 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.9**
+    * Added `SchemaRegistryContainer`
+
+* **0.39.8**
+    * Fixed Scaladex
+
+* **0.39.7**
+    * Fix for https://github.com/testcontainers/testcontainers-scala/issues/186
+
+* **0.39.6**
+    * Scala 3.0.1 support
+
 * **0.39.5**
     * Scala 3.0.0 support
     * Added the ability to specify services for `DockerComposeContainer`
