@@ -12,7 +12,8 @@ import org.junit.runner.Description
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{Container, FailureDetectingExternalResource, Network, TestContainerAccessor, GenericContainer => JavaGenericContainer}
+import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor}
+import org.testcontainers.containers.{GenericContainer => JavaGenericContainer, Container => JavaContainer}
 import org.testcontainers.images.builder.Transferable
 import org.testcontainers.lifecycle.Startable
 import org.testcontainers.utility.{MountableFile, ThrowingFunction}
@@ -127,11 +128,11 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
     x.intValue()
   }
 
-  def execInContainer(commands: String*): Container.ExecResult = {
+  def execInContainer(commands: String*): JavaContainer.ExecResult = {
     container.execInContainer(commands: _*)
   }
 
-  def execInContainer(outputCharset: Charset, commands: String*): Container.ExecResult = {
+  def execInContainer(outputCharset: Charset, commands: String*): JavaContainer.ExecResult = {
     container.execInContainer(outputCharset, commands: _*)
   }
 
