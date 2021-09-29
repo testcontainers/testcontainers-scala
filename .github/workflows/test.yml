@@ -21,8 +21,9 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt' # See 'Supported distributions' for available options
+          distribution: temurin # See 'Supported distributions' for available options
           java-version: ${{ matrix.java }}
+          check-latest: true
 
       - name: Restore cache
         uses: actions/cache@v2
