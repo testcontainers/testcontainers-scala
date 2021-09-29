@@ -10,6 +10,7 @@ val commonSettings = Seq(
   parallelExecution in ThisBuild := false,
   fork := true,
 
+
   scalacOptions ++= {
     if (isDotty.value) Seq(
       "-unchecked",
