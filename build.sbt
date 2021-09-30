@@ -4,26 +4,31 @@ import ReleaseTransformations._
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
-  scalaVersion in ThisBuild := "2.12.12",
-  crossScalaVersions := Seq("2.11.12", "2.12.12", "2.13.5", "3.0.1"),
+  ThisBuild / scalaVersion := "2.12.15",
+  crossScalaVersions := Seq("2.11.12", "2.12.15", "2.13.6", "3.0.2"),
 
-  parallelExecution in ThisBuild := false,
+  ThisBuild / parallelExecution := false,
   fork := true,
 
   scalacOptions ++= {
-    if (isDotty.value) Seq(
-      "-unchecked",
-      "-deprecation",
-      "-language:_",
-      "-encoding", "UTF-8",
-      "-source:3.0-migration"
-    ) else Seq(
-      "-unchecked",
-      "-deprecation",
-      "-language:_",
-      "-target:jvm-1.8",
-      "-encoding", "UTF-8"
-      )
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _)) =>
+        Seq(
+          "-unchecked",
+          "-deprecation",
+          "-language:_",
+          "-encoding", "UTF-8",
+          "-source:3.0-migration"
+        )
+      case _ =>
+        Seq(
+          "-unchecked",
+          "-deprecation",
+          "-language:_",
+          "-target:jvm-1.8",
+          "-encoding", "UTF-8"
+        )
+    }
   },
 
   /**
@@ -41,15 +46,15 @@ val commonSettings = Seq(
   sonatypeProfileName := "testcontainers-scala",
   sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
   licenses := Seq("The MIT License (MIT)" -> new URL("https://opensource.org/licenses/MIT")),
-  organization in ThisBuild := "com.dimafeng",
+  ThisBuild / organization := "com.dimafeng",
 
-  parallelExecution in Global := false,
+  Global / parallelExecution := false,
 
   releaseCrossBuild := true
 )
 
 lazy val noPublishSettings = Seq(
-  skip in publish := true
+  publish / skip  := true
 )
 
 lazy val root = (project in file("."))

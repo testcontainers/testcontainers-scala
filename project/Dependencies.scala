@@ -14,24 +14,24 @@ object Dependencies {
 
   private val testcontainersVersion = "1.15.3"
   private val seleniumVersion = "2.53.1"
-  private val slf4jVersion = "1.7.25"
+  private val slf4jVersion = "1.7.32"
   private val scalaTestVersion = "3.2.9"
   private val scalaTestMockitoVersion = "3.2.9.0"
   private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
-  private val junitVersion = "4.13.1"
-  private val munitVersion = "0.7.25"
+  private val junitVersion = "4.13.2"
+  private val munitVersion = "0.7.29"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
-  private val oracleDriverVersion = "19.3.0.0"
+  private val oracleDriverVersion = "21.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
-  private val postgresqlDriverVersion = "9.4.1212"
+  private val postgresqlDriverVersion = "42.2.24"
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "3.7.7"
   private val restAssuredVersion = "4.0.0"
   private val awsV1Version = "1.11.479"
   private val awsV2Version = "2.15.7"
-  private val sttpVersion = "3.3.13"
+  private val sttpVersion = "3.3.14"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -110,7 +110,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "oracle-xe" % testcontainersVersion
     ) ++ TEST(
-      "com.oracle.ojdbc" % "ojdbc8" % oracleDriverVersion
+      "com.oracle.database.jdbc" % "ojdbc8" % oracleDriverVersion
     )
   )
 
