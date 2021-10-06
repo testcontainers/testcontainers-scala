@@ -83,4 +83,36 @@ object GenericContainer {
     override type Container = C
     protected def createContainer(): C = init
   }
+
+  object Def {
+
+    private final case class Default(dockerImage: DockerImage,
+                                     exposedPorts: Seq[Int] = Seq(),
+                                     env: Map[String, String] = Map(),
+                                     command: Seq[String] = Seq(),
+                                     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+                                     waitStrategy: WaitStrategy = null,
+                                     labels: Map[String, String] = Map.empty,
+                                     tmpFsMapping: Map[String, String] = Map.empty,
+                                     imagePullPolicy: ImagePullPolicy = null) extends Def[GenericContainer](
+      GenericContainer(
+        dockerImage, exposedPorts, env, command, classpathResourceMapping, waitStrategy, 
+        labels, tmpFsMapping, imagePullPolicy)
+    )
+
+    def apply(dockerImage: DockerImage,
+              exposedPorts: Seq[Int] = Seq(),
+              env: Map[String, String] = Map(),
+              command: Seq[String] = Seq(),
+              classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+              waitStrategy: WaitStrategy = null,
+              labels: Map[String, String] = Map.empty,
+              tmpFsMapping: Map[String, String] = Map.empty,
+              imagePullPolicy: ImagePullPolicy = null): GenericContainer.Def[GenericContainer] = 
+      Default(
+        dockerImage, exposedPorts, env, command, classpathResourceMapping, waitStrategy, 
+        labels, tmpFsMapping, imagePullPolicy)
+
+  }
+
 }
