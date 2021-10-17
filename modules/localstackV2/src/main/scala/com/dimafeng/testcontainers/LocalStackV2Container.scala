@@ -5,8 +5,6 @@ import org.testcontainers.containers.localstack.{LocalStackContainer => JavaLoca
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 
-import scala.annotation.nowarn
-
 case class LocalStackV2Container(
   tag: String = LocalStackV2Container.defaultTag,
   services: Seq[LocalStackV2Container.Service] = Seq.empty
@@ -32,8 +30,7 @@ case class LocalStackV2Container(
 object LocalStackV2Container {
 
 
-  @nowarn
-  val defaultTag = JavaLocalStackContainer.VERSION
+  val defaultTag = "0.9.4"
 
   type Service = JavaLocalStackContainer.EnabledService
 
