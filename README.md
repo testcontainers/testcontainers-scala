@@ -157,6 +157,7 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-elasticsearch` — module with the Elastic search container.
 * `testcontainers-scala-influxdb` — module with the InfluxDB container.
 * `testcontainers-scala-localstack` — module with the Localstack container.
+* `testcontainers-scala-localstack-v2` — module with the Localstack V2 container.
 * `testcontainers-scala-mariadb` — module with the MariaDB container.
 * `testcontainers-scala-mockserver` — module with the MockServer container.
 * `testcontainers-scala-nginx` — module with the Nginx container.
