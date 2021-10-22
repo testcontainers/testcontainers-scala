@@ -100,7 +100,7 @@ object GenericContainer {
         labels, tmpFsMapping, imagePullPolicy)
     )
 
-    def anonymous(dockerImage: DockerImage,
+    def apply(dockerImage: DockerImage,
               exposedPorts: Seq[Int] = Seq(),
               env: Map[String, String] = Map(),
               command: Seq[String] = Seq(),
