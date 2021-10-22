@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers
 
 import java.net.URI
-
 import org.testcontainers.containers.localstack.{LocalStackContainer => JavaLocalStackContainer}
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
@@ -30,9 +29,10 @@ case class LocalStackV2Container(
 
 object LocalStackV2Container {
 
+
   val defaultTag = "0.9.4"
 
-  type Service = JavaLocalStackContainer.Service
+  type Service = JavaLocalStackContainer.EnabledService
 
   case class Def(
                   tag: String = LocalStackV2Container.defaultTag,
