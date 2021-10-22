@@ -181,13 +181,13 @@ The most flexible but less convenient container type is `GenericContainer`. This
 with custom configuration.
 
 ```scala
-class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
-  override val container: GenericContainer = GenericContainer("nginx:latest",
+class GenericContainerSpec extends AnyFlatSpec with TestContainerForAll {
+  override val containerDef = GenericContainer.Def("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
   )
 
-  "GenericContainer" should "start nginx and expose 80 port" in {
+  "GenericContainer" should "start nginx and expose 80 port" in withContainers { case container =>
     assert(Source.fromInputStream(
       new URL(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").openConnection().getInputStream
     ).mkString.contains("If you see this page, the nginx web server is successfully installed"))
