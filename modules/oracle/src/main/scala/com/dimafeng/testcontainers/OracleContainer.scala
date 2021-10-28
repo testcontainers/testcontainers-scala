@@ -42,8 +42,8 @@ case class OracleContainer(
 object OracleContainer {
 
   val defaultDatabaseName = "xe"
-  val defaultUsername = "system"
-  val defaultPassword = "oracle"
+  val defaultUsername = "test"
+  val defaultPassword = "test"
   val defaultSharedMemory = 10240000000L //1 GB
   val defaultCommonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams().copy(
     startupTimeout = 240.seconds
