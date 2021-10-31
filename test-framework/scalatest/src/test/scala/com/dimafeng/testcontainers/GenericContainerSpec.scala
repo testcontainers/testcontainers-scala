@@ -5,9 +5,10 @@ import scala.io.Source
 import java.net.URL
 import com.dimafeng.testcontainers.scalatest.TestContainerForAll
 import org.testcontainers.containers.wait.strategy.Wait
+import com.dimafeng.testcontainers.GenericContainer.Def
 
 class GenericContainerSpec extends AnyFlatSpec with TestContainerForAll {
-  override val containerDef = GenericContainer.Def("nginx:latest",
+  override val containerDef: Def[GenericContainer] = GenericContainer.Def("nginx:latest",
     exposedPorts = Seq(80),
     waitStrategy = Wait.forHttp("/")
   )
