@@ -623,6 +623,12 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.39.11**
+    * Generic container instantiation - https://github.com/testcontainers/testcontainers-scala/pull/194
+
+* **0.39.10**
+    * testcontainers-java updated to 1.16.2
+
 * **0.39.9**
     * Added `SchemaRegistryContainer`
 
