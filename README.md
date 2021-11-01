@@ -455,6 +455,15 @@ object NginxContainer {
 }
 ```
 
+However, if you don't want to create a custom container, you can use `GenericContainer` directly while overriding `containerDef`:
+
+```scala
+override val containerDef = GenericContainer.Def("nginx:latest",
+  exposedPorts = Seq(80),
+  waitStrategy = Wait.forHttp("/")
+)
+```
+
 ### Migration from the classic API
 
 1. If you have custom containers created with the `GenericContainer`, add `ContainerDef` in the companion like this:
