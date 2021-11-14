@@ -77,7 +77,8 @@ object GenericContainer {
             labels: Map[String, String] = Map.empty,
             tmpFsMapping: Map[String, String] = Map.empty,
             imagePullPolicy: ImagePullPolicy = null): GenericContainer =
-    new GenericContainer(dockerImage, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy), labels, tmpFsMapping)
+    new GenericContainer(dockerImage, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy), labels, tmpFsMapping,
+    Option(imagePullPolicy))
 
   abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef {
     override type Container = C
