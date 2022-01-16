@@ -21,6 +21,7 @@ class GenericContainer(
     env: Map[String, String] = Map(),
     command: Seq[String] = Seq(),
     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+    fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
     waitStrategy: Option[WaitStrategy] = None,
     labels: Map[String, String] = Map.empty,
     tmpFsMapping: Map[String, String] = Map.empty,
@@ -39,6 +40,7 @@ class GenericContainer(
       underlying.withCommand(command: _*)
     }
     classpathResourceMapping.foreach{ case (r, c, m) => underlying.withClasspathResourceMapping(r, c, m) }
+    fileSystemBind.foreach{ case (r, c, m) => underlying.withFileSystemBind(r, c, m) }
     waitStrategy.foreach(underlying.waitingFor)
 
     if (labels.nonEmpty) {
@@ -73,12 +75,23 @@ object GenericContainer {
             env: Map[String, String] = Map(),
             command: Seq[String] = Seq(),
             classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+            fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
             waitStrategy: WaitStrategy = null,
             labels: Map[String, String] = Map.empty,
             tmpFsMapping: Map[String, String] = Map.empty,
             imagePullPolicy: ImagePullPolicy = null): GenericContainer =
-    new GenericContainer(dockerImage, exposedPorts, env, command, classpathResourceMapping, Option(waitStrategy), labels, tmpFsMapping,
-    Option(imagePullPolicy))
+    new GenericContainer(
+      dockerImage = dockerImage,
+      exposedPorts = exposedPorts,
+      env = env,
+      command = command,
+      classpathResourceMapping = classpathResourceMapping,
+      fileSystemBind = fileSystemBind,
+      waitStrategy = Option(waitStrategy),
+      labels = labels,
+      tmpFsMapping = tmpFsMapping,
+      imagePullPolicy = Option(imagePullPolicy)
+    )
 
   abstract class Def[C <: GenericContainer](init: => C) extends ContainerDef {
     override type Container = C
@@ -92,13 +105,23 @@ object GenericContainer {
                                      env: Map[String, String] = Map(),
                                      command: Seq[String] = Seq(),
                                      classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+                                     fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
                                      waitStrategy: WaitStrategy = null,
                                      labels: Map[String, String] = Map.empty,
                                      tmpFsMapping: Map[String, String] = Map.empty,
                                      imagePullPolicy: ImagePullPolicy = null) extends Def[GenericContainer](
       GenericContainer(
-        dockerImage, exposedPorts, env, command, classpathResourceMapping, waitStrategy, 
-        labels, tmpFsMapping, imagePullPolicy)
+        dockerImage = dockerImage,
+        exposedPorts = exposedPorts,
+        env = env,
+        command = command,
+        classpathResourceMapping = classpathResourceMapping,
+        fileSystemBind = fileSystemBind,
+        waitStrategy = waitStrategy,
+        labels = labels,
+        tmpFsMapping = tmpFsMapping,
+        imagePullPolicy = imagePullPolicy
+          )
     )
 
     def apply(dockerImage: DockerImage,
@@ -106,13 +129,23 @@ object GenericContainer {
               env: Map[String, String] = Map(),
               command: Seq[String] = Seq(),
               classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+              fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
               waitStrategy: WaitStrategy = null,
               labels: Map[String, String] = Map.empty,
               tmpFsMapping: Map[String, String] = Map.empty,
               imagePullPolicy: ImagePullPolicy = null): GenericContainer.Def[GenericContainer] = 
       Default(
-        dockerImage, exposedPorts, env, command, classpathResourceMapping, waitStrategy, 
-        labels, tmpFsMapping, imagePullPolicy)
+        dockerImage = dockerImage,
+        exposedPorts = exposedPorts,
+        env = env,
+        command = command,
+        classpathResourceMapping = classpathResourceMapping,
+        fileSystemBind = fileSystemBind,
+        waitStrategy = waitStrategy,
+        labels = labels,
+        tmpFsMapping = tmpFsMapping,
+        imagePullPolicy = imagePullPolicy
+      )
 
   }
 

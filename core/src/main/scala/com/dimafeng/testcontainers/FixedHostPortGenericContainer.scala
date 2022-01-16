@@ -8,6 +8,7 @@ class FixedHostPortGenericContainer(imageName: String,
                                     env: Map[String, String] = Map(),
                                     command: Seq[String] = Seq(),
                                     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+                                    fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
                                     waitStrategy: Option[WaitStrategy] = None,
                                     exposedHostPort: Int,
                                     exposedContainerPort: Int
@@ -23,6 +24,7 @@ class FixedHostPortGenericContainer(imageName: String,
     container.withCommand(command: _*)
   }
   classpathResourceMapping.foreach{ case (r, c, m) => container.withClasspathResourceMapping(r, c, m) }
+  fileSystemBind.foreach{ case (r, c, m) => container.withFileSystemBind(r, c, m) }
   waitStrategy.foreach(container.waitingFor)
   container.withFixedExposedPort(exposedHostPort, exposedContainerPort)
 }
@@ -33,16 +35,19 @@ object FixedHostPortGenericContainer {
             env: Map[String, String] = Map(),
             command: Seq[String] = Seq(),
             classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+            fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
             waitStrategy: WaitStrategy = null,
             exposedHostPort: Int,
             exposedContainerPort: Int): FixedHostPortGenericContainer=
-    new FixedHostPortGenericContainer(imageName,
-      exposedPorts,
-      env,
-      command,
-      classpathResourceMapping,
-      Option(waitStrategy),
-      exposedHostPort,
-      exposedContainerPort
+    new FixedHostPortGenericContainer(
+      imageName = imageName,
+      exposedPorts = exposedPorts,
+      env = env,
+      command = command,
+      classpathResourceMapping = classpathResourceMapping,
+      fileSystemBind = fileSystemBind,
+      waitStrategy = Option(waitStrategy),
+      exposedHostPort = exposedHostPort,
+      exposedContainerPort = exposedContainerPort
     )
 }
