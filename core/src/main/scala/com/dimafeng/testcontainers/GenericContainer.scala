@@ -21,11 +21,11 @@ class GenericContainer(
     env: Map[String, String] = Map(),
     command: Seq[String] = Seq(),
     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-    fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
     waitStrategy: Option[WaitStrategy] = None,
     labels: Map[String, String] = Map.empty,
     tmpFsMapping: Map[String, String] = Map.empty,
-    imagePullPolicy: Option[ImagePullPolicy] = None
+    imagePullPolicy: Option[ImagePullPolicy] = None,
+    fileSystemBind: Seq[(String, String, BindMode)] = Seq()
   ) = this({
     val underlying: JavaGenericContainer[_] = dockerImage match {
       case DockerImage(Left(imageFromDockerfile)) => new JavaGenericContainer(imageFromDockerfile)
@@ -70,16 +70,18 @@ object GenericContainer {
     DockerImage(Left(imageName))
   }
 
-  def apply(dockerImage: DockerImage,
-            exposedPorts: Seq[Int] = Seq(),
-            env: Map[String, String] = Map(),
-            command: Seq[String] = Seq(),
-            classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-            fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
-            waitStrategy: WaitStrategy = null,
-            labels: Map[String, String] = Map.empty,
-            tmpFsMapping: Map[String, String] = Map.empty,
-            imagePullPolicy: ImagePullPolicy = null): GenericContainer =
+  def apply(
+    dockerImage: DockerImage,
+    exposedPorts: Seq[Int] = Seq(),
+    env: Map[String, String] = Map(),
+    command: Seq[String] = Seq(),
+    classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+    waitStrategy: WaitStrategy = null,
+    labels: Map[String, String] = Map.empty,
+    tmpFsMapping: Map[String, String] = Map.empty,
+    imagePullPolicy: ImagePullPolicy = null,
+    fileSystemBind: Seq[(String, String, BindMode)] = Seq()
+  ): GenericContainer =
     new GenericContainer(
       dockerImage = dockerImage,
       exposedPorts = exposedPorts,
@@ -100,16 +102,18 @@ object GenericContainer {
 
   object Def {
 
-    private final case class Default(dockerImage: DockerImage,
-                                     exposedPorts: Seq[Int] = Seq(),
-                                     env: Map[String, String] = Map(),
-                                     command: Seq[String] = Seq(),
-                                     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-                                     fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
-                                     waitStrategy: WaitStrategy = null,
-                                     labels: Map[String, String] = Map.empty,
-                                     tmpFsMapping: Map[String, String] = Map.empty,
-                                     imagePullPolicy: ImagePullPolicy = null) extends Def[GenericContainer](
+    private final case class Default(
+      dockerImage: DockerImage,
+      exposedPorts: Seq[Int] = Seq(),
+      env: Map[String, String] = Map(),
+      command: Seq[String] = Seq(),
+      classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+      waitStrategy: WaitStrategy = null,
+      labels: Map[String, String] = Map.empty,
+      tmpFsMapping: Map[String, String] = Map.empty,
+      imagePullPolicy: ImagePullPolicy = null,
+      fileSystemBind: Seq[(String, String, BindMode)] = Seq()
+    ) extends Def[GenericContainer](
       GenericContainer(
         dockerImage = dockerImage,
         exposedPorts = exposedPorts,
@@ -124,16 +128,18 @@ object GenericContainer {
           )
     )
 
-    def apply(dockerImage: DockerImage,
-              exposedPorts: Seq[Int] = Seq(),
-              env: Map[String, String] = Map(),
-              command: Seq[String] = Seq(),
-              classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-              fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
-              waitStrategy: WaitStrategy = null,
-              labels: Map[String, String] = Map.empty,
-              tmpFsMapping: Map[String, String] = Map.empty,
-              imagePullPolicy: ImagePullPolicy = null): GenericContainer.Def[GenericContainer] = 
+    def apply(
+      dockerImage: DockerImage,
+      exposedPorts: Seq[Int] = Seq(),
+      env: Map[String, String] = Map(),
+      command: Seq[String] = Seq(),
+      classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+      waitStrategy: WaitStrategy = null,
+      labels: Map[String, String] = Map.empty,
+      tmpFsMapping: Map[String, String] = Map.empty,
+      imagePullPolicy: ImagePullPolicy = null,
+      fileSystemBind: Seq[(String, String, BindMode)] = Seq()
+    ): GenericContainer.Def[GenericContainer] =
       Default(
         dockerImage = dockerImage,
         exposedPorts = exposedPorts,

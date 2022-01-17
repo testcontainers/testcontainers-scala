@@ -8,10 +8,10 @@ class FixedHostPortGenericContainer(imageName: String,
                                     env: Map[String, String] = Map(),
                                     command: Seq[String] = Seq(),
                                     classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-                                    fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
                                     waitStrategy: Option[WaitStrategy] = None,
                                     exposedHostPort: Int,
-                                    exposedContainerPort: Int
+                                    exposedContainerPort: Int,
+                                    fileSystemBind: Seq[(String, String, BindMode)] = Seq()
                                    ) extends SingleContainer[JavaFixedHostPortGenericContainer[_]] {
 
   override implicit val container: JavaFixedHostPortGenericContainer[_] = new JavaFixedHostPortGenericContainer(imageName)
@@ -30,15 +30,17 @@ class FixedHostPortGenericContainer(imageName: String,
 }
 
 object FixedHostPortGenericContainer {
-  def apply(imageName: String,
-            exposedPorts: Seq[Int] = Seq(),
-            env: Map[String, String] = Map(),
-            command: Seq[String] = Seq(),
-            classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
-            fileSystemBind: Seq[(String, String, BindMode)] = Seq(),
-            waitStrategy: WaitStrategy = null,
-            exposedHostPort: Int,
-            exposedContainerPort: Int): FixedHostPortGenericContainer=
+  def apply(
+    imageName: String,
+    exposedPorts: Seq[Int] = Seq(),
+    env: Map[String, String] = Map(),
+    command: Seq[String] = Seq(),
+    classpathResourceMapping: Seq[(String, String, BindMode)] = Seq(),
+    waitStrategy: WaitStrategy = null,
+    exposedHostPort: Int,
+    exposedContainerPort: Int,
+    fileSystemBind: Seq[(String, String, BindMode)] = Seq()
+  ): FixedHostPortGenericContainer=
     new FixedHostPortGenericContainer(
       imageName = imageName,
       exposedPorts = exposedPorts,
