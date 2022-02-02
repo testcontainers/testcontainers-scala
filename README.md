@@ -169,6 +169,7 @@ Here is the full list of the currently available modules:
 * `testcontainers-scala-trino` — module with the Trino container.
 * `testcontainers-scala-mongodb` — module with the MongoDB container.
 * `testcontainers-scala-solr` — module with the Solr container.
+* `testcontainers-scala-gcloud` — module with the Firebase emulator container.
 
 Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
 You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).

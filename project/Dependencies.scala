@@ -32,6 +32,7 @@ object Dependencies {
   private val awsV1Version = "1.11.479"
   private val awsV2Version = "2.15.7"
   private val sttpVersion = "3.3.14"
+  private val firestoreConnectorVersion = "3.0.11"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -275,6 +276,14 @@ object Dependencies {
   val moduleSolr = Def.setting(
     COMPILE(
       "org.testcontainers" % "solr" % testcontainersVersion
+    )
+  )
+
+  val moduleGcloud = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "gcloud" % testcontainersVersion
+    ) ++ PROVIDED(
+      "com.google.cloud" % "google-cloud-firestore" % firestoreConnectorVersion
     )
   )
 }
