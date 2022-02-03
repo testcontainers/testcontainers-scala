@@ -92,6 +92,7 @@ lazy val root = (project in file("."))
     moduleTrino,
     moduleMongodb,
     moduleSolr,
+    moduleGcloud,
     allOld
   )
   .settings(noPublishSettings)
@@ -464,4 +465,12 @@ lazy val moduleSolr = (project in file("modules/solr"))
   .settings(
     name := "testcontainers-scala-solr",
     libraryDependencies ++= Dependencies.moduleSolr.value
+  )
+
+lazy val moduleGcloud = (project in file("modules/gcloud"))
+  .dependsOn(core, scalatest % "test->test")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-gcloud",
+    libraryDependencies ++= Dependencies.moduleGcloud.value
   )
