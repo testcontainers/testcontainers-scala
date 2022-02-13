@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.testcontainers.containers.Network
+import org.testcontainers.utility.DockerImageName
 
 import java.util.Properties
 import scala.collection.JavaConverters._
@@ -26,26 +27,26 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
   //a way to communicate containers
   val network: Network = Network.newNetwork()
 
-  val kafkaContainer: KafkaContainer = KafkaContainer.Def(kafkaVersion).createContainer()
+  val kafkaContainer: KafkaContainer = KafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
   val schemaRegistryContainer: GenericContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
 
   kafkaContainer.container
-  .withNetwork(network)
-  .withNetworkAliases(hostName)
-  .withEnv(
-    Map[String, String](
-      "KAFKA_BROKER_ID" -> brokerId.toString,
-      "KAFKA_HOST_NAME" -> hostName,
-      "KAFKA_AUTO_CREATE_TOPICS_ENABLE" -> "false"
-    ).asJava
-  )
+    .withNetwork(network)
+    .withNetworkAliases(hostName)
+    .withEnv(
+      Map[String, String](
+        "KAFKA_BROKER_ID" -> brokerId.toString,
+        "KAFKA_HOST_NAME" -> hostName,
+        "KAFKA_AUTO_CREATE_TOPICS_ENABLE" -> "false"
+      ).asJava
+    )
 
   override val container: MultipleContainers = MultipleContainers(kafkaContainer, schemaRegistryContainer)
 
   def getKafkaAddress: String = kafkaContainer.bootstrapServers
 
   def getSchemaRegistryAddress: String =
-      s"http://${schemaRegistryContainer.container.getHost}:${schemaRegistryContainer.container.getMappedPort(SchemaRegistryContainer.defaultSchemaPort)}"
+    s"http://${schemaRegistryContainer.container.getHost}:${schemaRegistryContainer.container.getMappedPort(SchemaRegistryContainer.defaultSchemaPort)}"
 
 
   "Schema registry container" should "be started" in {
