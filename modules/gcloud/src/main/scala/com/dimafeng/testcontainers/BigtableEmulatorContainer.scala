@@ -1,9 +1,6 @@
 package com.dimafeng.testcontainers
 
-import com.dimafeng.testcontainers.FirestoreEmulatorContainer.defaultImageName
 import com.google.cloud.bigtable.admin.v2.{
-  BigtableInstanceAdminClient,
-  BigtableInstanceAdminSettings,
   BigtableTableAdminClient,
   BigtableTableAdminSettings
 }
@@ -18,36 +15,45 @@ import org.testcontainers.utility.DockerImageName
 
 class BigtableEmulatorContainer(
   bigtableEmulatorImageName: Option[DockerImageName] = None,
-  projectId: String = BigtableEmulatorContainer.defaultProjectId
+  projectId: String = BigtableEmulatorContainer.defaultProjectId,
+  instanceId: String = BigtableEmulatorContainer.defaultInstanceId
 ) extends SingleContainer[JavaBigtableEmulatorContainer] {
 
   override val container: JavaBigtableEmulatorContainer =
     bigtableEmulatorImageName
       .map(new JavaBigtableEmulatorContainer(_))
-      .getOrElse(new JavaBigtableEmulatorContainer(defaultImageName))
+      .getOrElse(
+        new JavaBigtableEmulatorContainer(
+          BigtableEmulatorContainer.defaultImageName
+        )
+      )
 
-  def dataClient: BigtableDataClient =
+  lazy val dataClient: BigtableDataClient =
     BigtableDataClient.create(
       BigtableDataSettings
         .newBuilderForEmulator(container.getHost, container.getEmulatorPort)
         .setProjectId(projectId)
-        .setInstanceId("value-not-important")
+        .setInstanceId(instanceId)
         .build()
     )
 
-  def tableAdminClient: BigtableTableAdminClient =
+  lazy val tableAdminClient: BigtableTableAdminClient =
     BigtableTableAdminClient.create(
       BigtableTableAdminSettings
         .newBuilderForEmulator(container.getHost, container.getEmulatorPort)
         .setProjectId(projectId)
-        .setInstanceId("value-not-important")
+        .setInstanceId(instanceId)
         .build()
     )
+
+  def emulatorHost: String = container.getHost
+  def emulatorPort: Int = container.getEmulatorPort
 }
 
 object BigtableEmulatorContainer {
 
   val defaultProjectId = "test-project"
+  val defaultInstanceId = "test-instance"
 
   val defaultImageName: DockerImageName =
     DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk")
