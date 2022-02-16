@@ -1,51 +1,29 @@
 package com.dimafeng.testcontainers
 
 import org.testcontainers.containers.{KafkaContainer => JavaKafkaContainer}
+import org.testcontainers.utility.DockerImageName
 
-class KafkaContainer(confluentPlatformVersion: Option[String] = None,
-                     externalZookeeper: Option[String] = None) extends SingleContainer[JavaKafkaContainer] {
+case class KafkaContainer(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
+                    ) extends SingleContainer[JavaKafkaContainer] {
 
-  @deprecated("Please use reflective methods of the scala container or `configure` method")
-  val kafkaContainer: JavaKafkaContainer = {
-    if (confluentPlatformVersion.isEmpty) {
-      new JavaKafkaContainer()
-    } else {
-      new JavaKafkaContainer(confluentPlatformVersion.get)
-    }
-  }
-
-  if (externalZookeeper.isEmpty) {
-    kafkaContainer.withEmbeddedZookeeper()
-  } else {
-    kafkaContainer.withExternalZookeeper(externalZookeeper.get)
-  }
-
-  override val container: JavaKafkaContainer = kafkaContainer
+  override val container: JavaKafkaContainer = new JavaKafkaContainer(dockerImageName)
 
   def bootstrapServers: String = container.getBootstrapServers
 }
 
 object KafkaContainer {
 
+  val defaultImage = "confluentinc/cp-kafka"
   val defaultTag = "5.2.1"
+  val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
-  def apply(confluentPlatformVersion: String = null,
-            externalZookeeper: String = null): KafkaContainer = {
-    new KafkaContainer(Option(confluentPlatformVersion), Option(externalZookeeper))
-  }
-
-  case class Def(
-    confluentPlatformVersion: String = defaultTag,
-    externalZookeeper: Option[String] = None
-  ) extends ContainerDef {
+  case class Def(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
+                ) extends ContainerDef {
 
     override type Container = KafkaContainer
 
     override def createContainer(): KafkaContainer = {
-      new KafkaContainer(
-        confluentPlatformVersion = Some(confluentPlatformVersion),
-        externalZookeeper = externalZookeeper
-      )
+      new KafkaContainer(dockerImageName)
     }
   }
 }
