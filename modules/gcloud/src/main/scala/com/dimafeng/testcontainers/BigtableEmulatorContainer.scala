@@ -13,7 +13,7 @@ import org.testcontainers.containers.{
 }
 import org.testcontainers.utility.DockerImageName
 
-class BigtableEmulatorContainer(
+case class BigtableEmulatorContainer(
   bigtableEmulatorImageName: Option[DockerImageName] = None,
   projectId: String = BigtableEmulatorContainer.defaultProjectId,
   instanceId: String = BigtableEmulatorContainer.defaultInstanceId
@@ -57,9 +57,4 @@ object BigtableEmulatorContainer {
 
   val defaultImageName: DockerImageName =
     DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk")
-
-  def apply(
-    bigtableEmulatorImageName: DockerImageName = null
-  ): BigtableEmulatorContainer =
-    new BigtableEmulatorContainer(Option(bigtableEmulatorImageName))
 }
