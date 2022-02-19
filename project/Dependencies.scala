@@ -33,6 +33,7 @@ object Dependencies {
   private val awsV2Version = "2.15.7"
   private val sttpVersion = "3.3.14"
   private val firestoreConnectorVersion = "3.0.11"
+  private val bigtableVersion = "2.5.3"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -282,8 +283,10 @@ object Dependencies {
   val moduleGcloud = Def.setting(
     COMPILE(
       "org.testcontainers" % "gcloud" % testcontainersVersion
-    ) ++ PROVIDED(
-      "com.google.cloud" % "google-cloud-firestore" % firestoreConnectorVersion
-    )
+    ) ++
+      PROVIDED(
+        "com.google.cloud" % "google-cloud-firestore" % firestoreConnectorVersion,
+        "com.google.cloud" % "google-cloud-bigtable" % bigtableVersion
+      )
   )
 }
