@@ -624,6 +624,13 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.40.2**
+    * Added `BigtableEmulatorContainer`
+    * Refactoring of `KafkaContainer`: https://github.com/testcontainers/testcontainers-scala/pull/209
+
+* **0.40.1**
+    * Added `FirestoreEmulatorContainer`
+
 * **0.40.0**
     * Added file system bindings https://github.com/testcontainers/testcontainers-scala/pull/206
     * **Breaking change:** `classpathResourceMapping` is now `Seq[FileSystemBind]`
