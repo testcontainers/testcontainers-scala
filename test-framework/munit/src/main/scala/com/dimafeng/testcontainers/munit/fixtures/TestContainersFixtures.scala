@@ -25,7 +25,7 @@ trait TestContainersFixtures { self: FunSuite =>
      *
      *   test("test case name") {
      *     // Inside your test body you can do with your container whatever you want to
-     *     assert(mysql.container.jdbcUrl.nonEmpty)
+     *     assert(mysql().jdbcUrl.nonEmpty)
      *   }
      * }
      * }}}
@@ -76,7 +76,7 @@ trait TestContainersFixtures { self: FunSuite =>
          *
          *   test("test case name") {
          *     // Inside your test body you can do with your container whatever you want to
-         *     assert(mysql.container.jdbcUrl.nonEmpty)
+         *     assert(mysql().jdbcUrl.nonEmpty)
          *   }
          * }
          * }}}
@@ -100,7 +100,7 @@ trait TestContainersFixtures { self: FunSuite =>
      *
      *   test("test case name") {
      *     // Inside your test body you can do with your container whatever you want to
-     *     assert(mysql.container.jdbcUrl.nonEmpty)
+     *     assert(mysql().jdbcUrl.nonEmpty)
      *   }
      * }
      * }}}
@@ -153,7 +153,7 @@ trait TestContainersFixtures { self: FunSuite =>
          *
          *   test("test case name") {
          *     // Inside your test body you can do with your container whatever you want to
-         *     assert(mysql.container.jdbcUrl.nonEmpty)
+         *     assert(mysql().jdbcUrl.nonEmpty)
          *   }
          * }
          * }}}
