@@ -491,6 +491,12 @@ Similarly to Scalatest, you can use one of the four traits:
 3. `TestContainersForAll` — will start multiple containers before all tests and stop after all tests.
 4. `TestContainersForEach` — will start multiple containers before each test and stop after each test.
 
+Additionally, you have available MUnit fixtures integrations under `TestContainersFixtures`:
+
+1. `ForAllContainerFixture` — will start a single container before all tests and stop after all tests.
+2. `ForEachContainerFixture` — will start a single container before each test and stop after each test.
+3. `ContainerFunFixture` — will start a single container before each test and stop after each test.
+
 #### Single container in tests
 
 If you want to use a single container for all tests in your suite:
@@ -610,6 +616,40 @@ class MySpec extends AnyFlatSpec with TestContainersForAll {
       assert(mysqlContainer.jdbcUrl.nonEmpty && pgContainer.jdbcUrl.nonEmpty)
   }
 
+}
+```
+
+#### Using fixtures
+
+Instead of the `*ForAll`/`*ForEach` traits you can use the fixtures under `TestContainersFixture`:
+
+```scala
+class MysqlSpec extends FunSuite with TestContainersFixtures {
+
+  // Use `ForAllContainerFixture` to start/stop container before/after all tests
+  val mysql = ForEachContainerFixture(MySQLContainer())
+
+  // You need to override `munitFixtures` and pass in your container fixture
+  override def munitFixtures = List(mysql)
+
+  test("test case name") {
+    // Inside your test body you can do with your container whatever you want to
+    assert(mysql().jdbcUrl.nonEmpty)
+  }
+}
+```
+
+There is also available a `FunFixture` version for containers:
+
+```scala
+class MysqlSpec extends FunSuite with TestContainersFixtures {
+
+  val mysql = ContainerFunFixture(MySQLContainer())
+
+  mysql.test("test case name") { container =>
+    // Inside your test body you can do with your container whatever you want to
+    assert(container.jdbcUrl.nonEmpty)
+  }
 }
 ```
 
