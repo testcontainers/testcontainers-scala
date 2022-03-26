@@ -1,6 +1,7 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.GenericContainer.FileSystemBind
+import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.containers.{BindMode, FixedHostPortGenericContainer => JavaFixedHostPortGenericContainer}
 
@@ -12,7 +13,8 @@ class FixedHostPortGenericContainer(imageName: String,
                                     waitStrategy: Option[WaitStrategy] = None,
                                     exposedHostPort: Int,
                                     exposedContainerPort: Int,
-                                    fileSystemBind: Seq[FileSystemBind] = Seq()
+                                    fileSystemBind: Seq[FileSystemBind] = Seq(),
+                                    startupCheckStrategy: Option[StartupCheckStrategy] = None
                                    ) extends SingleContainer[JavaFixedHostPortGenericContainer[_]] {
 
   override implicit val container: JavaFixedHostPortGenericContainer[_] = new JavaFixedHostPortGenericContainer(imageName)
@@ -33,6 +35,7 @@ class FixedHostPortGenericContainer(imageName: String,
       container.withFileSystemBind(hostFilePath, containerFilePath, bindMode)
   }
   waitStrategy.foreach(container.waitingFor)
+  startupCheckStrategy.foreach(container.withStartupCheckStrategy)
   container.withFixedExposedPort(exposedHostPort, exposedContainerPort)
 }
 
