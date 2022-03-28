@@ -3,6 +3,7 @@ package com.dimafeng.testcontainers
 import java.util.concurrent.Future
 
 import com.dimafeng.testcontainers.GenericContainer.{FileSystemBind, DockerImage}
+import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.wait.strategy.WaitStrategy
 import org.testcontainers.containers.{BindMode, GenericContainer => JavaGenericContainer}
 import org.testcontainers.images.ImagePullPolicy
@@ -25,7 +26,8 @@ class GenericContainer(
     labels: Map[String, String] = Map.empty,
     tmpFsMapping: Map[String, String] = Map.empty,
     imagePullPolicy: Option[ImagePullPolicy] = None,
-    fileSystemBind: Seq[FileSystemBind] = Seq()
+    fileSystemBind: Seq[FileSystemBind] = Seq(),
+    startupCheckStrategy: Option[StartupCheckStrategy] = None
   ) = this({
     val underlying: JavaGenericContainer[_] = dockerImage match {
       case DockerImage(Left(imageFromDockerfile)) => new JavaGenericContainer(imageFromDockerfile)
@@ -48,6 +50,8 @@ class GenericContainer(
         underlying.withFileSystemBind(hostFilePath, containerFilePath, bindMode)
     }
     waitStrategy.foreach(underlying.waitingFor)
+
+    startupCheckStrategy.foreach(underlying.withStartupCheckStrategy)
 
     if (labels.nonEmpty) {
       underlying.withLabels(labels.asJava)
