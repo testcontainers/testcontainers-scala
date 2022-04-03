@@ -30,7 +30,7 @@ object Dependencies {
   private val mockitoVersion = "3.7.7"
   private val restAssuredVersion = "4.0.0"
   private val awsV1Version = "1.11.479"
-  private val awsV2Version = "2.15.7"
+  private val awsV2Version = "2.17.158"
   private val sttpVersion = "3.3.14"
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.5.3"
@@ -198,7 +198,8 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "localstack" % testcontainersVersion
     ) ++ PROVIDED(
-      "com.amazonaws" % "aws-java-sdk-s3" % awsV1Version
+      "com.amazonaws" % "aws-java-sdk-s3" % awsV1Version,
+      "com.amazonaws" % "aws-java-sdk-sqs" % awsV1Version
     )
   )
 
@@ -206,7 +207,8 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "localstack" % testcontainersVersion
     ) ++ PROVIDED(
-      "software.amazon.awssdk" % "s3" % awsV2Version
+      "software.amazon.awssdk" % "s3" % awsV2Version,
+      "software.amazon.awssdk" % "sqs" % awsV2Version
     )
   )
 
