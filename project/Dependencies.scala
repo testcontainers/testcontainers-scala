@@ -34,6 +34,7 @@ object Dependencies {
   private val sttpVersion = "3.3.14"
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.5.3"
+  private val pubsubVersion = "1.116.4"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -288,7 +289,8 @@ object Dependencies {
     ) ++
       PROVIDED(
         "com.google.cloud" % "google-cloud-firestore" % firestoreConnectorVersion,
-        "com.google.cloud" % "google-cloud-bigtable" % bigtableVersion
+        "com.google.cloud" % "google-cloud-bigtable" % bigtableVersion,
+        "com.google.cloud" % "google-cloud-pubsub" % pubsubVersion
       )
   )
 }
