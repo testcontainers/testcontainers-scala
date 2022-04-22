@@ -5,6 +5,7 @@ import com.google.protobuf.ByteString
 import com.google.pubsub.v1._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
+import org.testcontainers.utility.DockerImageName
 
 import java.util.concurrent.TimeUnit
 import scala.collection.JavaConverters._
@@ -12,14 +13,8 @@ import scala.concurrent.TimeoutException
 
 class PubSubEmulatorContainerSpec extends AnyWordSpecLike with Matchers with ForAllTestContainer {
 
-  override val container: PubSubEmulatorContainer = PubSubEmulatorContainer()
-
-  override def beforeStop(): Unit = {
-    container.topicAdminClient.close()
-    container.subscriptionAdminClient.close()
-    container.close()
-    super.beforeStop()
-  }
+  override val container: PubSubEmulatorContainer = PubSubEmulatorContainer(
+    DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:382.0.0"))
 
   "PubSub emulator container" should {
 

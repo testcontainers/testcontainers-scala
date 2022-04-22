@@ -57,6 +57,12 @@ class PubSubEmulatorContainer(
   }
 
   def emulatorEndpoint: String = container.getEmulatorEndpoint
+
+  override def close(): Unit = {
+    topicAdminClient.close()
+    subscriptionAdminClient.close()
+    super.close()
+  }
 }
 
 object PubSubEmulatorContainer {
