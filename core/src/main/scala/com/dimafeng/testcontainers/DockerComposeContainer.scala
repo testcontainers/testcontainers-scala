@@ -162,6 +162,7 @@ class DockerComposeContainer(composeFiles: ComposeFile,
 
     container.withPull(pull)
     container.withLocalCompose(localCompose)
+    container.withOptions("--compatibility")
     container.withEnv(env.asJava)
     container.withTailChildContainers(tailChildContainers)
 
