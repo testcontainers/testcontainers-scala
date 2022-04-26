@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import java.util.{Map => JMap}
+import scala.collection.JavaConverters._
 
 class FirestoreEmulatorContainerSpec extends AnyWordSpecLike with Matchers with ForAllTestContainer {
 
@@ -16,8 +16,8 @@ class FirestoreEmulatorContainerSpec extends AnyWordSpecLike with Matchers with 
       try {
         val users = firestore.collection("users")
         val docRef = users.document("alovelace")
-        val data = JMap.of("first", "Ada", "last", "Lovelace")
-        val eventualInit = docRef.set(data)
+        val data = Map[String, Any]("first" -> "Ada", "last" -> "Lovelace")
+        val eventualInit = docRef.set(data.asJava)
         eventualInit.get()
 
         val eventualSnapshot = users.get()
