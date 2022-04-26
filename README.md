@@ -1,6 +1,6 @@
 ![Logo](logo.png)
 
-[![Build Status](https://travis-ci.org/testcontainers/testcontainers-scala.svg?branch=master)](https://travis-ci.org/testcontainers/testcontainers-scala)
+[![Build Status](https://github.com/testcontainers/testcontainers-scala/actions/workflows/test.yml/badge.svg)](https://github.com/testcontainers/testcontainers-scala/actions/workflows/test.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.dimafeng/testcontainers-scala_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/com.dimafeng/testcontainers-scala_2.12)
 
 # Testcontainers-scala
@@ -10,7 +10,9 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 > TestContainers is a Java 8 library that supports JUnit tests, providing lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.
 
-Testcontainers-scala in action: http://dimafeng.com/2016/08/01/testcontainers-selenium/
+[testcontainers-scala in action](http://dimafeng.com/2016/08/01/testcontainers-selenium)
+
+[SBT Microsite](https://testcontainers.github.io/testcontainers-scala)
 
 ## Slack
 
@@ -575,9 +577,9 @@ class MySpec extends AnyFlatSpec with TestContainerForAll {
     }
   }
 
- it should "work" in withContainers { 
+ it should "work" in withContainers {
    case pgContainer: PostgreSQLContainer =>
-     assert(pgContainer.jdbcUrl.nonEmpty) 
+     assert(pgContainer.jdbcUrl.nonEmpty)
   }
 }
 ```
