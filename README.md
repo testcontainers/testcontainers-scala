@@ -12,8 +12,6 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 [testcontainers-scala in action](http://dimafeng.com/2016/08/01/testcontainers-selenium)
 
-[SBT Microsite](https://testcontainers.github.io/testcontainers-scala)
-
 ## Slack
 
 [Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
