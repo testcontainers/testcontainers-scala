@@ -27,7 +27,7 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
   //a way to communicate containers
   val network: Network = Network.newNetwork()
 
-  val kafkaContainer: KafkaContainer = KafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
+  val kafkaContainer: KafkaContainer = KafkaContainer.Def().createContainer()
   val schemaRegistryContainer: GenericContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
 
   kafkaContainer.container
