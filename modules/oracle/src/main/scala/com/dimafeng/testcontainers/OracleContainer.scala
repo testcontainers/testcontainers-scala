@@ -17,7 +17,7 @@ case class OracleContainer(
   oraPassword: String = OracleContainer.defaultPassword,
   containerSharedMemory: Long = OracleContainer.defaultSharedMemory,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = OracleContainer.defaultCommonJdbcParams
-) extends SingleContainer[JavaOracleContainer] {
+) extends SingleContainer[JavaOracleContainer] with JdbcDatabaseContainer {
 
   override val container: JavaOracleContainer = {
     val c = new JavaOracleContainer(dockerImageName)
@@ -27,14 +27,6 @@ case class OracleContainer(
     commonJdbcParams.applyTo(c)
     c
   }
-
-  def driverClassName: String = container.getDriverClassName
-
-  def jdbcUrl: String = container.getJdbcUrl
-
-  def username: String = container.getUsername
-
-  def password: String = container.getPassword
 
   def testQueryString: String = container.getTestQueryString
 }
