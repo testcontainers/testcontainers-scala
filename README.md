@@ -664,6 +664,23 @@ If you have any questions or difficulties feel free to ask it in our [slack chan
 
 ## Release notes
 
+* **0.40.8**
+    * Fixed `MockServer` container tag
+    * Added `ContainerDef` constructors for `gcloud` containers
+
+* **0.40.6**
+    * Added `PubSubEmulatorContainer`
+
+* **0.40.5**
+    * Kafka docker image for ARM
+    * Updated `localstack` dependencies
+
+* **0.40.4**
+    * `startupCheckStrategy` for `FixedHostPortGenericContainer` and `GenericContainer` https://github.com/testcontainers/testcontainers-scala/pull/215
+
+* **0.40.3**
+    * MUnit fixtures https://github.com/testcontainers/testcontainers-scala/pull/214
+
 * **0.40.2**
     * Added `BigtableEmulatorContainer`
     * Refactoring of `KafkaContainer`: https://github.com/testcontainers/testcontainers-scala/pull/209
