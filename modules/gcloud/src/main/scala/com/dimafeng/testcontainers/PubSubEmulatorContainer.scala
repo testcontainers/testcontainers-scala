@@ -75,6 +75,14 @@ object PubSubEmulatorContainer {
            ): PubSubEmulatorContainer =
     new PubSubEmulatorContainer(Option(pubsubEmulatorImageName))
 
+  case class Def(pubSubEmulatorImageName: Option[DockerImageName] = None) extends ContainerDef {
+
+    override type Container = PubSubEmulatorContainer
+
+    override def createContainer(): PubSubEmulatorContainer =
+      new PubSubEmulatorContainer(pubSubEmulatorImageName)
+  }
+
 }
 
 
