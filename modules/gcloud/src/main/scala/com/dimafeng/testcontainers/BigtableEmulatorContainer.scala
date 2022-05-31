@@ -57,4 +57,16 @@ object BigtableEmulatorContainer {
 
   val defaultImageName: DockerImageName =
     DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk")
+
+  case class Def(
+    bigtableEmulatorImageName: Option[DockerImageName] = None,
+    projectId: String = BigtableEmulatorContainer.defaultProjectId,
+    instanceId: String = BigtableEmulatorContainer.defaultInstanceId
+  ) extends ContainerDef {
+
+    override type Container = BigtableEmulatorContainer
+
+    override def createContainer(): BigtableEmulatorContainer =
+      new BigtableEmulatorContainer(bigtableEmulatorImageName, projectId, instanceId)
+  }
 }

@@ -34,4 +34,12 @@ object FirestoreEmulatorContainer {
   ): FirestoreEmulatorContainer =
     new FirestoreEmulatorContainer(Option(firestoreEmulatorImageName))
 
+  case class Def(firestoreEmulatorImageName: Option[DockerImageName] = None) extends ContainerDef {
+
+    override type Container = FirestoreEmulatorContainer
+
+    override def createContainer(): FirestoreEmulatorContainer =
+      new FirestoreEmulatorContainer(firestoreEmulatorImageName)
+  }
+
 }
