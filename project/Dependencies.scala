@@ -296,4 +296,12 @@ object Dependencies {
         "com.google.cloud" % "google-cloud-pubsub" % pubsubVersion
       )
   )
+
+  val moduleRedpanda = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "redpanda" % testcontainersVersion
+    ) ++ TEST(
+      "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion
+    )
+  )
 }
