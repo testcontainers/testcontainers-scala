@@ -93,6 +93,7 @@ lazy val root = (project in file("."))
     moduleMongodb,
     moduleSolr,
     moduleGcloud,
+    moduleRedpanda,
     allOld
   )
   .settings(noPublishSettings)
@@ -473,4 +474,12 @@ lazy val moduleGcloud = (project in file("modules/gcloud"))
   .settings(
     name := "testcontainers-scala-gcloud",
     libraryDependencies ++= Dependencies.moduleGcloud.value
+  )
+
+lazy val moduleRedpanda = (project in file("modules/redpanda"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings: _*)
+  .settings(
+    name := "testcontainers-scala-redpanda",
+    libraryDependencies ++= Dependencies.moduleRedpanda.value
   )
