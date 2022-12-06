@@ -10,14 +10,16 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 > TestContainers is a Java 8 library that supports JUnit tests, providing lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.
 
+The following test frameworks are supported: 
 
+* [ScalaTest](https://www.scalatest.org/)
+* [MUnit](https://scalameta.org/munit/)
 
 ## Slack
 
 [Slack channel](https://testcontainers.slack.com/messages/CAFK4GL85)
 
 [Invite link for slack](https://slack.testcontainers.org/)
-
 
 ## Documentation
 
@@ -27,5 +29,3 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 ## Release notes
 
 See [release notes](release-notes.md)
-
-

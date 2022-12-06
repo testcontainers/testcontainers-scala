@@ -1,6 +1,3 @@
-[![Build Status](https://github.com/testcontainers/testcontainers-scala/actions/workflows/test.yml/badge.svg)](https://github.com/testcontainers/testcontainers-scala/actions/workflows/test.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/com.dimafeng/testcontainers-scala_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/com.dimafeng/testcontainers-scala_2.12)
-
 # Testcontainers-scala usage
 
 Since this project is essentially a scala wrapper, please familiarize yourself with the [Testcontainer documentation](https://www.testcontainers.org/) first.
@@ -279,11 +276,12 @@ You have the option to override `afterContainersStart` and `beforeContainersStop
 import com.dimafeng.testcontainers.PostgreSQLContainer
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
 import org.scalatest.flatspec.AnyFlatSpec
+import org.testcontainers.utility.DockerImageName
 
 class MySpec extends AnyFlatSpec with TestContainerForAll {
 
   override val containerDef =
-    PostgreSQLContainer.Def(DockerImageName.parse("postgres:12"))
+    PostgreSQLContainer.Def(DockerImageName.parse("postgres:15.1"))
 
   override def afterContainersStart(container: Containers): Unit = {
     super.afterContainersStart(container)
@@ -305,10 +303,9 @@ class MySpec extends AnyFlatSpec with TestContainerForAll {
     assert(pgContainer.jdbcUrl.nonEmpty)
   }
 }
-
 ```
 
-#### Example with multiple containers
+### Example with multiple containers
 
 ```scala
 import com.dimafeng.testcontainers.MySQLContainer
@@ -352,7 +349,7 @@ class MySpec extends AnyFlatSpec with TestContainersForAll {
 }
 ```
 
-## Notes on MUnit usage
+## Specific notes on MUnit usage
 
 ### Using fixtures
 
@@ -376,7 +373,6 @@ class MysqlSpec extends FunSuite with TestContainersFixtures {
     assert(mysql().jdbcUrl.nonEmpty)
   }
 }
-
 ```
 
 There is also available a `FunFixture` version for containers:
