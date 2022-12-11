@@ -8,7 +8,7 @@
 
 ## Sbt setup
 
-Although Testcontainer tests are mere unit tests, it's best to use them as [sbt integration tests](https://www.scala-sbt.org/1.x/docs/Testing.html#Integration+Tests) since they spawn a separate environment, can be slower and require specific configuration. 
+Although Testcontainer tests are mere unit tests, it's best (although not mandatory) to use them as [sbt integration tests](https://www.scala-sbt.org/1.x/docs/Testing.html#Integration+Tests) since they spawn a separate environment, can be slower and require specific configuration. 
 
 ```scala
 lazy val root = (project in file("."))
