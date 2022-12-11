@@ -2,7 +2,7 @@
 
 Since this project is essentially a scala wrapper, please familiarize yourself with the [Testcontainer documentation](https://www.testcontainers.org/) first.
 
-This section describes the syntax valid since version 0.34.0. See this [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78) for the motivation of the change. The legacy API description is [available here](usage_legacy.md).
+This section describes the syntax valid since version 0.34.0. See this [pull request](https://github.com/testcontainers/testcontainers-scala/pull/78) for the motivation of the change. **The legacy API description is [available here](usage_legacy.md)**.
 
 **This API is experimental and may change!**
 

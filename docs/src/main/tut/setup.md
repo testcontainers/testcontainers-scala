@@ -43,17 +43,18 @@ The library above will enable you to launch a generic docker container or docker
 Next, enable [sbt forking](https://www.scala-sbt.org/1.x/docs/Forking.html#Forking) to run the tests in a separate JVM from sbt. This allows for graceful shutdown of containers once the tests have finished running.
 
 ```scala
-IntegrationTest / fork := true,
+IntegrationTest / fork := true
 ```
 
 ## Modules
 
 Testcontainers-scala is modular. All modules has the same version. To depend on some module put this into your `build.sbt` file: 
+
 ```scala
 libraryDependencies += "com.dimafeng" %% moduleName % testcontainersScalaVersion % "it"
 ```
 
-Here is the full list of the currently available modules:
+Here is the full list of the [currently available modules](https://github.com/testcontainers/testcontainers-scala/tree/master/modules):
 
 * `testcontainers-scala-core` — core module. 
   It contains some basic building blocks of the library and no integration with any test frameworks. 
