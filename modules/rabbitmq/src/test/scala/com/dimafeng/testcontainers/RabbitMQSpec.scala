@@ -12,7 +12,9 @@ class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
   import RabbitMQSpec._
 
   override val container: Container = MultipleContainers(
-    defaultRabbitContainer, customRabbitContainer
+    defaultRabbitContainer,
+    customRabbitContainer,
+    customRabbitContainerViaDef
   )
 
   "Default Rabbit container" should "start" in {
