@@ -203,13 +203,46 @@ object RabbitMQContainer {
   )
 
   case class Def(
-    customContent: Option[String] = None
+    dockerImageName: DockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
+    adminPassword: String = RabbitMQContainer.defaultAdminPassword,
+    queues: Seq[RabbitMQContainer.Queue] = Seq.empty,
+    exchanges: Seq[RabbitMQContainer.Exchange] = Seq.empty,
+    bindings: Seq[RabbitMQContainer.Binding] = Seq.empty,
+    users: Seq[RabbitMQContainer.User] = Seq.empty,
+    vhosts: Seq[RabbitMQContainer.VHost] = Seq.empty,
+    vhostsLimits: Seq[RabbitMQContainer.VHostLimit] = Seq.empty,
+    operatorPolicies: Seq[RabbitMQContainer.OperatorPolicy] = Seq.empty,
+    policies: Seq[RabbitMQContainer.Policy] = Seq.empty,
+    parameters: Seq[RabbitMQContainer.Parameter] = Seq.empty,
+    permissions: Seq[RabbitMQContainer.Permission] = Seq.empty,
+    pluginsEnabled: Seq[String] = Seq.empty,
+    ssl: Option[RabbitMQContainer.SslConfig] = None,
+    rabbitMqConfig: Option[MountableFile] = None,
+    rabbitMqConfigErlang: Option[MountableFile] = None,
+    rabbitMqConfigSysctl: Option[MountableFile] = None
   ) extends ContainerDef {
 
     override type Container = RabbitMQContainer
 
     override def createContainer(): RabbitMQContainer = {
       new RabbitMQContainer(
+        dockerImageName,
+        adminPassword,
+        queues,
+        exchanges,
+        bindings,
+        users,
+        vhosts,
+        vhostsLimits,
+        operatorPolicies,
+        policies,
+        parameters,
+        permissions,
+        pluginsEnabled,
+        ssl,
+        rabbitMqConfig,
+        rabbitMqConfigErlang,
+        rabbitMqConfigSysctl
       )
     }
   }
