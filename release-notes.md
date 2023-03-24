@@ -1,6 +1,9 @@
 
 # Testcontainers-scala release notes
 
+* **0.40.9**
+    * munit updated to 1.0.0-M7
+
 * **0.40.8**
     * Fixed `MockServer` container tag
     * Added `ContainerDef` constructors for `gcloud` containers
