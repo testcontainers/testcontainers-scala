@@ -8,7 +8,7 @@ import com.dimafeng.testcontainers.munit.TestContainerForAllSpec._
 import munit.{FunSuite, MUnitRunner, Suite}
 import org.junit.runner.notification.RunNotifier
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{times, verify}
+import org.mockito.Mockito.{times, verify, when}
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatestplus.mockito.MockitoSugar
 
@@ -52,7 +52,10 @@ class TestContainerForAllSpec extends FunSuite with MockitoSugar {
   test("call afterContainersStart() and beforeContainersStop()") {
     val container = mock[SampleJavaContainer]
 
-    val spec = Mockito.spy(new MultipleTestsSpec({}, SampleContainer.Def(container)))
+    val spec0 = new MultipleTestsSpec({}, SampleContainer.Def(container))
+    val spec = Mockito.spy(spec0)
+    // bug in mockito ? - spec.munitTests() returns null.
+    when(spec.munitTests()).thenReturn(spec0.munitTests());
     run(spec)
 
     verify(spec).afterContainersStart(any())
