@@ -5,11 +5,12 @@ import io.restassured.RestAssured.given
 import io.restassured.module.scala.RestAssuredSupport.AddThenToResponse
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
+import org.testcontainers.utility.DockerImageName
 
 class VaultSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   private val port = 8200
-  override val container: VaultContainer = VaultContainer(vaultPort = Some(port))
+  override val container: VaultContainer = VaultContainer(DockerImageName.parse("vault:1.1.3"), vaultPort = Some(port))
 
   "Vault container" should "be started" in {
     given().

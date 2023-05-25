@@ -1,7 +1,5 @@
 package com.dimafeng.testcontainers
 
-import com.amazonaws.auth.AWSCredentialsProvider
-import com.amazonaws.client.builder.AwsClientBuilder
 import org.testcontainers.containers.localstack.{LocalStackContainer => JavaLocalStackContainer}
 import org.testcontainers.utility.DockerImageName
 
@@ -15,11 +13,6 @@ case class LocalStackContainer(
     c.withServices(services: _*)
     c
   }
-
-  def endpointConfiguration(service: LocalStackContainer.Service): AwsClientBuilder.EndpointConfiguration =
-    container.getEndpointConfiguration(service)
-
-  def defaultCredentialsProvider: AWSCredentialsProvider = container.getDefaultCredentialsProvider
 }
 
 object LocalStackContainer {
