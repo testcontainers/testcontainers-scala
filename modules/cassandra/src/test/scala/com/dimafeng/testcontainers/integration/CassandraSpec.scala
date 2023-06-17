@@ -15,7 +15,7 @@ class CassandraSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
     val session = CqlSession.builder
       .addContactEndPoint(new DefaultEndPoint(InetSocketAddress
-      .createUnresolved(container.cassandraContainer.getContainerIpAddress,
+      .createUnresolved(container.cassandraContainer.getHost,
                         container.cassandraContainer.getFirstMappedPort.intValue())))
       .withLocalDatacenter("datacenter1").build()
     val rs = session.execute("select release_version from system.local")

@@ -55,7 +55,7 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
     adminProperties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, getKafkaAddress)
 
     val adminClient = AdminClient.create(adminProperties)
-    val createTopicResult = adminClient.createTopics(List(new NewTopic(topicName, 1, 1)).asJava)
+    val createTopicResult = adminClient.createTopics(List(new NewTopic(topicName, 1, 1.shortValue())).asJava)
     createTopicResult.values().get(topicName).get()
 
     val properties = new Properties()

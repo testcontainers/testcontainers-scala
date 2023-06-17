@@ -1,12 +1,12 @@
 package com.dimafeng.testcontainers
 
 import java.sql.DriverManager
-
 import org.scalatest.flatspec.AnyFlatSpec
+import org.testcontainers.utility.DockerImageName
 
 class OracleSpec extends AnyFlatSpec with ForAllTestContainer {
 
-  override val container: OracleContainer = OracleContainer("gvenzl/oracle-xe:18.4.0-slim")
+  override val container: OracleContainer = OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0-slim"))
 
   "Oracle container" should "be started" in {
     System.setProperty("oracle.jdbc.timezoneAsRegion", "false")

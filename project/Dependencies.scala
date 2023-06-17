@@ -13,29 +13,29 @@ object Dependencies {
   }
 
   private val testcontainersVersion = "1.18.1"
-  private val seleniumVersion = "2.53.1"
-  private val slf4jVersion = "1.7.32"
-  private val scalaTestVersion = "3.2.9"
-  private val scalaTestMockitoVersion = "3.2.9.0"
+  private val seleniumVersion = "4.8.1"
+  private val slf4jVersion = "2.0.5"
+  private val scalaTestVersion = "3.2.15"
+  private val scalaTestMockitoVersion = "3.2.10.0"
   private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
   private val munitVersion = "1.0.0-M7"
-  private val mysqlConnectorVersion = "5.1.42"
-  private val neo4jConnectorVersion = "4.0.0"
-  private val oracleDriverVersion = "21.3.0.0"
-  private val cassandraDriverVersion = "4.0.1"
-  private val postgresqlDriverVersion = "42.2.24"
-  private val kafkaDriverVersion = "2.2.0"
+  private val mysqlConnectorVersion = "8.0.33"
+  private val neo4jConnectorVersion = "5.6.0"
+  private val oracleDriverVersion = "21.9.0.0"
+  private val cassandraDriverVersion = "4.15.0"
+  private val postgresqlDriverVersion = "42.5.4"
+  private val kafkaDriverVersion = "3.4.0"
   private val mockitoVersion = "3.7.7"
-  private val restAssuredVersion = "4.0.0"
-  private val groovyVersion = "2.5.16"
-  private val awsV1Version = "1.11.479"
-  private val awsV2Version = "2.17.158"
-  private val sttpVersion = "3.3.14"
-  private val firestoreConnectorVersion = "3.0.11"
-  private val bigtableVersion = "2.5.3"
-  private val pubsubVersion = "1.116.4"
+  private val restAssuredVersion = "5.3.1"
+  private val groovyVersion = "3.0.16"
+  private val awsV1Version = "1.12.472"
+  private val awsV2Version = "2.20.68"
+  private val sttpVersion = "3.8.13"
+  private val firestoreConnectorVersion = "3.9.1"
+  private val bigtableVersion = "2.20.0"
+  private val pubsubVersion = "1.123.6"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -154,7 +154,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "clickhouse" % testcontainersVersion
     ) ++ TEST(
-      "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.2.4",
+      "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.3.2",
     )
   )
 
@@ -194,7 +194,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "influxdb" % testcontainersVersion
     ) ++ PROVIDED(
-      "org.influxdb" % "influxdb-java" % "2.17"
+      "org.influxdb" % "influxdb-java" % "2.23"
     )
   )
 

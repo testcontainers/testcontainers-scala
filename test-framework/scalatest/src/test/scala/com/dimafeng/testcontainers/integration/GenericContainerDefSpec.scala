@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers.integration
 
-import java.net.URL
-
+import java.net.{URI, URL}
 import com.dimafeng.testcontainers.{GenericContainer, SingleContainer}
 import com.dimafeng.testcontainers.lifecycle.and
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
@@ -35,8 +34,8 @@ object GenericContainerDefSpec {
 
   private val port = 80
 
-  private def createUrl(container: SingleContainer[_]) = {
-    new URL(s"http://${container.containerIpAddress}:${container.mappedPort(port)}/")
+  private def createUrl(container: SingleContainer[_]): URL = {
+    new URI(s"http://${container.containerIpAddress}:${container.mappedPort(port)}/").toURL
   }
 
   private def urlToString(url: URL) = {

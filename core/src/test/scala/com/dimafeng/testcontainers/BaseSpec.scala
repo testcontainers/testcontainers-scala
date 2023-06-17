@@ -12,5 +12,5 @@ abstract class BaseSpec[T: ClassTag]
 
   behavior of implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]].getSimpleName
 
-  override def beforeEach(): Unit = MockitoAnnotations.initMocks(this)
+  override def beforeEach(): Unit = MockitoAnnotations.openMocks(this)
 }

@@ -1,12 +1,9 @@
 package com.dimafeng.testcontainers.integration
 
-import java.net.URL
-
+import java.net.URI
 import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.Wait
-import org.testcontainers.images.builder.ImageFromDockerfile
-import org.testcontainers.images.builder.traits.ClasspathTrait;
 
 import scala.io.Source
 
@@ -18,7 +15,7 @@ class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
 
   "GenericContainer" should "start nginx and expose 80 port" in {
     assert(Source.fromInputStream(
-      new URL(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").openConnection().getInputStream
+      new URI(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").toURL.openConnection().getInputStream
     ).mkString.contains("If you see this page, the nginx web server is successfully installed"))
   }
 }

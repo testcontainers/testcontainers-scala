@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers.integration
 
-import java.net.URL
-
+import java.net.{URI, URL}
 import com.dimafeng.testcontainers.{FixedHostPortGenericContainer, ForAllTestContainer}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
@@ -18,7 +17,7 @@ class FixedHostPortContainerSpec extends AnyFlatSpec with ForAllTestContainer {
   "FixedHostPortGenericContainer" should "start nginx and expose 8090 port on host" in {
     assert(container.mappedPort(80) == 8090)
     assert(Source.fromInputStream(
-      new URL(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").openConnection().getInputStream
+      new URI(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").toURL.openConnection().getInputStream
     ).mkString.contains("If you see this page, the nginx web server is successfully installed"))
   }
 }
