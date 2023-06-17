@@ -4,3 +4,6 @@ build/
 out
 target/
 project/project/
+.bloop/
+.metals/
+project/**/metals.sbt

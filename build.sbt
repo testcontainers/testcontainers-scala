@@ -35,7 +35,6 @@ val commonSettings = Seq(
   /**
    * Publishing
    */
-  useGpg := true,
   publishTo := {
     val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value) {
