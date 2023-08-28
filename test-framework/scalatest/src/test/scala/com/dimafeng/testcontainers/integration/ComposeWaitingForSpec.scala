@@ -15,7 +15,7 @@ class ComposeWaitingForSpec extends AnyFlatSpec with ForAllTestContainer {
 
   "DockerComposeContainer" should "wait for service" in {
     // container.start() should blocks until successful or timeout
-    assert(container.getContainerByServiceName("redis_1").get.isRunning)
+    assert(container.getContainerByServiceName("redis-1").get.isRunning)
   }
 }
 

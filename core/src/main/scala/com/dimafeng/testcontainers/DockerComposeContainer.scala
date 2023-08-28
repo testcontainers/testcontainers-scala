@@ -7,7 +7,7 @@ import java.util.function.Consumer
 import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
-import org.testcontainers.containers.{ContainerState, DockerComposeContainer => JavaDockerComposeContainer}
+import org.testcontainers.containers.{ContainerState, ComposeContainer => JavaDockerComposeContainer}
 import org.testcontainers.utility.Base58
 
 import scala.collection.JavaConverters._
@@ -131,10 +131,10 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
                              waitingFor: Option[WaitingForService] = None,
                              services: Services = Services.All)
-  extends TestContainerProxy[JavaDockerComposeContainer[_]] {
+  extends TestContainerProxy[JavaDockerComposeContainer] {
 
-  override val container: JavaDockerComposeContainer[_] = {
-    val container: JavaDockerComposeContainer[_] = new JavaDockerComposeContainer(identifier, composeFiles match {
+  override val container: JavaDockerComposeContainer = {
+    val container: JavaDockerComposeContainer = new JavaDockerComposeContainer(identifier, composeFiles match {
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })
@@ -162,7 +162,6 @@ class DockerComposeContainer(composeFiles: ComposeFile,
 
     container.withPull(pull)
     container.withLocalCompose(localCompose)
-    container.withOptions("--compatibility")
     container.withEnv(env.asJava)
     container.withTailChildContainers(tailChildContainers)
 
