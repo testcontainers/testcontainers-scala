@@ -6,7 +6,7 @@ import java.util.function.Consumer
 
 import com.dimafeng.testcontainers.lifecycle.Stoppable
 import com.github.dockerjava.api.DockerClient
-import com.github.dockerjava.api.command.{CreateContainerCmd, InspectContainerResponse}
+import com.github.dockerjava.api.command.InspectContainerResponse
 import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
 import org.junit.runner.Description
 import org.testcontainers.containers.output.OutputFrame
@@ -14,6 +14,7 @@ import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
 import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer, Container => JavaContainer}
+import org.testcontainers.core.CreateContainerCmdModifier
 import org.testcontainers.images.builder.Transferable
 import org.testcontainers.lifecycle.Startable
 import org.testcontainers.utility.{MountableFile, ThrowingFunction}
@@ -107,7 +108,7 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def logConsumers: Seq[Consumer[OutputFrame]] = container.getLogConsumers.asScala.toSeq
 
-  def createContainerCmdModifiers: Set[Consumer[CreateContainerCmd]] = container.getCreateContainerCmdModifiers.asScala.toSet
+  def createContainerCmdModifiers: Set[CreateContainerCmdModifier] = container.getCreateContainerCmdModifiers.asScala.toSet
 
   def copyToFileContainerPathMap: Map[MountableFile, String] = container.getCopyToFileContainerPathMap.asScala.toMap
 
