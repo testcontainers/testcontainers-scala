@@ -154,7 +154,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "clickhouse" % testcontainersVersion
     ) ++ TEST(
-      "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.2.4",
+      "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.3.2",
     )
   )
 
