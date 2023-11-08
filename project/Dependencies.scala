@@ -211,8 +211,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "localstack" % testcontainersVersion
     ) ++ PROVIDED(
-      "software.amazon.awssdk" % "s3" % awsV2Version,
-      "software.amazon.awssdk" % "sqs" % awsV2Version
+      "software.amazon.awssdk" % "auth" % awsV2Version,
     )
   )
 
