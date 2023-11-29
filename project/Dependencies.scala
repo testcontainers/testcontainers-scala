@@ -12,7 +12,7 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.19.0"
+  private val testcontainersVersion = "1.19.1"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.32"
   private val scalaTestVersion = "3.2.9"
@@ -302,6 +302,12 @@ object Dependencies {
       "org.testcontainers" % "redpanda" % testcontainersVersion
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion
+    )
+  )
+
+  val moduleMinIO = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "minio" % testcontainersVersion
     )
   )
 }
