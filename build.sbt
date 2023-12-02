@@ -96,6 +96,7 @@ lazy val root = (project in file("."))
     moduleSolr,
     moduleGcloud,
     moduleRedpanda,
+    moduleMinIO,
     allOld
   )
   .settings(noPublishSettings)
@@ -488,4 +489,12 @@ lazy val moduleRedpanda = (project in file("modules/redpanda"))
   .settings(
     name := "testcontainers-scala-redpanda",
     libraryDependencies ++= Dependencies.moduleRedpanda.value
+  )
+
+lazy val moduleMinIO = (project in file("modules/minio"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-minio",
+    libraryDependencies ++= Dependencies.moduleMinIO.value
   )
