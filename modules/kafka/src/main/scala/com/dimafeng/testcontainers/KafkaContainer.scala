@@ -1,29 +1,34 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{KafkaContainer => JavaKafkaContainer}
+import org.testcontainers.containers.{Network, KafkaContainer => JavaKafkaContainer}
 import org.testcontainers.utility.DockerImageName
 
-case class KafkaContainer(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
-                    ) extends SingleContainer[JavaKafkaContainer] {
+case class KafkaContainer(
+  override val network: Network = KafkaContainer.defaultNetwork,
+  dockerImageName: DockerImageName = KafkaContainer.defaultDockerImage
+) extends SingleContainer[JavaKafkaContainer] {
 
-  override val container: JavaKafkaContainer = new JavaKafkaContainer(dockerImageName)
+  override val container: JavaKafkaContainer = new JavaKafkaContainer(dockerImageName).withNetwork(network)
 
   def bootstrapServers: String = container.getBootstrapServers
 }
 
 object KafkaContainer {
 
-  val defaultImage = "confluentinc/cp-kafka"
   val defaultTag = "7.2.0"
-  val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
-  case class Def(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
-                ) extends ContainerDef {
+  private val defaultDockerImage = DockerImageName.parse(s"confluentinc/cp-kafka:$defaultTag")
+  private def defaultNetwork: Network = Network.newNetwork()
+
+  case class Def(
+    network: Network = defaultNetwork,
+    dockerImageName: DockerImageName = defaultDockerImage
+  ) extends ContainerDef {
 
     override type Container = KafkaContainer
 
     override def createContainer(): KafkaContainer = {
-      new KafkaContainer(dockerImageName)
+      new KafkaContainer(network, dockerImageName)
     }
   }
 }

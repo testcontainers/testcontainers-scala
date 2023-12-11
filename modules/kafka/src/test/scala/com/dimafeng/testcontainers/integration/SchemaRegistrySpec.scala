@@ -16,6 +16,7 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
 
   //this should be the same version that your lib is using under the hood
   val kafkaVersion = "6.1.1"
+  val kafkaDockerImage = DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")
 
   //these are the default kafka host name but because that may change
   //we need to ensure that these are the values for container network, kafka and the schema registry
@@ -27,11 +28,10 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
   //a way to communicate containers
   val network: Network = Network.newNetwork()
 
-  val kafkaContainer: KafkaContainer = KafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
+  val kafkaContainer: KafkaContainer = KafkaContainer.Def(network, kafkaDockerImage).createContainer()
   val schemaRegistryContainer: GenericContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
 
   kafkaContainer.container
-    .withNetwork(network)
     .withNetworkAliases(hostName)
     .withEnv(
       Map[String, String](
