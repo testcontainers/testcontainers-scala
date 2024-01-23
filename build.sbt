@@ -88,6 +88,7 @@ lazy val root = (project in file("."))
     moduleNginx,
     modulePulsar,
     moduleRabbitmq,
+    moduleRedis,
     moduleToxiproxy,
     moduleOrientdb,
     modulePresto,
@@ -425,6 +426,14 @@ lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
   .settings(
     name := "testcontainers-scala-rabbitmq",
     libraryDependencies ++= Dependencies.moduleRabbitmq.value
+  )
+
+lazy val moduleRedis = (project in file("modules/redis"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-redis",
+    libraryDependencies ++= Dependencies.moduleRedis.value
   )
 
 lazy val moduleToxiproxy = (project in file("modules/toxiproxy"))
