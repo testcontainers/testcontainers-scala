@@ -5,7 +5,7 @@ import org.testcontainers.vault.{VaultContainer => JavaVaultContainer}
 
 class VaultContainer(dockerImageNameOverride: Option[DockerImageName] = None,
                      vaultToken: Option[String] = None,
-                     @deprecated vaultPort: Option[Int] = None,
+                     @deprecated("use container's defaults", "v0.39.0") vaultPort: Option[Int] = None,
                      secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[_]] {
 
   val vaultContainer: JavaVaultContainer[_] = {
@@ -37,7 +37,7 @@ object VaultContainer {
 
   def apply(dockerImageNameOverride: DockerImageName = null,
             vaultToken: String = null,
-            @deprecated vaultPort: Option[Int] = None,
+            @deprecated("use container's defaults", "v0.39.0") vaultPort: Option[Int] = None,
             secrets: Option[VaultContainer.Secrets] = None): VaultContainer = new VaultContainer(
     Option(dockerImageNameOverride),
     Option(vaultToken),
@@ -48,7 +48,7 @@ object VaultContainer {
   case class Def(
     dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
     vaultToken: Option[String] = None,
-    @deprecated vaultPort: Option[Int] = None,
+    @deprecated("use container's defaults", "v0.39.0") vaultPort: Option[Int] = None,
     secrets: Option[VaultContainer.Secrets] = None
   ) extends ContainerDef {
 

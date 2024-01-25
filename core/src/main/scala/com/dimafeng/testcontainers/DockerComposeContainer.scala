@@ -50,14 +50,14 @@ object DockerComposeContainer {
 
   def randomIdentifier: String = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
 
-  @deprecated("Please use expanded `apply` method")
+  @deprecated("Please use expanded `apply` method", "v0.19.0")
   def apply(composeFiles: ComposeFile,
             exposedService: Map[String, Int],
             identifier: String): DockerComposeContainer =
     apply(composeFiles, exposedService, identifier)
 
 
-  @deprecated("Please use expanded `apply` method")
+  @deprecated("Please use expanded `apply` method", "v0.19.0")
   def apply(composeFiles: ComposeFile,
             exposedService: Map[String, Int]): DockerComposeContainer =
     new DockerComposeContainer(composeFiles, exposedService)
