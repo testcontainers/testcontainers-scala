@@ -22,22 +22,22 @@ import org.testcontainers.utility.{MountableFile, ThrowingFunction}
 import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
 
-@deprecated("For internal usage only. Will be deleted.")
+@deprecated("For internal usage only. Will be deleted.", "v0.34.0")
 trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
 
-  @deprecated("Please use reflective methods from the wrapper and `configure` method for creation")
+  @deprecated("Please use reflective methods from the wrapper and `configure` method for creation", "v0.17.0")
   implicit def container: T
 
-  @deprecated("Use `stop` instead")
+  @deprecated("Use `stop` instead", "v0.27.0")
   override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
 
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
   override def succeeded()(implicit description: Description): Unit = TestContainerAccessor.succeeded(description)
 
-  @deprecated("Use `start` instead")
+  @deprecated("Use `start` instead", "v0.27.0")
   override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
 
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
@@ -79,7 +79,7 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
     }
   }
 
-  @deprecated("See org.testcontainers.containers.Network")
+  @deprecated("See org.testcontainers.containers.Network", "v0.17.0")
   def linkedContainers: Map[String, LinkableContainer] = container.getLinkedContainers.asScala.toMap
 
   def mappedPort(port: Int): Int = container.getMappedPort(port)
@@ -163,15 +163,15 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
 trait Container extends Startable with Stoppable {
 
-  @deprecated("Use `stop` instead")
+  @deprecated("Use `stop` instead", "v0.29.0")
   def finished()(implicit description: Description): Unit = stop()
 
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.29.0")
   def failed(e: Throwable)(implicit description: Description): Unit = {}
 
-  @deprecated("Use `start` instead")
+  @deprecated("Use `start` instead", "v0.29.0")
   def starting()(implicit description: Description): Unit = start()
 
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead")
+  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.29.0")
   def succeeded()(implicit description: Description): Unit = {}
 }
