@@ -8,7 +8,7 @@ object Dependencies {
 
   private def TEST(modules: ModuleID*): Seq[ModuleID] = deps(Some(Test), modules: _*)
 
-  private def deps(scope: Option[Configuration], modules: sbt.ModuleID*): Seq[ModuleID] = {
+  private def deps(scope: Option[Configuration], modules: ModuleID*): Seq[ModuleID] = {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
