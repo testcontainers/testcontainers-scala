@@ -1,14 +1,14 @@
-import sbt._
+import sbt.*
 import sbt.Keys.scalaVersion
 
 object Dependencies {
-  private def COMPILE(modules: sbt.ModuleID*): Seq[sbt.ModuleID] = deps(None, modules: _*)
+  private def COMPILE(modules: ModuleID*): Seq[ModuleID] = deps(None, modules: _*)
 
-  private def PROVIDED(modules: sbt.ModuleID*): Seq[sbt.ModuleID] = deps(Some("provided"), modules: _*)
+  private def PROVIDED(modules: ModuleID*): Seq[ModuleID] = deps(Some(Provided), modules: _*)
 
-  private def TEST(modules: sbt.ModuleID*): Seq[sbt.ModuleID] = deps(Some("test"), modules: _*)
+  private def TEST(modules: ModuleID*): Seq[ModuleID] = deps(Some(Test), modules: _*)
 
-  private def deps(scope: Option[String], modules: sbt.ModuleID*): Seq[sbt.ModuleID] = {
+  private def deps(scope: Option[Configuration], modules: sbt.ModuleID*): Seq[ModuleID] = {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
@@ -31,7 +31,7 @@ object Dependencies {
   private val restAssuredVersion = "4.0.0"
   private val groovyVersion = "2.5.16"
   private val awsV1Version = "1.11.479"
-  private val awsV2Version = "2.17.158"
+  private val awsV2Version = "2.20.68"
   private val sttpVersion = "3.3.14"
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.5.3"
