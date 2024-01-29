@@ -381,7 +381,7 @@ lazy val moduleLocalstack = (project in file("modules/localstack"))
   )
 
 lazy val moduleLocalstackV2 = (project in file("modules/localstackV2"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings)
   .settings(
     name := "testcontainers-scala-localstack-v2",
