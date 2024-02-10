@@ -227,6 +227,9 @@ object Dependencies {
   val moduleMockserver = Def.setting(
     COMPILE(
       "org.testcontainers" % "mockserver" % testcontainersVersion
+    ) ++ TEST(
+      "com.softwaremill.sttp.client3" %% "core" % sttpVersion,
+      "org.mock-server" % "mockserver-client-java" % "5.13.2"
     )
   )
 
