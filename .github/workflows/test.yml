@@ -20,6 +20,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # Container modules occupy too much disk space. The GitHub-hosted runners ran into the
+      # error: "no space left on device."
+      # This action will free up disk space by removing unnecessary files.
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        if: runner.os == 'Linux'
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: false
+
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
