@@ -7,7 +7,7 @@ case class MockServerContainer(
   version: String = MockServerContainer.defaultVersion
 ) extends SingleContainer[JavaMockServerContainer] {
 
-  override val container: JavaMockServerContainer = 
+  override val container: JavaMockServerContainer =
     new JavaMockServerContainer(
       MockServerContainer.defaultImageName.withTag(s"mockserver-$version")
     )
@@ -15,6 +15,8 @@ case class MockServerContainer(
   def endpoint: String = container.getEndpoint
 
   def serverPort: Int = container.getServerPort
+
+  def serverHost: String = container.getHost
 }
 
 object MockServerContainer {

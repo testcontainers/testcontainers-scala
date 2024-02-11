@@ -397,7 +397,7 @@ lazy val moduleMariadb = (project in file("modules/mariadb"))
   )
 
 lazy val moduleMockserver = (project in file("modules/mockserver"))
-  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
   .settings(commonSettings)
   .settings(
     name := "testcontainers-scala-mockserver",
