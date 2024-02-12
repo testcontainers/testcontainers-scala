@@ -98,6 +98,7 @@ lazy val root = (project in file("."))
     moduleGcloud,
     moduleRedpanda,
     moduleMinIO,
+    moduleWireMock,
     allOld
   )
   .settings(noPublishSettings)
@@ -506,4 +507,12 @@ lazy val moduleMinIO = (project in file("modules/minio"))
   .settings(
     name := "testcontainers-scala-minio",
     libraryDependencies ++= Dependencies.moduleMinIO.value
+  )
+
+lazy val moduleWireMock = (project in file("modules/wiremock"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-wiremock",
+    libraryDependencies ++= Dependencies.moduleWireMock.value
   )
