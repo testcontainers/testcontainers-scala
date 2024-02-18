@@ -13,13 +13,11 @@ class PostgreSQLContainer(
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
 ) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
 
+  import PostgreSQLContainer._
+
   override val container: JavaPostgreSQLContainer[_] = {
-    val c: JavaPostgreSQLContainer[_] = dockerImageNameOverride match {
-      case Some(imageNameOverride) =>
-        new JavaPostgreSQLContainer(imageNameOverride)
-      case None =>
-        new JavaPostgreSQLContainer()
-    }
+    val dockerImageName = dockerImageNameOverride.getOrElse(parsedDockerImageName)
+    val c: JavaPostgreSQLContainer[_] = new JavaPostgreSQLContainer(dockerImageName)
 
     databaseName.foreach(c.withDatabaseName)
     pgUsername.foreach(c.withUsername)
@@ -53,6 +51,9 @@ object PostgreSQLContainer {
   val defaultUsername = "test"
   val defaultPassword = "test"
 
+  private[testcontainers] def parsedDockerImageName: DockerImageName =
+    DockerImageName.parse(defaultDockerImageName)
+
   def apply(
     dockerImageNameOverride: DockerImageName = null,
     databaseName: String = null,
@@ -69,7 +70,7 @@ object PostgreSQLContainer {
     )
 
   case class Def(
-    dockerImageName: DockerImageName = DockerImageName.parse(defaultDockerImageName),
+    dockerImageName: DockerImageName = parsedDockerImageName,
     databaseName: String = defaultDatabaseName,
     username: String = defaultUsername,
     password: String = defaultPassword,
