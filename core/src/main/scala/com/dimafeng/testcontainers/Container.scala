@@ -84,6 +84,8 @@ abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContain
 
   def mappedPort(port: Int): Int = container.getMappedPort(port)
 
+  def firstMappedPort: Int = container.getFirstMappedPort()
+
   def portBindings: Seq[String] = container.getPortBindings.asScala.toSeq
 
   def boundPortNumbers: Seq[Int] = container.getBoundPortNumbers.asScala.toSeq.map(_.intValue())
