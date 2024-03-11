@@ -53,12 +53,12 @@ class GenericContainerSpec extends AnyFlatSpec with TestContainerForAll {
   )
 
   "GenericContainer" should "start nginx and expose 80 port" in {
-    withContainers { mysqlContainer =>
+    withContainers { nginxContainer =>
       assert(
         Source
           .fromInputStream(
             new URL(
-              s"http://${mysqlContainer.containerIpAddress}:${mysqlContainer.mappedPort(80)}/"
+              s"http://${nginxContainer.containerIpAddress}:${nginxContainer.mappedPort(80)}/"
             ).openConnection().getInputStream
           )
           .mkString
@@ -92,12 +92,12 @@ class GenericContainerSpec extends FunSuite with TestContainerForAll {
   )
 
   test("GenericContainer should start nginx and expose 80 port ") {
-    withContainers { mysqlContainer =>
+    withContainers { nginxContainer =>
       assert(
         Source
           .fromInputStream(
             new URL(
-              s"http://${mysqlContainer.containerIpAddress}:${mysqlContainer.mappedPort(80)}/"
+              s"http://${nginxContainer.containerIpAddress}:${nginxContainer.mappedPort(80)}/"
             ).openConnection().getInputStream
           )
           .mkString
