@@ -11,8 +11,7 @@ import scala.io.Source
 class FixedHostPortContainerSpec extends AnyFlatSpec with ForAllTestContainer {
   override val container: FixedHostPortGenericContainer = FixedHostPortGenericContainer("nginx:latest",
     waitStrategy = new HttpWaitStrategy().forPath("/"),
-    exposedHostPort = 8090,
-    exposedContainerPort = 80
+    portBindings = Seq((8090, 80))
   )
 
   "FixedHostPortGenericContainer" should "start nginx and expose 8090 port on host" in {
