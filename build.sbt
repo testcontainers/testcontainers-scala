@@ -5,8 +5,8 @@ import java.net.URI
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
-  ThisBuild / scalaVersion := "2.12.15",
-  crossScalaVersions := Seq("2.11.12", "2.12.15", "2.13.8", "3.1.2"),
+  ThisBuild / scalaVersion := "2.12.19",
+  crossScalaVersions := Seq("2.12.19", "2.13.14", "3.3.3"),
 
   ThisBuild / parallelExecution := false,
   fork := true,
