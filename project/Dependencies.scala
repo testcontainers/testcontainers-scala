@@ -29,7 +29,7 @@ object Dependencies {
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "3.7.7"
   private val restAssuredVersion = "4.0.0"
-  private val groovyVersion = "2.5.16"
+  private val groovyVersion = "2.5.23"
   private val awsV1Version = "1.11.479"
   private val awsV2Version = "2.20.68"
   private val sttpVersion = "3.3.14"
