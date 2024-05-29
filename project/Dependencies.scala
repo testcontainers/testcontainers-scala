@@ -32,7 +32,7 @@ object Dependencies {
   private val groovyVersion = "2.5.16"
   private val awsV1Version = "1.11.479"
   private val awsV2Version = "2.20.68"
-  private val sttpVersion = "3.3.14"
+  private val sttpVersion = "3.3.18"
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.5.3"
   private val pubsubVersion = "1.116.4"
