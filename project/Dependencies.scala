@@ -36,7 +36,7 @@ object Dependencies {
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.5.3"
   private val pubsubVersion = "1.116.4"
-  private val redisTestcontainersVersion = "2.0.1"
+  private val redisTestcontainersVersion = "2.0.2"
   private val jedisVersion = "5.0.0"
   private val wireMockTestcontainersVersion = "1.0-alpha-13"
 
