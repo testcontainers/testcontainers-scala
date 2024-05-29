@@ -25,7 +25,7 @@ object Dependencies {
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "21.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
-  private val postgresqlDriverVersion = "42.2.24"
+  private val postgresqlDriverVersion = "42.2.29"
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "3.7.7"
   private val restAssuredVersion = "4.0.0"
