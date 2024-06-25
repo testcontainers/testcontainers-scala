@@ -14,7 +14,7 @@ case class KafkaContainer(dockerImageName: DockerImageName = DockerImageName.par
 object KafkaContainer {
 
   val defaultImage = "confluentinc/cp-kafka"
-  val defaultTag = "7.2.0"
+  val defaultTag = "7.6.1"
   val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
   case class Def(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
