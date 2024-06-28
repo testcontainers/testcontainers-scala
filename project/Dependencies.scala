@@ -12,7 +12,7 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.19.1"
+  private val testcontainersVersion = "1.19.8"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.32"
   private val scalaTestVersion = "3.2.9"
@@ -39,6 +39,7 @@ object Dependencies {
   private val redisTestcontainersVersion = "2.0.1"
   private val jedisVersion = "5.0.0"
   private val wireMockTestcontainersVersion = "1.0-alpha-13"
+  private val milvusSdkVersion = "2.4.1"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -222,6 +223,14 @@ object Dependencies {
   val moduleMariadb = Def.setting(
     COMPILE(
       "org.testcontainers" % "mariadb" % testcontainersVersion
+    )
+  )
+
+  val moduleMilvus = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "milvus" % testcontainersVersion
+    ) ++ TEST(
+      "io.milvus" % "milvus-sdk-java" % milvusSdkVersion
     )
   )
 
