@@ -84,6 +84,7 @@ lazy val root = (project in file("."))
     moduleLocalstack,
     moduleLocalstackV2,
     moduleMariadb,
+    moduleMilvus,
     moduleMockserver,
     moduleNginx,
     modulePulsar,
@@ -395,6 +396,14 @@ lazy val moduleMariadb = (project in file("modules/mariadb"))
   .settings(
     name := "testcontainers-scala-mariadb",
     libraryDependencies ++= Dependencies.moduleMariadb.value
+  )
+
+lazy val moduleMilvus = (project in file("modules/milvus"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-milvus",
+    libraryDependencies ++= Dependencies.moduleMilvus.value
   )
 
 lazy val moduleMockserver = (project in file("modules/mockserver"))
