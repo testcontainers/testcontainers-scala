@@ -38,7 +38,7 @@ object Dependencies {
   private val pubsubVersion = "1.116.4"
   private val redisTestcontainersVersion = "2.0.1"
   private val jedisVersion = "5.0.0"
-  private val wireMockTestcontainersVersion = "1.0-alpha-13"
+  private val wireMockTestcontainersVersion = "1.0-alpha-14"
   private val milvusSdkVersion = "2.4.1"
 
   val allOld = Def.setting(
