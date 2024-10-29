@@ -40,6 +40,7 @@ object Dependencies {
   private val jedisVersion = "5.0.0"
   private val wireMockTestcontainersVersion = "1.0-alpha-13"
   private val milvusSdkVersion = "2.4.1"
+  private val quadrantClientVersion = "1.12.0"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -252,6 +253,14 @@ object Dependencies {
   val modulePulsar = Def.setting(
     COMPILE(
       "org.testcontainers" % "pulsar" % testcontainersVersion
+    )
+  )
+
+  val moduleQuadrant = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "qdrant" % testcontainersVersion
+    ) ++ TEST(
+      "io.qdrant" % "client" % quadrantClientVersion
     )
   )
 
