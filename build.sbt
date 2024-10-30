@@ -100,6 +100,7 @@ lazy val root = (project in file("."))
     moduleRedpanda,
     moduleMinIO,
     moduleWireMock,
+    moduleYugabytedb,
     allOld
   )
   .settings(noPublishSettings)
@@ -524,4 +525,12 @@ lazy val moduleWireMock = (project in file("modules/wiremock"))
   .settings(
     name := "testcontainers-scala-wiremock",
     libraryDependencies ++= Dependencies.moduleWireMock.value
+  )
+
+lazy val moduleYugabytedb = (project in file("modules/yugabytedb"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-yugabytedb",
+    libraryDependencies ++= Dependencies.moduleYugabytedb.value
   )
