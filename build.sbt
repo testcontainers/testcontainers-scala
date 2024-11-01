@@ -88,6 +88,7 @@ lazy val root = (project in file("."))
     moduleMockserver,
     moduleNginx,
     modulePulsar,
+    moduleQuadrant,
     moduleRabbitmq,
     moduleRedis,
     moduleToxiproxy,
@@ -429,6 +430,14 @@ lazy val modulePulsar = (project in file("modules/pulsar"))
   .settings(
     name := "testcontainers-scala-pulsar",
     libraryDependencies ++= Dependencies.modulePulsar.value
+  )
+
+lazy val moduleQuadrant = (project in file("modules/quadrant"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-quadrant",
+    libraryDependencies ++= Dependencies.moduleQuadrant.value
   )
 
 lazy val moduleRabbitmq = (project in file("modules/rabbitmq"))
