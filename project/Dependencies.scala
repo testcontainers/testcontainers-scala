@@ -21,7 +21,7 @@ object Dependencies {
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
   private val munitVersion = "1.0.0"
-  private val mysqlConnectorVersion = "5.1.42"
+  private val mysqlConnectorVersion = "5.1.49"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "21.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
