@@ -94,6 +94,7 @@ Here is the full list of the [currently available modules](https://github.com/te
 * `testcontainers-scala-minio` — module with MinIO container.
 * `testcontainers-scala-redis` — module with Redis container.
 * `testcontainers-scala-wiremock` - module with WireMock container.
+* `testcontainers-scala-opensearch` - module with Opensearch container.
 
 Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
 You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).
