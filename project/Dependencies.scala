@@ -43,6 +43,7 @@ object Dependencies {
   private val quadrantClientVersion = "1.12.0"
   private val yugabyteJdbcVersion = "42.3.5-yb-6"
   private val yugabyteJavaDriverVersion = "4.15.0-yb-2-TESTFIX.0"
+  private val opensearchTestcontainersVersion = "1.0.0"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -359,7 +360,16 @@ object Dependencies {
       "org.testcontainers" % "yugabytedb" % testcontainersVersion
     ) ++ TEST(
       "com.yugabyte" % "jdbc-yugabytedb" % yugabyteJdbcVersion,
-      "com.yugabyte" % "java-driver-core" % yugabyteJavaDriverVersion,
+      "com.yugabyte" % "java-driver-core" % yugabyteJavaDriverVersion
+    )
+  )
+
+  val moduleOpensearch = Def.setting(
+    COMPILE(
+      "org.opensearch" % "opensearch-testcontainers" % opensearchTestcontainersVersion
+    ) ++ TEST(
+      "org.scalatest" %% "scalatest" % scalaTestVersion,
+      "com.softwaremill.sttp.client3" %% "core" % sttpVersion
     )
   )
 }
