@@ -102,6 +102,7 @@ lazy val root = (project in file("."))
     moduleMinIO,
     moduleWireMock,
     moduleYugabytedb,
+    moduleOpensearch,
     allOld
   )
   .settings(noPublishSettings)
@@ -542,4 +543,15 @@ lazy val moduleYugabytedb = (project in file("modules/yugabytedb"))
   .settings(
     name := "testcontainers-scala-yugabytedb",
     libraryDependencies ++= Dependencies.moduleYugabytedb.value
+  )
+
+lazy val moduleOpensearch = (project in file("modules/opensearch"))
+  .dependsOn(
+    core % "compile->compile;test->test;provided->provided",
+    scalatest % "test->test"
+  )
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-opensearch",
+    libraryDependencies ++= Dependencies.moduleOpensearch.value
   )
