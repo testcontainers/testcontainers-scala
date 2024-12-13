@@ -42,7 +42,7 @@ object Dependencies {
   private val milvusSdkVersion = "2.4.1"
   private val quadrantClientVersion = "1.12.0"
   private val yugabyteJdbcVersion = "42.3.5-yb-6"
-  private val yugabyteJavaDriverVersion = "4.15.0-yb-2-TESTFIX.0"
+  private val yugabyteJavaDriverVersion = "4.15.0-yb-2"
   private val opensearchTestcontainersVersion = "1.0.0"
 
   val allOld = Def.setting(
