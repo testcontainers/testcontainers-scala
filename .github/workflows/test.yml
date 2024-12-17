@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       # Container modules occupy too much disk space. The GitHub-hosted runners ran into the
       # error: "no space left on device."
@@ -36,12 +36,15 @@ jobs:
           swap-storage: false
 
       - name: Setup Java
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: temurin # See 'Supported distributions' for available options
           java-version: ${{ matrix.java }}
           check-latest: true
-
+          cache: 'sbt'
+      - uses: sbt/setup-sbt@v1
+        with:
+          sbt-runner-version: 1.10.5
       - name: Restore cache
         uses: actions/cache@v2
         with:
