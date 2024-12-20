@@ -47,6 +47,14 @@ val commonSettings = Seq(
   sonatypeProfileName := "testcontainers-scala",
   sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
   licenses := Seq("The MIT License (MIT)" -> URI.create("https://opensource.org/licenses/MIT").toURL),
+  developers := List(
+    Developer(
+      "dimafeng",
+      "Dmitry Fedosov",
+      "dimafeng@gmail.com",
+      url("http://dimafeng.com")
+    )
+  ),
   ThisBuild / organization := "com.dimafeng",
 
   Global / parallelExecution := false,
