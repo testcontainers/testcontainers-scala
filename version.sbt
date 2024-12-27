@@ -1,1 +1,1 @@
-ThisBuild / version := "0.41.5-SNAPSHOT"
+ThisBuild / version := sys.env("VERSION")
