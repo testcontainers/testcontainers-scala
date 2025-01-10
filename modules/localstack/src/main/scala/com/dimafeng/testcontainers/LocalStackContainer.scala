@@ -18,7 +18,7 @@ case class LocalStackContainer(
 object LocalStackContainer {
 
   val defaultImage = "localstack/localstack"
-  val defaultTag = "0.12.12"
+  val defaultTag = "4.0.3"
   val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
   type Service = JavaLocalStackContainer.Service

@@ -30,7 +30,7 @@ case class LocalStackV2Container(
 
 object LocalStackV2Container {
   val defaultImage: String = "localstack/localstack"
-  val defaultTag: String = "0.12.12"
+  val defaultTag: String = "4.0.3"
 
   type Service = JavaLocalStackContainer.EnabledService
 
