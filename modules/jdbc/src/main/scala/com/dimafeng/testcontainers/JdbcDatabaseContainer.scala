@@ -6,7 +6,7 @@ import org.testcontainers.containers.{JdbcDatabaseContainer => JavaJdbcDatabaseC
 
 import scala.concurrent.duration._
 
-trait JdbcDatabaseContainer { self: SingleContainer[_ <: JavaJdbcDatabaseContainer[_]] =>
+trait JdbcDatabaseContainer { self: SingleContainer[? <: JavaJdbcDatabaseContainer[?]] =>
 
   def driverClassName: String = underlyingUnsafeContainer.getDriverClassName
 
@@ -27,7 +27,7 @@ object JdbcDatabaseContainer {
     connectTimeout: FiniteDuration = 120.seconds,
     initScriptPath: Option[String] = None
   ) {
-    private[testcontainers] def applyTo[C <: JavaJdbcDatabaseContainer[_]](container: C): Unit = {
+    private[testcontainers] def applyTo[C <: JavaJdbcDatabaseContainer[?]](container: C): Unit = {
       container.withStartupTimeoutSeconds(startupTimeout.toSeconds.toInt)
       container.withConnectTimeoutSeconds(connectTimeout.toSeconds.toInt)
       initScriptPath.foreach(container.withInitScript)

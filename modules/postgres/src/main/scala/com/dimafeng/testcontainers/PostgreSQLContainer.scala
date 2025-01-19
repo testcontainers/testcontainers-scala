@@ -11,13 +11,13 @@ class PostgreSQLContainer(
   mountPostgresDataToTmpfs: Boolean = false,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaPostgreSQLContainer[_]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaPostgreSQLContainer[?]] with JdbcDatabaseContainer {
 
   import PostgreSQLContainer._
 
-  override val container: JavaPostgreSQLContainer[_] = {
+  override val container: JavaPostgreSQLContainer[?] = {
     val dockerImageName = dockerImageNameOverride.getOrElse(parsedDockerImageName)
-    val c: JavaPostgreSQLContainer[_] = new JavaPostgreSQLContainer(dockerImageName)
+    val c: JavaPostgreSQLContainer[?] = new JavaPostgreSQLContainer(dockerImageName)
 
     databaseName.foreach(c.withDatabaseName)
     pgUsername.foreach(c.withUsername)

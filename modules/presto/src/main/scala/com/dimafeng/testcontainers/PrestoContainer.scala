@@ -10,10 +10,10 @@ case class PrestoContainer(
   dbUsername: String = PrestoContainer.defaultDbUsername,
   dbName: String = PrestoContainer.defaultDbName,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaPrestoContainer[_]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaPrestoContainer[?]] with JdbcDatabaseContainer {
 
-  override val container: JavaPrestoContainer[_] = {
-    val c: JavaPrestoContainer[_] = new JavaPrestoContainer(dockerImageName)
+  override val container: JavaPrestoContainer[?] = {
+    val c: JavaPrestoContainer[?] = new JavaPrestoContainer(dockerImageName)
     c.withUsername(dbUsername)
     c.withDatabaseName(dbName)
     commonJdbcParams.applyTo(c)
