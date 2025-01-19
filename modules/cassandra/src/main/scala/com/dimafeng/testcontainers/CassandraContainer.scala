@@ -7,9 +7,9 @@ import org.testcontainers.utility.DockerImageName
 class CassandraContainer(dockerImageNameOverride: Option[DockerImageName] = None,
                          configurationOverride: Option[String] = None,
                          initScript: Option[String] = None,
-                         jmxReporting: Boolean = false) extends SingleContainer[JavaCassandraContainer[_]] {
+                         jmxReporting: Boolean = false) extends SingleContainer[JavaCassandraContainer[?]] {
 
-  val cassandraContainer: JavaCassandraContainer[_] = {
+  val cassandraContainer: JavaCassandraContainer[?] = {
     if (dockerImageNameOverride.isEmpty) {
       new JavaCassandraContainer()
     } else {
@@ -21,7 +21,7 @@ class CassandraContainer(dockerImageNameOverride: Option[DockerImageName] = None
   if (initScript.isDefined) cassandraContainer.withInitScript(initScript.get)
   if (jmxReporting) cassandraContainer.withJmxReporting(jmxReporting)
 
-  override val container: JavaCassandraContainer[_] = cassandraContainer
+  override val container: JavaCassandraContainer[?] = cassandraContainer
 
   def cluster: Cluster = cassandraContainer.getCluster
 

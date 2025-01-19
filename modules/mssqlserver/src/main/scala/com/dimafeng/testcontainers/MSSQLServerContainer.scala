@@ -10,10 +10,10 @@ case class MSSQLServerContainer(
   dbPassword: String = MSSQLServerContainer.defaultPassword,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams
-) extends SingleContainer[JavaMSSQLServerContainer[_]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaMSSQLServerContainer[?]] with JdbcDatabaseContainer {
 
-  override val container: JavaMSSQLServerContainer[_] = {
-    val c: JavaMSSQLServerContainer[_] = new JavaMSSQLServerContainer(dockerImageName)
+  override val container: JavaMSSQLServerContainer[?] = {
+    val c: JavaMSSQLServerContainer[?] = new JavaMSSQLServerContainer(dockerImageName)
 
     c.withPassword(dbPassword)
     urlParams.foreach { case (key, value) =>

@@ -6,10 +6,10 @@ import org.testcontainers.containers.{NginxContainer => JavaNginxContainer}
 
 case class NginxContainer(
   customContent: Option[String] = None
-) extends SingleContainer[JavaNginxContainer[_]] {
+) extends SingleContainer[JavaNginxContainer[?]] {
 
-  override val container: JavaNginxContainer[_] = {
-    val c: JavaNginxContainer[_] = new JavaNginxContainer()
+  override val container: JavaNginxContainer[?] = {
+    val c: JavaNginxContainer[?] = new JavaNginxContainer()
     customContent.foreach(c.withCustomContent)
     c
   }

@@ -35,7 +35,7 @@ object GenericContainerDefSpec {
 
   private val port = 80
 
-  private def createUrl(container: SingleContainer[_]) = {
+  private def createUrl(container: SingleContainer[?]) = {
     new URL(s"http://${container.containerIpAddress}:${container.mappedPort(port)}/")
   }
 

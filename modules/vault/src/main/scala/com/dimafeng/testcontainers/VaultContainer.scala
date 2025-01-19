@@ -6,9 +6,9 @@ import org.testcontainers.vault.{VaultContainer => JavaVaultContainer}
 class VaultContainer(dockerImageNameOverride: Option[DockerImageName] = None,
                      vaultToken: Option[String] = None,
                      @deprecated("use container's defaults", "v0.39.0") vaultPort: Option[Int] = None,
-                     secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[_]] {
+                     secrets: Option[VaultContainer.Secrets] = None) extends SingleContainer[JavaVaultContainer[?]] {
 
-  val vaultContainer: JavaVaultContainer[_] = {
+  val vaultContainer: JavaVaultContainer[?] = {
     if (dockerImageNameOverride.isEmpty) {
       new JavaVaultContainer()
     } else {
@@ -22,7 +22,7 @@ class VaultContainer(dockerImageNameOverride: Option[DockerImageName] = None,
     vaultContainer.withSecretInVault(x.path, x.firstSecret, x.secrets: _*)
   }
 
-  override val container: JavaVaultContainer[_] = vaultContainer
+  override val container: JavaVaultContainer[?] = vaultContainer
 }
 
 object VaultContainer {

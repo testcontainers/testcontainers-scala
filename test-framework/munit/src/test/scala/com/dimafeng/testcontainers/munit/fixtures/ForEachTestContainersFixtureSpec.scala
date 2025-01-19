@@ -60,7 +60,7 @@ object ForEachTestContainersFixtureSpec {
   protected class TestSpec(testBody: => Unit, container: Container) extends ContainerSpec {
     val containerFixture = ForEachContainerFixture(container)
 
-    override def munitFixtures: Seq[Fixture[_]] = List(containerFixture)
+    override def munitFixtures: Seq[Fixture[?]] = List(containerFixture)
 
     test("test") {testBody}
   }
@@ -68,7 +68,7 @@ object ForEachTestContainersFixtureSpec {
   protected class MultipleTestsSpec(testBody: => Unit, container: Container) extends ContainerSpec {
     val containerFixture = ForEachContainerFixture(container)
 
-    override def munitFixtures: Seq[Fixture[_]] = List(containerFixture)
+    override def munitFixtures: Seq[Fixture[?]] = List(containerFixture)
 
     test("test1") {testBody}
     test("test2") {testBody}

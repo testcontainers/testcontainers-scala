@@ -14,9 +14,9 @@ class FixedHostPortGenericContainer(imageName: String,
                                     fileSystemBind: Seq[FileSystemBind] = Seq(),
                                     startupCheckStrategy: Option[StartupCheckStrategy] = None,
                                     portBindings: Seq[(Int, Int)] = Seq()
-                                   ) extends SingleContainer[JavaFixedHostPortGenericContainer[_]] {
+                                   ) extends SingleContainer[JavaFixedHostPortGenericContainer[?]] {
 
-  override implicit val container: JavaFixedHostPortGenericContainer[_] = new JavaFixedHostPortGenericContainer(imageName)
+  override implicit val container: JavaFixedHostPortGenericContainer[?] = new JavaFixedHostPortGenericContainer(imageName)
 
   if (exposedPorts.nonEmpty) {
     container.withExposedPorts(exposedPorts.map(int2Integer): _*)

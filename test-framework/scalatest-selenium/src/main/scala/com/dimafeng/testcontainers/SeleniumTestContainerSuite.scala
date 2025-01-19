@@ -25,10 +25,10 @@ trait SeleniumTestContainerSuite extends ForEachTestContainer {
 
 class SeleniumContainer(desiredCapabilities: Option[DesiredCapabilities] = None,
                         recordingMode: Option[(BrowserWebDriverContainer.VncRecordingMode, File)] = None)
-  extends SingleContainer[BrowserWebDriverContainer[_]] with TestLifecycleAware {
+  extends SingleContainer[BrowserWebDriverContainer[?]] with TestLifecycleAware {
   require(desiredCapabilities.isDefined, "'desiredCapabilities' is required parameter")
 
-  override val container: BrowserWebDriverContainer[_] = new BrowserWebDriverContainer()
+  override val container: BrowserWebDriverContainer[?] = new BrowserWebDriverContainer()
   desiredCapabilities.foreach(container.withDesiredCapabilities)
   recordingMode.foreach { case (recMode, recDir) => container.withRecordingMode(recMode, recDir) }
 

@@ -11,10 +11,10 @@ case class InfluxDBContainer(
   username: String = InfluxDBContainer.defaultUsername,
   password: String = InfluxDBContainer.defaultPassword,
   authEnabled: Boolean = InfluxDBContainer.defaultAuthEnabled
-) extends SingleContainer[JavaInfluxDBContainer[_]] {
+) extends SingleContainer[JavaInfluxDBContainer[?]] {
 
-  override val container: JavaInfluxDBContainer[_] = {
-    val c: JavaInfluxDBContainer[_] = new JavaInfluxDBContainer(tag)
+  override val container: JavaInfluxDBContainer[?] = {
+    val c: JavaInfluxDBContainer[?] = new JavaInfluxDBContainer(tag)
     c.withDatabase(database)
     c.withAdmin(admin)
     c.withAdminPassword(adminPassword)
