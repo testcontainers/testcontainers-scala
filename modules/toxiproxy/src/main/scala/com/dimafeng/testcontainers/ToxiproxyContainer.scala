@@ -13,7 +13,7 @@ case class ToxiproxyContainer(
 
   def proxy(hostname: String, port: Int): ContainerProxy = container.getProxy(hostname, port)
 
-  def proxy(container: SingleContainer[_], port: Int): ContainerProxy = proxy(container.networkAliases.head, port)
+  def proxy(container: SingleContainer[?], port: Int): ContainerProxy = proxy(container.networkAliases.head, port)
 }
 
 object ToxiproxyContainer {

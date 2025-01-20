@@ -41,7 +41,7 @@ trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Containe
   override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
-abstract class SingleContainer[T <: JavaGenericContainer[_]] extends TestContainerProxy[T] {
+abstract class SingleContainer[T <: JavaGenericContainer[?]] extends TestContainerProxy[T] {
 
   def underlyingUnsafeContainer: T = container
 

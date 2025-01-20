@@ -11,10 +11,10 @@ import org.testcontainers.images.ImagePullPolicy
 import scala.collection.JavaConverters._
 
 class GenericContainer(
-  override val underlyingUnsafeContainer: JavaGenericContainer[_]
-) extends SingleContainer[JavaGenericContainer[_]] {
+  override val underlyingUnsafeContainer: JavaGenericContainer[?]
+) extends SingleContainer[JavaGenericContainer[?]] {
 
-  override implicit val container: JavaGenericContainer[_] = underlyingUnsafeContainer
+  override implicit val container: JavaGenericContainer[?] = underlyingUnsafeContainer
 
   def this(
     dockerImage: DockerImage,
@@ -29,7 +29,7 @@ class GenericContainer(
     fileSystemBind: Seq[FileSystemBind] = Seq(),
     startupCheckStrategy: Option[StartupCheckStrategy] = None
   ) = this({
-    val underlying: JavaGenericContainer[_] = dockerImage match {
+    val underlying: JavaGenericContainer[?] = dockerImage match {
       case DockerImage(Left(imageFromDockerfile)) => new JavaGenericContainer(imageFromDockerfile)
       case DockerImage(Right(imageName))          => new JavaGenericContainer(imageName)
     }

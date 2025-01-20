@@ -6,7 +6,7 @@ import org.testcontainers.lifecycle.TestDescription
 
 import scala.language.implicitConversions
 
-class MultipleContainers private(containers: Seq[LazyContainer[_]]) extends Container with TestLifecycleAware {
+class MultipleContainers private(containers: Seq[LazyContainer[?]]) extends Container with TestLifecycleAware {
 
   @deprecated("Use `stop` instead", "v0.27.0")
   override def finished()(implicit description: Description): Unit = containers.foreach(_.finished()(description))
@@ -54,7 +54,7 @@ object MultipleContainers {
     *  val containers = MultipleContainers(pgContainer, appContainer)
     *  }}}
     */
-  def apply(containers: LazyContainer[_]*): MultipleContainers = new MultipleContainers(containers)
+  def apply(containers: LazyContainer[?]*): MultipleContainers = new MultipleContainers(containers)
 }
 
 /**
