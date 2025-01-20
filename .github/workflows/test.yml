@@ -2,7 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: ['*']
+    branches: ["*"]
+  push:
+    branches: ["master"]
 
 jobs:
   build:
@@ -14,7 +16,7 @@ jobs:
           - 8
           - 11
           - 17
-#          - graalvm-ce-java11@20.3.0
+    #          - graalvm-ce-java11@20.3.0
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -41,7 +43,7 @@ jobs:
           distribution: temurin # See 'Supported distributions' for available options
           java-version: ${{ matrix.java }}
           check-latest: true
-          cache: 'sbt'
+          cache: "sbt"
       - uses: sbt/setup-sbt@v1
         with:
           sbt-runner-version: 1.10.5
