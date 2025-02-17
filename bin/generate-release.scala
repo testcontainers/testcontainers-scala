@@ -1,5 +1,5 @@
 //> using scala 3.6.2
-//> using dep "com.lihaoyi::os-lib:0.11.3"
+//> using dep "com.lihaoyi::os-lib:0.11.4"
 //> using dep "com.monovore::decline:2.4.1"
 //> using dep "org.kohsuke:github-api:1.326"
 
