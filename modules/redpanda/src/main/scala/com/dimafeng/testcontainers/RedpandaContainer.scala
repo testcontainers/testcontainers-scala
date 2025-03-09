@@ -14,7 +14,7 @@ case class RedpandaContainer(
 
 object RedpandaContainer {
 
-  val defaultImage = "docker.redpanda.com/vectorized/redpanda"
+  val defaultImage = "docker.redpanda.com/redpandadata/redpanda"
   val defaultTag = "v22.2.6"
   val defaultDockerImageName = s"$defaultImage:$defaultTag"
 
