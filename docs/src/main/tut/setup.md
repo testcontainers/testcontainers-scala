@@ -95,6 +95,7 @@ Here is the full list of the [currently available modules](https://github.com/te
 * `testcontainers-scala-redis` — module with Redis container.
 * `testcontainers-scala-wiremock` - module with WireMock container.
 * `testcontainers-scala-opensearch` - module with Opensearch container.
+* `testcontainers-scala-k3s` - module with K3S container.
 
 Most of the modules are just proxies to the testcontainers-java modules and behave exactly like java containers.
 You can find documentation about them in the [testcontainers-java docs pages](https://www.testcontainers.org/).

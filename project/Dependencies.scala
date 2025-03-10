@@ -372,4 +372,10 @@ object Dependencies {
       "com.softwaremill.sttp.client3" %% "core" % sttpVersion
     )
   )
+
+  val moduleK3s = Def.setting(
+    COMPILE(
+      "org.testcontainers" % "k3s" % testcontainersVersion
+    )
+  )
 }
