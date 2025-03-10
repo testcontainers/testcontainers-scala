@@ -12,11 +12,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        java:
-          - 8
-          - 11
-          - 17
-    #          - graalvm-ce-java11@20.3.0
+        scala: [2.12.20, 2.13.16, 3.3.5]
+        java: [8, 11, 17]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -44,15 +41,8 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
           cache: "sbt"
-      - name: Restore cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.sbt
-            ~/.ivy2/cache
-            ~/.cache/coursier
-          key: cache-v1-${{ hashFiles('build.sbt') }}
-          restore-keys: |
-            cache-v1-
-      - name: Compile and Test
-        run: ./sbt +test
+
+      - name: Setup sbt launcher
+        uses: sbt/setup-sbt@v1
+
+      - run: sbt ++${{ matrix.scala }} test
