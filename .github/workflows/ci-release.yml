@@ -17,7 +17,9 @@ jobs:
           distribution: temurin
           java-version: 8
           cache: sbt
-      - run: ./sbt ci-release
+      - name: Setup sbt launcher
+        uses: sbt/setup-sbt@v1
+      - run: sbt ci-release
         env:
           PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
           PGP_SECRET: ${{ secrets.PGP_SECRET }}

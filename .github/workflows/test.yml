@@ -41,15 +41,8 @@ jobs:
           java-version: ${{ matrix.java }}
           check-latest: true
           cache: "sbt"
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.sbt
-            ~/.ivy2/cache
-            ~/.cache/coursier
-          key: cache-v1-${{ hashFiles('build.sbt') }}
-          restore-keys: |
-            cache-v1-
-      - name: Compile and Test
-        run: ./sbt ++${{ matrix.scala }} test
+
+      - name: Setup sbt launcher
+        uses: sbt/setup-sbt@v1
+
+      - run: sbt ++${{ matrix.scala }} test
