@@ -111,6 +111,7 @@ lazy val root = (project in file("."))
     moduleWireMock,
     moduleYugabytedb,
     moduleOpensearch,
+    moduleK3s,
     allOld
   )
   .settings(noPublishSettings)
@@ -562,4 +563,15 @@ lazy val moduleOpensearch = (project in file("modules/opensearch"))
   .settings(
     name := "testcontainers-scala-opensearch",
     libraryDependencies ++= Dependencies.moduleOpensearch.value
+  )
+
+lazy val moduleK3s = project.in(file("modules/k3s"))
+  .dependsOn(
+    core % "compile->compile;test->test;provided->provided",
+    scalatest % "test->test"
+  )
+  .settings(
+    commonSettings,
+    name := "testcontainers-scala-k3s",
+    libraryDependencies ++= Dependencies.moduleK3s.value
   )
