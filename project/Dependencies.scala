@@ -16,7 +16,7 @@ object Dependencies {
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "1.7.32"
   private val scalaTestVersion = "3.2.9"
-  private val scalaTestMockitoVersion = "3.2.9.0"
+  private val scalaTestMockitoVersion = "3.2.10.0"
   private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
