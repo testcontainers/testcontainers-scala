@@ -202,7 +202,7 @@ object Dependencies {
     COMPILE(
       "org.testcontainers" % "influxdb" % testcontainersVersion
     ) ++ PROVIDED(
-      "org.influxdb" % "influxdb-java" % "2.24"
+      "org.influxdb" % "influxdb-java" % "2.25"
     )
   )
 
