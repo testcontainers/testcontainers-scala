@@ -192,6 +192,12 @@ object Dependencies {
     )
   )
 
+  val moduleDynamodb = Def.setting(
+     PROVIDED(
+      "software.amazon.awssdk" % "dynamodb" % awsV2Version,
+    )
+  )
+
   val moduleElasticsearch = Def.setting(
     COMPILE(
       "org.testcontainers" % "elasticsearch" % testcontainersVersion

@@ -87,6 +87,7 @@ lazy val root = (project in file("."))
     moduleCouchbase,
     moduleDb2,
     moduleDynalite,
+    moduleDynamodb,
     moduleElasticsearch,
     moduleInfluxdb,
     moduleLocalstack,
@@ -368,6 +369,14 @@ lazy val moduleDynalite = (project in file("modules/dynalite"))
   .settings(
     name := "testcontainers-scala-dynalite",
     libraryDependencies ++= Dependencies.moduleDynalite.value
+  )
+
+lazy val moduleDynamodb = (project in file("modules/dynamodb"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-dynamodb",
+    libraryDependencies ++= Dependencies.moduleDynamodb.value
   )
 
 lazy val moduleElasticsearch = (project in file("modules/elasticsearch"))
