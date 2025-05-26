@@ -7,6 +7,7 @@ jobs:
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.8.0"
+        if: github.actor == 'scala-steward'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: ""
