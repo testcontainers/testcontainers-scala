@@ -12,32 +12,32 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.20.6"
+  private val testcontainersVersion = "1.21.1"
   private val seleniumVersion = "2.53.1"
-  private val slf4jVersion = "1.7.32"
+  private val slf4jVersion = "2.0.17"
   private val scalaTestVersion = "3.2.9"
   private val scalaTestMockitoVersion = "3.2.9.0"
   private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
-  private val munitVersion = "1.0.0"
+  private val munitVersion = "1.1.1"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "21.3.0.0"
   private val cassandraDriverVersion = "4.0.1"
-  private val postgresqlDriverVersion = "42.2.24"
+  private val postgresqlDriverVersion = "42.7.6"
   private val kafkaDriverVersion = "2.2.0"
   private val mockitoVersion = "3.12.4"
   private val restAssuredVersion = "4.0.0"
   private val groovyVersion = "2.5.16"
   private val awsV1Version = "1.11.479"
-  private val awsV2Version = "2.20.68"
+  private val awsV2Version = "2.31.58"
   private val sttpVersion = "3.3.14"
   private val firestoreConnectorVersion = "3.0.11"
   private val bigtableVersion = "2.45.0"
   private val pubsubVersion = "1.139.4"
-  private val redisTestcontainersVersion = "2.0.1"
-  private val jedisVersion = "5.0.0"
+  private val redisTestcontainersVersion = "2.2.4"
+  private val jedisVersion = "6.0.0"
   private val wireMockTestcontainersVersion = "1.0-alpha-13"
   private val milvusSdkVersion = "2.4.1"
   private val quadrantClientVersion = "1.14.0"
@@ -148,7 +148,7 @@ object Dependencies {
     ) ++ TEST(
       ("io.rest-assured" % "scala-support" % restAssuredVersion)
         .exclude("org.codehaus.groovy", "groovy"),
-      "org.codehaus.groovy"% "groovy" % groovyVersion
+      "org.codehaus.groovy" % "groovy" % groovyVersion
     )
   )
 

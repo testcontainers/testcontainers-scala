@@ -2,6 +2,8 @@ import xerial.sbt.Sonatype.*
 import ReleaseTransformations.*
 import java.net.URI
 
+Global / onChangedBuildSource := IgnoreSourceChanges
+
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
