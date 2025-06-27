@@ -21,6 +21,7 @@ object Dependencies {
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
   private val munitVersion = "1.1.1"
+  private val specs2Version = "4.20.5"
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "21.18.0.0"
@@ -81,6 +82,15 @@ object Dependencies {
       "org.scalameta" %% "munit" % munitVersion
     )
   )
+
+  val specs2 = Def.setting {
+    PROVIDED(
+      "org.specs2" %% "specs2-core" % specs2Version
+    ) ++ TEST(
+      "org.mockito" % "mockito-core" % mockitoVersion,
+      "org.specs2" %% "specs2-mock" % specs2Version
+    )
+  }
 
   val scalatestSelenium = Def.setting(
     COMPILE(
