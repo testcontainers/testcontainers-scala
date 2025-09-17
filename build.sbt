@@ -73,6 +73,7 @@ lazy val root = (project in file("."))
   .aggregate(
     core,
     munit,
+    specs2,
     scalatest,
     scalatestSelenium,
     jdbc,
@@ -250,6 +251,15 @@ lazy val munit = (project in file("test-framework/munit"))
   .settings(
     name := "testcontainers-scala-munit",
     libraryDependencies ++= Dependencies.munit.value
+  )
+
+lazy val specs2 = (project in file("test-framework/specs2"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-specs2",
+    libraryDependencies ++= Dependencies.specs2.value,
+    Test / scalacOptions --= Seq("-Xfatal-warnings")
   )
 
 lazy val scalatestSelenium = (project in file("test-framework/scalatest-selenium"))

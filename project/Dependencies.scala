@@ -21,6 +21,13 @@ object Dependencies {
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
   private val junitVersion = "4.13.2"
   private val munitVersion = "1.1.1"
+
+  private val specs2Version = Def.setting {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, _)) => "4.20.5"
+      case _            => "5.6.4" // Scala 3
+    }
+  }
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
   private val oracleDriverVersion = "21.18.0.0"
@@ -81,6 +88,14 @@ object Dependencies {
       "org.scalameta" %% "munit" % munitVersion
     )
   )
+
+  val specs2 = Def.setting {
+    PROVIDED(
+      "org.specs2" %% "specs2-core" % specs2Version.value
+    ) ++ TEST(
+      "org.mockito" % "mockito-core" % mockitoVersion
+    )
+  }
 
   val scalatestSelenium = Def.setting(
     COMPILE(
