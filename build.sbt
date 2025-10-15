@@ -8,7 +8,7 @@ lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 val commonSettings = Seq(
   ThisBuild / scalaVersion := "2.12.20",
-  crossScalaVersions := Seq("2.12.20", "2.13.16", "3.3.6"),
+  crossScalaVersions := Seq("2.12.20", "2.13.16", "3.3.7"),
 
   ThisBuild / parallelExecution := false,
   fork := true,
