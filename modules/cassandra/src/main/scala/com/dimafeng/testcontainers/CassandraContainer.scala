@@ -1,7 +1,7 @@
 package com.dimafeng.testcontainers
 
 import com.datastax.driver.core.Cluster
-import org.testcontainers.containers.{CassandraContainer => JavaCassandraContainer}
+import org.testcontainers.cassandra.{CassandraContainer => JavaCassandraContainer}
 import org.testcontainers.utility.DockerImageName
 
 class CassandraContainer(dockerImageNameOverride: Option[DockerImageName] = None,

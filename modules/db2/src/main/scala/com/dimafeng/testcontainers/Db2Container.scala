@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{Db2Container => JavaDb2Container}
+import org.testcontainers.db2.{Db2Container => JavaDb2Container}
 import org.testcontainers.utility.DockerImageName
 
 case class Db2Container(

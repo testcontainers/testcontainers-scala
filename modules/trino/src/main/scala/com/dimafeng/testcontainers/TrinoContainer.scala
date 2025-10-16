@@ -2,7 +2,7 @@ package com.dimafeng.testcontainers
 
 import java.sql.Connection
 
-import org.testcontainers.containers.{TrinoContainer => JavaTrinoContainer}
+import org.testcontainers.trino.{TrinoContainer => JavaTrinoContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class TrinoContainer(

@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{CockroachContainer => JavaCockroachContainer}
+import org.testcontainers.cockroachdb.{CockroachContainer => JavaCockroachContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class CockroachContainer(

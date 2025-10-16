@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{MySQLContainer => JavaMySQLContainer}
+import org.testcontainers.mysql.{MySQLContainer => JavaMySQLContainer}
 import org.testcontainers.utility.DockerImageName
 
 class MySQLContainer(
@@ -11,10 +11,10 @@ class MySQLContainer(
   mysqlPassword: Option[String] = None,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaMySQLContainer[?]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaMySQLContainer] with JdbcDatabaseContainer {
 
-  override val container: JavaMySQLContainer[?] = {
-    val c: JavaMySQLContainer[?] = mysqlImageVersion
+  override val container: JavaMySQLContainer = {
+    val c: JavaMySQLContainer = mysqlImageVersion
       .map(new JavaMySQLContainer(_))
       .getOrElse(new JavaMySQLContainer(MySQLContainer.DEFAULT_MYSQL_VERSION))
 

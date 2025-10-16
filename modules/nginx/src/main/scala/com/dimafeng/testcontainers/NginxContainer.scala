@@ -1,18 +1,14 @@
 package com.dimafeng.testcontainers
 
 import java.net.URL
-
-import org.testcontainers.containers.{NginxContainer => JavaNginxContainer}
+import org.testcontainers.nginx.{NginxContainer => JavaNginxContainer}
+import org.testcontainers.utility.DockerImageName
 
 case class NginxContainer(
-  customContent: Option[String] = None
-) extends SingleContainer[JavaNginxContainer[?]] {
+    tag: DockerImageName,
+) extends SingleContainer[JavaNginxContainer] {
 
-  override val container: JavaNginxContainer[?] = {
-    val c: JavaNginxContainer[?] = new JavaNginxContainer()
-    customContent.foreach(c.withCustomContent)
-    c
-  }
+  override val container: JavaNginxContainer = new JavaNginxContainer(tag)
 
   def baseUrl(scheme: String, port: Int): URL = container.getBaseUrl(scheme, port)
 }
@@ -20,14 +16,14 @@ case class NginxContainer(
 object NginxContainer {
 
   case class Def(
-    customContent: Option[String] = None
+    tag: DockerImageName
   ) extends ContainerDef {
 
     override type Container = NginxContainer
 
     override def createContainer(): NginxContainer = {
       new NginxContainer(
-        customContent
+        tag
       )
     }
   }

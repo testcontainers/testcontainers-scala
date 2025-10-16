@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{KafkaContainer => JavaKafkaContainer}
+import org.testcontainers.kafka.{KafkaContainer => JavaKafkaContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class KafkaContainer(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)

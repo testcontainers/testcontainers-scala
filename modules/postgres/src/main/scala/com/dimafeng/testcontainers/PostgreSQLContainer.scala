@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{PostgreSQLContainer => JavaPostgreSQLContainer}
+import org.testcontainers.postgresql.{PostgreSQLContainer => JavaPostgreSQLContainer}
 import org.testcontainers.utility.DockerImageName
 
 class PostgreSQLContainer(
@@ -11,13 +11,13 @@ class PostgreSQLContainer(
   mountPostgresDataToTmpfs: Boolean = false,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaPostgreSQLContainer[?]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaPostgreSQLContainer] with JdbcDatabaseContainer {
 
   import PostgreSQLContainer._
 
-  override val container: JavaPostgreSQLContainer[?] = {
+  override val container: JavaPostgreSQLContainer = {
     val dockerImageName = dockerImageNameOverride.getOrElse(parsedDockerImageName)
-    val c: JavaPostgreSQLContainer[?] = new JavaPostgreSQLContainer(dockerImageName)
+    val c: JavaPostgreSQLContainer = new JavaPostgreSQLContainer(dockerImageName)
 
     databaseName.foreach(c.withDatabaseName)
     pgUsername.foreach(c.withUsername)

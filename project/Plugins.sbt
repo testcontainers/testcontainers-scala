@@ -3,3 +3,5 @@ addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.3.0")
 addSbtPlugin("com.github.sbt" % "sbt-release" % "1.1.0")
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.11.0")
+
+ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always

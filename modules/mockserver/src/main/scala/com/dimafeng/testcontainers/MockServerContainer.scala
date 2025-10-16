@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{MockServerContainer => JavaMockServerContainer}
+import org.testcontainers.mockserver.{MockServerContainer => JavaMockServerContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class MockServerContainer(
