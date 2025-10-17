@@ -19,7 +19,6 @@ object Dependencies {
   private val scalaTestMockitoVersion = "3.2.9.0"
   private val scalaTestSeleniumVersion_scala2 = "3.2.2.0"
   private val scalaTestSeleniumVersion_scala3 = "3.2.9.0"
-  private val junitVersion = "4.13.2"
   private val munitVersion = "1.1.1"
 
   private val specs2Version = Def.setting {
@@ -64,7 +63,6 @@ object Dependencies {
     ) ++ PROVIDED(
       "org.slf4j" % "slf4j-simple" % slf4jVersion
     ) ++ TEST(
-      "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
       "org.scalatestplus" %% "selenium-3-141" % (CrossVersion.partialVersion(scalaVersion.value) match {
@@ -78,9 +76,7 @@ object Dependencies {
   )
 
   val scalatest = Def.setting(
-    COMPILE(
-      "junit" % "junit" % junitVersion, // TODO remove
-    ) ++    PROVIDED(
+    PROVIDED(
       "org.scalatest" %% "scalatest" % scalaTestVersion
     )
   )
@@ -92,9 +88,7 @@ object Dependencies {
   )
 
   val specs2 = Def.setting {
-    COMPILE(
-      "junit" % "junit" % junitVersion, // TODO remove
-    ) ++  PROVIDED(
+    PROVIDED(
       "org.specs2" %% "specs2-core" % specs2Version.value
     ) ++ TEST(
       "org.mockito" % "mockito-core" % mockitoVersion

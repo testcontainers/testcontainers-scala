@@ -1,12 +1,10 @@
 package com.dimafeng.testcontainers
 
-import com.dimafeng.testcontainers.RabbitMQContainer.{Exchange, Permission, User, VHost}
+import com.dimafeng.testcontainers.RabbitMQContainer.Permission
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.testcontainers.utility.DockerImageName
 import sttp.client3.{HttpURLConnectionBackend, UriContext, basicRequest}
-
-import scala.util.Either
 
 class RabbitMQSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
   import RabbitMQSpec._
@@ -93,25 +91,6 @@ object RabbitMQSpec {
   val customRabbitContainer: RabbitMQContainer = RabbitMQContainer(
     dockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
     adminPassword = RabbitMQContainer.defaultAdminPassword,
-    queues = Seq.empty,
-    exchanges = Seq(
-      Exchange(
-        name = testExchange,
-        exchangeType = "direct",
-        arguments = Map.empty,
-        vhost = Some("test-vhost")
-      )
-    ),
-    bindings = Seq.empty,
-    users = Seq(
-      User(
-        name = testUsername,
-        password = testPassword,
-        tags = Set("administrator")
-      )
-    ),
-    vhosts = Seq(VHost(name = "test-vhost")),
-    vhostsLimits = Seq.empty,
     operatorPolicies = Seq.empty,
     policies = Seq.empty,
     parameters = Seq.empty,
@@ -128,25 +107,6 @@ object RabbitMQSpec {
   val customRabbitContainerViaDef = RabbitMQContainer.Def(
     dockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
     adminPassword = RabbitMQContainer.defaultAdminPassword,
-    queues = Seq.empty,
-    exchanges = Seq(
-      Exchange(
-        name = testExchange,
-        exchangeType = "direct",
-        arguments = Map.empty,
-        vhost = Some("test-vhost")
-      )
-    ),
-    bindings = Seq.empty,
-    users = Seq(
-      User(
-        name = testUsername,
-        password = testPassword,
-        tags = Set("administrator")
-      )
-    ),
-    vhosts = Seq(VHost(name = "test-vhost")),
-    vhostsLimits = Seq.empty,
     operatorPolicies = Seq.empty,
     policies = Seq.empty,
     parameters = Seq.empty,

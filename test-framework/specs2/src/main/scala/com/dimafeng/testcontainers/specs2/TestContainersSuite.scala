@@ -3,7 +3,6 @@ package com.dimafeng.testcontainers.specs2
 import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import com.dimafeng.testcontainers.lifecycle.{Andable, TestLifecycleAware}
 import org.specs2.specification.core.SpecificationStructure
-import org.junit.runner.{Description => JunitDescription}
 import org.testcontainers.lifecycle.TestDescription
 
 trait TestContainersSuite extends DockerImageNameConverters { self: SpecificationStructure =>
@@ -25,10 +24,9 @@ trait TestContainersSuite extends DockerImageNameConverters { self: Specificatio
   @volatile private[testcontainers] var startedContainers: Option[Containers] = None
 
   private[testcontainers] val suiteDescription: TestDescription = {
-    val description = JunitDescription.createSuiteDescription(self.getClass)
     new TestDescription {
-      override def getTestId: String = description.getDisplayName
-      override def getFilesystemFriendlyName: String = s"${description.getClassName}-${description.getMethodName}"
+      override def getTestId: String = self.getClass.getName
+      override def getFilesystemFriendlyName: String = self.getClass.getName
     }
   }
 

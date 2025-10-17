@@ -4,7 +4,7 @@ import org.testcontainers.mongodb.{MongoDBContainer => JavaMongoDBContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class MongoDBContainer(
-  tag: DockerImageName
+  tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)
 ) extends SingleContainer[JavaMongoDBContainer] {
 
   override val container: JavaMongoDBContainer = new JavaMongoDBContainer(tag)
@@ -14,10 +14,12 @@ case class MongoDBContainer(
 
 object MongoDBContainer {
 
-  def apply(tag: DockerImageName): MongoDBContainer = new MongoDBContainer(tag)
+  val defaultImageName = "mongo"
+  
+  def apply(tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)): MongoDBContainer = new MongoDBContainer(tag)
 
   case class Def(
-    tag: DockerImageName
+    tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)
   ) extends ContainerDef {
 
     override type Container = MongoDBContainer
