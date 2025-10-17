@@ -38,7 +38,7 @@ class MySQLContainer(
 
 object MySQLContainer {
 
-  val defaultDockerImageName = s"${JavaMySQLContainer.IMAGE}:${JavaMySQLContainer.DEFAULT_TAG}"
+  val defaultDockerImageName = "mysql"
   val defaultDatabaseName = "test"
   val defaultUsername = "test"
   val defaultPassword = "test"

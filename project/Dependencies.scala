@@ -78,7 +78,9 @@ object Dependencies {
   )
 
   val scalatest = Def.setting(
-    PROVIDED(
+    COMPILE(
+      "junit" % "junit" % junitVersion, // TODO remove
+    ) ++    PROVIDED(
       "org.scalatest" %% "scalatest" % scalaTestVersion
     )
   )
@@ -90,7 +92,9 @@ object Dependencies {
   )
 
   val specs2 = Def.setting {
-    PROVIDED(
+    COMPILE(
+      "junit" % "junit" % junitVersion, // TODO remove
+    ) ++  PROVIDED(
       "org.specs2" %% "specs2-core" % specs2Version.value
     ) ++ TEST(
       "org.mockito" % "mockito-core" % mockitoVersion

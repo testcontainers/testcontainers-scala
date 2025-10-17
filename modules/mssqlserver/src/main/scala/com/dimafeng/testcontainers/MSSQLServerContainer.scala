@@ -29,7 +29,7 @@ case class MSSQLServerContainer(
 
 object MSSQLServerContainer {
 
-  val defaultDockerImageName = s"${JavaMSSQLServerContainer.IMAGE}:${JavaMSSQLServerContainer.DEFAULT_TAG}"
+  val defaultDockerImageName = "mcr.microsoft.com/mssql/server"
   val defaultPassword = "A_Str0ng_Required_Password"
   val defaultCommonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams().copy(
     startupTimeout = 240.seconds,

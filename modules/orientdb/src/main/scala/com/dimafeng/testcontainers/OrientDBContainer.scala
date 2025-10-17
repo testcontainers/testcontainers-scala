@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import com.orientechnologies.orient.core.db.{ODatabaseSession, OrientDB}
+import org.testcontainers.images.builder.Transferable
 import org.testcontainers.orientdb.{OrientDBContainer => JavaOrientDBContainer}
 import org.testcontainers.utility.DockerImageName
 
@@ -8,7 +8,7 @@ case class OrientDBContainer(
   dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
   databaseName: String = OrientDBContainer.defaultDatabaseName,
   serverPassword: String = OrientDBContainer.defaultServerPassword,
-  scriptPath: Option[String] = None
+  scriptPath: Option[Transferable] = None
 ) extends SingleContainer[JavaOrientDBContainer] {
 
   override val container: JavaOrientDBContainer = {
@@ -35,7 +35,7 @@ object OrientDBContainer {
     dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
     databaseName: String = OrientDBContainer.defaultDatabaseName,
     serverPassword: String = OrientDBContainer.defaultServerPassword,
-    scriptPath: Option[String] = None
+    scriptPath: Option[Transferable] = None
   ) extends ContainerDef {
 
     override type Container = OrientDBContainer

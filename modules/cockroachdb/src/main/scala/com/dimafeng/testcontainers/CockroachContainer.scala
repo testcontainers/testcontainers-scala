@@ -26,7 +26,7 @@ case class CockroachContainer(
 
 object CockroachContainer {
 
-  val defaultDockerImageName = s"${JavaCockroachContainer.IMAGE}:${JavaCockroachContainer.IMAGE_TAG}"
+  val defaultDockerImageName = "cockroachdb/cockroach"
 
   case class Def(
     dockerImageName: DockerImageName = DockerImageName.parse(CockroachContainer.defaultDockerImageName),

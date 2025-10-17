@@ -34,7 +34,7 @@ case class MariaDBContainer(
 
 object MariaDBContainer {
 
-  val defaultDockerImageName = s"${JavaMariaDBContainer.IMAGE}:${JavaMariaDBContainer.DEFAULT_TAG}"
+  val defaultDockerImageName = "mariadb"
   val defaultDatabaseName = "test"
   val defaultUsername = "test"
   val defaultPassword = "test"

@@ -32,7 +32,7 @@ case class Db2Container(
 
 object Db2Container {
 
-  val defaultDockerImageName = s"${JavaDb2Container.DEFAULT_DB2_IMAGE_NAME}:${JavaDb2Container.DEFAULT_TAG}"
+  val defaultDockerImageName = "icr.io/db2_community/db2"
   val defaultDatabaseName = "test"
   val defaultUsername = "db2inst1"
   val defaultPassword = "foobar1234"
