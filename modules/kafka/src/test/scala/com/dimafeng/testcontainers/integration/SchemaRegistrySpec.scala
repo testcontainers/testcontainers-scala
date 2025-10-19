@@ -15,7 +15,7 @@ import scala.collection.JavaConverters._
 class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   //this should be the same version that your lib is using under the hood
-  val kafkaVersion = "6.1.1"
+  val kafkaVersion = "8.1.0"
 
   //these are the default kafka host name but because that may change
   //we need to ensure that these are the values for container network, kafka and the schema registry
