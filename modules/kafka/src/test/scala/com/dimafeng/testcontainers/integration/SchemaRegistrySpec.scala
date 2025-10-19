@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers.integration
 
-import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer, KafkaContainer, MultipleContainers, SchemaRegistryContainer}
+import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer, ConfluentKafkaContainer, MultipleContainers, SchemaRegistryContainer}
 import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig, NewTopic}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -27,7 +27,7 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
   //a way to communicate containers
   val network: Network = Network.newNetwork()
 
-  val kafkaContainer: KafkaContainer = KafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
+  val kafkaContainer: ConfluentKafkaContainer = ConfluentKafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
   val schemaRegistryContainer: GenericContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
 
   kafkaContainer.container
