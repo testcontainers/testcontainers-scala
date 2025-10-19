@@ -6,11 +6,6 @@ import org.testcontainers.utility.{DockerImageName, MountableFile}
 case class RabbitMQContainer(
   dockerImageName: DockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
   adminPassword: String = RabbitMQContainer.defaultAdminPassword,
-  operatorPolicies: Seq[RabbitMQContainer.OperatorPolicy] = Seq.empty,
-  policies: Seq[RabbitMQContainer.Policy] = Seq.empty,
-  parameters: Seq[RabbitMQContainer.Parameter] = Seq.empty,
-  permissions: Seq[RabbitMQContainer.Permission] = Seq.empty,
-  pluginsEnabled: Seq[String] = Seq.empty,
   rabbitMqConfig: Option[MountableFile] = None,
   rabbitMqConfigErlang: Option[MountableFile] = None,
   rabbitMqConfigSysctl: Option[MountableFile] = None
@@ -54,44 +49,9 @@ object RabbitMQContainer {
   val defaultDockerImageName = s"$defaultImage:$defaultTag"
   val defaultAdminPassword = "guest"
 
-  case class OperatorPolicy(
-    name: String,
-    pattern: String,
-    definition: Map[String, String],
-    priority: Int = 0,
-    applyTo: String = ""
-  )
-
-  case class Policy(
-    name: String,
-    pattern: String,
-    definition: Map[String, String],
-    priority: Int = 0,
-    applyTo: String = ""
-  )
-
-  case class Parameter(
-    component: String,
-    name: String,
-    value: String
-  )
-
-  case class Permission(
-    vhost: String,
-    user: String,
-    configure: String,
-    write: String,
-    read: String
-  )
-
   case class Def(
     dockerImageName: DockerImageName = DockerImageName.parse(RabbitMQContainer.defaultDockerImageName),
     adminPassword: String = RabbitMQContainer.defaultAdminPassword,
-    operatorPolicies: Seq[RabbitMQContainer.OperatorPolicy] = Seq.empty,
-    policies: Seq[RabbitMQContainer.Policy] = Seq.empty,
-    parameters: Seq[RabbitMQContainer.Parameter] = Seq.empty,
-    permissions: Seq[RabbitMQContainer.Permission] = Seq.empty,
-    pluginsEnabled: Seq[String] = Seq.empty,
     rabbitMqConfig: Option[MountableFile] = None,
     rabbitMqConfigErlang: Option[MountableFile] = None,
     rabbitMqConfigSysctl: Option[MountableFile] = None
@@ -103,11 +63,6 @@ object RabbitMQContainer {
       new RabbitMQContainer(
         dockerImageName,
         adminPassword,
-        operatorPolicies,
-        policies,
-        parameters,
-        permissions,
-        pluginsEnabled,
         rabbitMqConfig,
         rabbitMqConfigErlang,
         rabbitMqConfigSysctl

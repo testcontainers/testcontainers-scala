@@ -3,7 +3,7 @@ package com.dimafeng.testcontainers
 import org.testcontainers.kafka.{KafkaContainer => JavaKafkaContainer}
 import org.testcontainers.utility.DockerImageName
 
-case class KafkaContainer(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
+case class KafkaContainer(dockerImageName: DockerImageName = KafkaContainer.defaultDockerImageName
                     ) extends SingleContainer[JavaKafkaContainer] {
 
   override val container: JavaKafkaContainer = new JavaKafkaContainer(dockerImageName)
@@ -15,9 +15,9 @@ object KafkaContainer {
 
   val defaultImage = "confluentinc/cp-kafka"
   val defaultTag = "7.6.1"
-  val defaultDockerImageName = s"$defaultImage:$defaultTag"
+  val defaultDockerImageName: DockerImageName = DockerImageName.parse(s"$defaultImage:$defaultTag").asCompatibleSubstituteFor("apache/kafka")
 
-  case class Def(dockerImageName: DockerImageName = DockerImageName.parse(KafkaContainer.defaultDockerImageName)
+  case class Def(dockerImageName: DockerImageName = defaultDockerImageName
                 ) extends ContainerDef {
 
     override type Container = KafkaContainer
