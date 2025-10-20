@@ -1,4 +1,5 @@
 import xerial.sbt.Sonatype.*
+import xerial.sbt.Sonatype.sonatypeCentralHost
 import ReleaseTransformations.*
 import java.net.URI
 
@@ -35,17 +36,17 @@ val commonSettings = Seq(
   },
 
   /**
-   * Publishing
+   * Publishing - Central Portal
    */
   publishTo := {
-    val nexus = "https://oss.sonatype.org/"
     if (isSnapshot.value) {
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+      Some("central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/")
     } else {
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+      sonatypePublishToBundle.value
     }
   },
   publishMavenStyle := true,
+  sonatypeCredentialHost := sonatypeCentralHost,
   sonatypeProfileName := "testcontainers-scala",
   sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
   licenses := Seq("The MIT License (MIT)" -> URI.create("https://opensource.org/licenses/MIT").toURL),
@@ -130,7 +131,7 @@ lazy val root = (project in file("."))
       releaseStepCommandAndRemaining("+publishSigned"),
       setNextVersion,
       commitNextVersion,
-      releaseStepCommand("sonatypeReleaseAll"),
+      releaseStepCommand("sonatypeCentralRelease"),
       pushChanges
     )
   )
