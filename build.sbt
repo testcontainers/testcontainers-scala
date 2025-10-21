@@ -42,7 +42,7 @@ val commonSettings = Seq(
     if (isSnapshot.value) {
       Some("central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/")
     } else {
-      sonatypePublishToBundle.value
+      Some(MavenCache("sonatype-bundle", sonatypeBundleDirectory.value))
     }
   },
   publishMavenStyle := true,
