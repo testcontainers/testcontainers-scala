@@ -322,7 +322,8 @@ lazy val moduleKafka = (project in file("modules/kafka"))
   .settings(commonSettings)
   .settings(
     name := "testcontainers-scala-kafka",
-    libraryDependencies ++= Dependencies.moduleKafka.value
+    libraryDependencies ++= Dependencies.moduleKafka.value,
+    resolvers += "Confluent" at "https://packages.confluent.io/maven"
   )
 
 lazy val moduleVault = (project in file("modules/vault"))

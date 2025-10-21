@@ -15,7 +15,7 @@ class SchemaRegistryContainer(network: Network, kafkaHost: String, confluentPlat
   container.setEnv(
     List(
       s"SCHEMA_REGISTRY_HOST_NAME=${container.getHost}",
-      s"SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=$kafkaHost:9092"
+      s"SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=$kafkaHost:9093"
     ).asJava
   )
 
