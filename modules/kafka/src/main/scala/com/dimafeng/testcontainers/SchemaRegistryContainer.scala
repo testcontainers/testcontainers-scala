@@ -15,7 +15,7 @@ class SchemaRegistryContainer(network: Network, kafkaHost: String, confluentPlat
   container.setEnv(
     List(
       s"SCHEMA_REGISTRY_HOST_NAME=${container.getHost}",
-      s"SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=$kafkaHost:9092"
+      s"SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=$kafkaHost:9093"
     ).asJava
   )
 
@@ -31,7 +31,7 @@ object SchemaRegistryContainer {
   def apply(
     network: Network,
     kafkaHost: String,
-    confluentPlatformVersion: String = KafkaContainer.defaultTag,
+    confluentPlatformVersion: String = ConfluentKafkaContainer.defaultTag,
     schemaPort: Int = defaultSchemaPort
   ): SchemaRegistryContainer =
     new SchemaRegistryContainer(network, kafkaHost, confluentPlatformVersion, schemaPort)
@@ -39,7 +39,7 @@ object SchemaRegistryContainer {
   case class Def(
     network: Network,
     kafkaHost: String,
-    confluentPlatformVersion: String = KafkaContainer.defaultTag,
+    confluentPlatformVersion: String = ConfluentKafkaContainer.defaultTag,
     schemaPort: Int = defaultSchemaPort
   ) extends ContainerDef {
 

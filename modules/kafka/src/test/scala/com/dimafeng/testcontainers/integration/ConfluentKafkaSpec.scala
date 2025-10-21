@@ -1,18 +1,17 @@
 package com.dimafeng.testcontainers.integration
 
-import com.dimafeng.testcontainers.{ForAllTestContainer, KafkaContainer}
+import java.util.Properties
+import com.dimafeng.testcontainers.{ForAllTestContainer, ConfluentKafkaContainer}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.util.Properties
+class ConfluentKafkaSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
-class KafkaSpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
+  override val container: ConfluentKafkaContainer = ConfluentKafkaContainer()
 
-  override val container: KafkaContainer = KafkaContainer()
-
-  "Kafka container" should "be started" in {
+  "Confluent Kafka container" should "be started" in {
 
     val properties = new Properties()
     properties.put("bootstrap.servers", container.bootstrapServers)

@@ -4,7 +4,6 @@ import com.dimafeng.testcontainers.implicits.DockerImageNameConverters
 import com.dimafeng.testcontainers.lifecycle.{Andable, TestLifecycleAware}
 import com.dimafeng.testcontainers.munit.TestContainersSuite.IllegalWithContainersCall
 import munit.Suite
-import org.junit.runner.{Description => JunitDescription}
 import org.testcontainers.lifecycle.TestDescription
 
 trait TestContainersSuite extends DockerImageNameConverters { self: Suite =>
@@ -117,16 +116,9 @@ object TestContainersSuite {
   )
 
   def createDescription(suite: Suite): TestDescription = {
-    val description = JunitDescription.createSuiteDescription(suite.getClass)
-    // If we don't add the testNames and nested suites in, we get
-    // Unrooted Tests show up in Eclipse
-    for (name <- suite.munitTests()) {
-      description.addChild(JunitDescription.createTestDescription(suite.getClass, name.name))
-    }
-
     new TestDescription {
-      override def getTestId: String = description.getDisplayName
-      override def getFilesystemFriendlyName: String = s"${description.getClassName}-${description.getMethodName}"
+      override def getTestId: String = suite.getClass.getName
+      override def getFilesystemFriendlyName: String = suite.getClass.getName
     }
   }
 }

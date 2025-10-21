@@ -3,12 +3,11 @@ package com.dimafeng.testcontainers
 import java.io.File
 import java.util
 import java.util.function.Consumer
-
 import com.dimafeng.testcontainers.DockerComposeContainer.ComposeFile
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.wait.strategy.{Wait, WaitStrategy}
 import org.testcontainers.containers.{ContainerState, ComposeContainer => JavaDockerComposeContainer}
-import org.testcontainers.utility.Base58
+import org.testcontainers.utility.{Base58, DockerImageName}
 
 import scala.collection.JavaConverters._
 
@@ -50,40 +49,28 @@ object DockerComposeContainer {
 
   def randomIdentifier: String = Base58.randomString(DockerComposeContainer.ID_LENGTH).toLowerCase()
 
-  @deprecated("Please use expanded `apply` method", "v0.19.0")
-  def apply(composeFiles: ComposeFile,
-            exposedService: Map[String, Int],
-            identifier: String): DockerComposeContainer =
-    apply(composeFiles, exposedService, identifier)
-
-
-  @deprecated("Please use expanded `apply` method", "v0.19.0")
-  def apply(composeFiles: ComposeFile,
-            exposedService: Map[String, Int]): DockerComposeContainer =
-    new DockerComposeContainer(composeFiles, exposedService)
-
   def apply(composeFiles: ComposeFile,
             exposedServices: Seq[ExposedService] = Seq.empty,
             identifier: String = DockerComposeContainer.randomIdentifier,
             scaledServices: Seq[ScaledService] = Seq.empty,
             pull: Boolean = true,
-            localCompose: Boolean = true,
             env: Map[String, String] = Map.empty,
             tailChildContainers: Boolean = false,
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
             waitingFor: Option[WaitingForService] = None,
-            services: Services = Services.All): DockerComposeContainer =
+            services: Services = Services.All,
+            image: DockerImageName = DockerImageName.parse("docker")): DockerComposeContainer =
     new DockerComposeContainer(composeFiles,
       exposedServices,
       identifier,
       scaledServices,
       pull,
-      localCompose,
       env,
       tailChildContainers,
       logConsumers,
       waitingFor,
-      services)
+      services,
+      image)
 
   case class Def(
                   composeFiles: ComposeFile,
@@ -91,12 +78,12 @@ object DockerComposeContainer {
                   identifier: String = DockerComposeContainer.randomIdentifier,
                   scaledServices: Seq[ScaledService] = Seq.empty,
                   pull: Boolean = true,
-                  localCompose: Boolean = true,
                   env: Map[String, String] = Map.empty,
                   tailChildContainers: Boolean = false,
                   logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
                   waitingFor: Option[WaitingForService] = None,
-                  services: Services = Services.All
+                  services: Services = Services.All,
+                  image: DockerImageName = DockerImageName.parse("docker")
                 ) extends ContainerDef {
 
     override type Container = DockerComposeContainer
@@ -108,12 +95,12 @@ object DockerComposeContainer {
         identifier,
         scaledServices,
         pull,
-        localCompose,
         env,
         tailChildContainers,
         logConsumers,
         waitingFor,
-        services
+        services,
+        image
       )
     }
   }
@@ -125,16 +112,16 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              identifier: String = DockerComposeContainer.randomIdentifier,
                              scaledServices: Seq[ScaledService] = Seq.empty,
                              pull: Boolean = true,
-                             localCompose: Boolean = true,
                              env: Map[String, String] = Map.empty,
                              tailChildContainers: Boolean = false,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
                              waitingFor: Option[WaitingForService] = None,
-                             services: Services = Services.All)
+                             services: Services = Services.All,
+                             image: DockerImageName = DockerImageName.parse("docker"))
   extends TestContainerProxy[JavaDockerComposeContainer] {
 
   override val container: JavaDockerComposeContainer = {
-    val container: JavaDockerComposeContainer = new JavaDockerComposeContainer(identifier, composeFiles match {
+    val container: JavaDockerComposeContainer = new JavaDockerComposeContainer(image, identifier, composeFiles match {
       case ComposeFile(Left(f)) => util.Arrays.asList(f)
       case ComposeFile(Right(files)) => files.asJava
     })
@@ -161,7 +148,6 @@ class DockerComposeContainer(composeFiles: ComposeFile,
     )
 
     container.withPull(pull)
-    container.withLocalCompose(localCompose)
     container.withEnv(env.asJava)
     container.withTailChildContainers(tailChildContainers)
 

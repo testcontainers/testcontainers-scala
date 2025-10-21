@@ -2,7 +2,8 @@ package com.dimafeng.testcontainers
 
 import java.net.URL
 
-import org.testcontainers.containers.{SolrContainerConfiguration, SolrContainer => JavaSolrContainer}
+import org.testcontainers.containers.SolrContainerConfiguration
+import org.testcontainers.solr.{SolrContainer => JavaSolrContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class SolrContainer(

@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{CockroachContainer => JavaCockroachContainer}
+import org.testcontainers.cockroachdb.{CockroachContainer => JavaCockroachContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class CockroachContainer(
@@ -26,7 +26,7 @@ case class CockroachContainer(
 
 object CockroachContainer {
 
-  val defaultDockerImageName = s"${JavaCockroachContainer.IMAGE}:${JavaCockroachContainer.IMAGE_TAG}"
+  val defaultDockerImageName = "cockroachdb/cockroach"
 
   case class Def(
     dockerImageName: DockerImageName = DockerImageName.parse(CockroachContainer.defaultDockerImageName),

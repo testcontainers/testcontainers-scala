@@ -1,14 +1,14 @@
 package com.dimafeng.testcontainers
 
-import com.orientechnologies.orient.core.db.{ODatabaseSession, OrientDB}
-import org.testcontainers.containers.{OrientDBContainer => JavaOrientDBContainer}
+import org.testcontainers.images.builder.Transferable
+import org.testcontainers.orientdb.{OrientDBContainer => JavaOrientDBContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class OrientDBContainer(
   dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
   databaseName: String = OrientDBContainer.defaultDatabaseName,
   serverPassword: String = OrientDBContainer.defaultServerPassword,
-  scriptPath: Option[String] = None
+  scriptPath: Option[Transferable] = None
 ) extends SingleContainer[JavaOrientDBContainer] {
 
   override val container: JavaOrientDBContainer = {
@@ -19,17 +19,10 @@ case class OrientDBContainer(
     c
   }
 
-  def testQueryString: String = container.getTestQueryString
-
-  def orientDB: OrientDB = container.getOrientDB
-
   def serverUrl: String = container.getServerUrl
 
   def dbUrl: String = container.getDbUrl
-
-  def session: ODatabaseSession = container.getSession
-
-  def session(username: String, password: String): ODatabaseSession = container.getSession(username, password)
+  
 }
 
 object OrientDBContainer {
@@ -42,7 +35,7 @@ object OrientDBContainer {
     dockerImageName: DockerImageName = DockerImageName.parse(OrientDBContainer.defaultDockerImageName),
     databaseName: String = OrientDBContainer.defaultDatabaseName,
     serverPassword: String = OrientDBContainer.defaultServerPassword,
-    scriptPath: Option[String] = None
+    scriptPath: Option[Transferable] = None
   ) extends ContainerDef {
 
     override type Container = OrientDBContainer

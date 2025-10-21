@@ -1,14 +1,14 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{Neo4jContainer => JavaNeo4jContainer}
+import org.testcontainers.neo4j.{Neo4jContainer => JavaNeo4jContainer}
 import org.testcontainers.utility.DockerImageName
 
 class Neo4jContainer(configurationOverride: Option[String] = None,
                      neo4jImageVersion: Option[DockerImageName] = None,
                      neo4jPassword: Option[String] = None)
-  extends SingleContainer[JavaNeo4jContainer[?]] {
+  extends SingleContainer[JavaNeo4jContainer] {
 
-  override val container: JavaNeo4jContainer[?] = neo4jImageVersion
+  override val container: JavaNeo4jContainer = neo4jImageVersion
     .map(new JavaNeo4jContainer(_))
     .getOrElse(new JavaNeo4jContainer(Neo4jContainer.DEFAULT_NEO4J_VERSION))
 
