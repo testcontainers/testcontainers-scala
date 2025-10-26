@@ -12,7 +12,7 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.21.1"
+  private val testcontainersVersion = "1.21.3"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "2.0.17"
   private val scalaTestVersion = "3.2.9"
