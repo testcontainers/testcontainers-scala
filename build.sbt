@@ -1,11 +1,23 @@
-import xerial.sbt.Sonatype.*
-import xerial.sbt.Sonatype.sonatypeCentralHost
 import ReleaseTransformations.*
 import java.net.URI
 
 Global / onChangedBuildSource := IgnoreSourceChanges
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
+
+ThisBuild / organization := "com.dimafeng"
+ThisBuild / organizationName := "testcontainers-scala"
+ThisBuild / homepage := Some(url("https://github.com/testcontainers/testcontainers-scala"))
+ThisBuild / licenses += "The MIT License (MIT)" -> URI.create("https://opensource.org/licenses/MIT").toURL
+
+ThisBuild / developers := List(
+  Developer(
+    "dimafeng",
+    "Dmitry Fedosov",
+    "dimafeng@gmail.com",
+    url("http://dimafeng.com")
+  )
+)
 
 val commonSettings = Seq(
   ThisBuild / scalaVersion := "2.12.20",
@@ -43,18 +55,6 @@ val commonSettings = Seq(
     if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
     else localStaging.value
   },
-  sonatypeProfileName := "testcontainers-scala",
-  sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
-  licenses := Seq("The MIT License (MIT)" -> URI.create("https://opensource.org/licenses/MIT").toURL),
-  developers := List(
-    Developer(
-      "dimafeng",
-      "Dmitry Fedosov",
-      "dimafeng@gmail.com",
-      url("http://dimafeng.com")
-    )
-  ),
-  ThisBuild / organization := "com.dimafeng",
 
   Global / parallelExecution := false,
 
