@@ -39,14 +39,10 @@ val commonSettings = Seq(
    * Publishing - Central Portal
    */
   publishTo := {
-    if (isSnapshot.value) {
-      Some("central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/")
-    } else {
-      Some(Resolver.file("sonatype-local-bundle", sonatypeBundleDirectory.value))
-    }
+    val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+    if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
+    else localStaging.value
   },
-  publishMavenStyle := true,
-  sonatypeCredentialHost := sonatypeCentralHost,
   sonatypeProfileName := "testcontainers-scala",
   sonatypeProjectHosting := Some(GitHubHosting("testcontainers", "testcontainers-scala", "dimafeng@gmail.com")),
   licenses := Seq("The MIT License (MIT)" -> URI.create("https://opensource.org/licenses/MIT").toURL),
@@ -124,14 +120,14 @@ lazy val root = (project in file("."))
       checkSnapshotDependencies,
       inquireVersions,
       runClean,
-      //runTest,
+      //releaseStepTaskAggregated(Test / compile),
       setReleaseVersion,
       commitReleaseVersion,
       tagRelease,
       releaseStepCommandAndRemaining("+publishSigned"),
+      releaseStepCommandAndRemaining("sonaRelease"),
       setNextVersion,
       commitNextVersion,
-      releaseStepCommand("sonatypeCentralRelease"),
       pushChanges
     )
   )
