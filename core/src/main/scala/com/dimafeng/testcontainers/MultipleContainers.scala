@@ -1,24 +1,11 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.lifecycle.TestLifecycleAware
-import org.junit.runner.Description
 import org.testcontainers.lifecycle.TestDescription
 
 import scala.language.implicitConversions
 
 class MultipleContainers private(containers: Seq[LazyContainer[?]]) extends Container with TestLifecycleAware {
-
-  @deprecated("Use `stop` instead", "v0.27.0")
-  override def finished()(implicit description: Description): Unit = containers.foreach(_.finished()(description))
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def succeeded()(implicit description: Description): Unit = containers.foreach(_.succeeded()(description))
-
-  @deprecated("Use `start` instead", "v0.27.0")
-  override def starting()(implicit description: Description): Unit = containers.foreach(_.starting()(description))
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def failed(e: Throwable)(implicit description: Description): Unit = containers.foreach(_.failed(e)(description))
 
   override def beforeTest(description: TestDescription): Unit = {
     containers.foreach(_.beforeTest(description))
@@ -67,18 +54,6 @@ object MultipleContainers {
   */
 class LazyContainer[T <: Container](factory: => T) extends Container with TestLifecycleAware {
   lazy val container: T = factory
-
-  @deprecated("Use `stop` instead", "v0.27.0")
-  override def finished()(implicit description: Description): Unit = container.finished()
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def failed(e: Throwable)(implicit description: Description): Unit = container.failed(e)
-
-  @deprecated("Use `start` instead", "v0.27.0")
-  override def starting()(implicit description: Description): Unit = container.starting()
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def succeeded()(implicit description: Description): Unit = container.succeeded()
 
   override def beforeTest(description: TestDescription): Unit = {
     container match {

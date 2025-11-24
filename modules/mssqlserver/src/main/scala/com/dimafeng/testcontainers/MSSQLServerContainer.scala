@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{MSSQLServerContainer => JavaMSSQLServerContainer}
+import org.testcontainers.mssqlserver.{MSSQLServerContainer => JavaMSSQLServerContainer}
 import org.testcontainers.utility.DockerImageName
 
 import scala.concurrent.duration._
@@ -10,10 +10,10 @@ case class MSSQLServerContainer(
   dbPassword: String = MSSQLServerContainer.defaultPassword,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = MSSQLServerContainer.defaultCommonJdbcParams
-) extends SingleContainer[JavaMSSQLServerContainer[?]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaMSSQLServerContainer] with JdbcDatabaseContainer {
 
-  override val container: JavaMSSQLServerContainer[?] = {
-    val c: JavaMSSQLServerContainer[?] = new JavaMSSQLServerContainer(dockerImageName)
+  override val container: JavaMSSQLServerContainer = {
+    val c: JavaMSSQLServerContainer = new JavaMSSQLServerContainer(dockerImageName)
 
     c.withPassword(dbPassword)
     urlParams.foreach { case (key, value) =>
@@ -29,7 +29,7 @@ case class MSSQLServerContainer(
 
 object MSSQLServerContainer {
 
-  val defaultDockerImageName = s"${JavaMSSQLServerContainer.IMAGE}:${JavaMSSQLServerContainer.DEFAULT_TAG}"
+  val defaultDockerImageName = "mcr.microsoft.com/mssql/server"
   val defaultPassword = "A_Str0ng_Required_Password"
   val defaultCommonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams().copy(
     startupTimeout = 240.seconds,

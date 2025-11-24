@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{MariaDBContainer => JavaMariaDBContainer}
+import org.testcontainers.mariadb.{MariaDBContainer => JavaMariaDBContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class MariaDBContainer(
@@ -11,10 +11,10 @@ case class MariaDBContainer(
   configurationOverride: Option[String] = None,
   urlParams: Map[String, String] = Map.empty,
   commonJdbcParams: JdbcDatabaseContainer.CommonParams = JdbcDatabaseContainer.CommonParams()
-) extends SingleContainer[JavaMariaDBContainer[?]] with JdbcDatabaseContainer {
+) extends SingleContainer[JavaMariaDBContainer] with JdbcDatabaseContainer {
 
-  override val container: JavaMariaDBContainer[?] = {
-    val c: JavaMariaDBContainer[?] = new JavaMariaDBContainer(dockerImageName)
+  override val container: JavaMariaDBContainer = {
+    val c: JavaMariaDBContainer = new JavaMariaDBContainer(dockerImageName)
 
     c.withDatabaseName(dbName)
     c.withUsername(dbUsername)
@@ -34,7 +34,7 @@ case class MariaDBContainer(
 
 object MariaDBContainer {
 
-  val defaultDockerImageName = s"${JavaMariaDBContainer.IMAGE}:${JavaMariaDBContainer.DEFAULT_TAG}"
+  val defaultDockerImageName = "mariadb"
   val defaultDatabaseName = "test"
   val defaultUsername = "test"
   val defaultPassword = "test"

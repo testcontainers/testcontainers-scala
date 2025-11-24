@@ -1,30 +1,29 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{MongoDBContainer => JavaMongoDBContainer}
+import org.testcontainers.mongodb.{MongoDBContainer => JavaMongoDBContainer}
 import org.testcontainers.utility.DockerImageName
 
 case class MongoDBContainer(
-  tag: Option[DockerImageName] = None
+  tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)
 ) extends SingleContainer[JavaMongoDBContainer] {
 
-  override val container: JavaMongoDBContainer = tag match {
-    case Some(tag) => new JavaMongoDBContainer(tag)
-    case None      => new JavaMongoDBContainer()
-  }
+  override val container: JavaMongoDBContainer = new JavaMongoDBContainer(tag)
 
   def replicaSetUrl: String = container.getReplicaSetUrl
 }
 
 object MongoDBContainer {
 
-  def apply(tag: DockerImageName): MongoDBContainer = new MongoDBContainer(Option(tag))
+  val defaultImageName = "mongo"
+  
+  def apply(tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)): MongoDBContainer = new MongoDBContainer(tag)
 
   case class Def(
-    tag: DockerImageName = null
+    tag: DockerImageName = DockerImageName.parse(MongoDBContainer.defaultImageName)
   ) extends ContainerDef {
 
     override type Container = MongoDBContainer
 
-    override def createContainer(): MongoDBContainer = new MongoDBContainer(Option(tag))
+    override def createContainer(): MongoDBContainer = new MongoDBContainer(tag)
   }
 }

@@ -1,7 +1,6 @@
 package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.TestContainers.TestContainersSuite
-import org.junit.runner.Description
 import org.scalatest._
 
 /**

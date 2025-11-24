@@ -1,6 +1,6 @@
 package com.dimafeng.testcontainers
 
-import org.testcontainers.containers.{PulsarContainer => JavaPulsarContainer}
+import org.testcontainers.pulsar.{PulsarContainer => JavaPulsarContainer}
 
 case class PulsarContainer(
   tag: String = PulsarContainer.defaultTag

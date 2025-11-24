@@ -1,6 +1,8 @@
 package com.dimafeng.testcontainers.integration
 
-import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer, KafkaContainer, MultipleContainers, SchemaRegistryContainer}
+import com.dimafeng.testcontainers.{ConfluentKafkaContainer, ForAllTestContainer, GenericContainer, MultipleContainers, SchemaRegistryContainer}
+import io.confluent.kafka.schemaregistry.ParsedSchema
+import io.confluent.kafka.schemaregistry.avro.AvroSchema
 import org.apache.kafka.clients.admin.{AdminClient, AdminClientConfig, NewTopic}
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -8,6 +10,9 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient
+import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient
+import org.apache.avro.Schema
 
 import java.util.Properties
 import scala.collection.JavaConverters._
@@ -15,7 +20,7 @@ import scala.collection.JavaConverters._
 class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Matchers {
 
   //this should be the same version that your lib is using under the hood
-  val kafkaVersion = "6.1.1"
+  val kafkaVersion = "8.1.0"
 
   //these are the default kafka host name but because that may change
   //we need to ensure that these are the values for container network, kafka and the schema registry
@@ -27,8 +32,8 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
   //a way to communicate containers
   val network: Network = Network.newNetwork()
 
-  val kafkaContainer: KafkaContainer = KafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
-  val schemaRegistryContainer: GenericContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
+  val kafkaContainer: ConfluentKafkaContainer = ConfluentKafkaContainer.Def(DockerImageName.parse(s"confluentinc/cp-kafka:$kafkaVersion")).createContainer()
+  val schemaRegistryContainer: SchemaRegistryContainer = SchemaRegistryContainer.Def(network, hostName, kafkaVersion).createContainer()
 
   kafkaContainer.container
     .withNetwork(network)
@@ -45,18 +50,26 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
 
   def getKafkaAddress: String = kafkaContainer.bootstrapServers
 
-  def getSchemaRegistryAddress: String =
-    s"http://${schemaRegistryContainer.container.getHost}:${schemaRegistryContainer.container.getMappedPort(SchemaRegistryContainer.defaultSchemaPort)}"
+  def getSchemaRegistryAddress: String = schemaRegistryContainer.schemaUrl
 
 
   "Schema registry container" should "be started" in {
 
     val adminProperties = new Properties()
     adminProperties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, getKafkaAddress)
-
     val adminClient = AdminClient.create(adminProperties)
-    val createTopicResult = adminClient.createTopics(List(new NewTopic(topicName, 1, 1)).asJava)
+    
+    // Create a topic
+    val createTopicResult = adminClient.createTopics(List(new NewTopic(topicName, 1, 1.toShort)).asJava)
     createTopicResult.values().get(topicName).get()
+    
+    val registryUrl = getSchemaRegistryAddress
+    val schemaRegistryClient: SchemaRegistryClient = new CachedSchemaRegistryClient(registryUrl, 10);
+
+    // Explicitly create a schema in the registry
+    val schema: Schema = Schema.create(Schema.Type.STRING)
+    val parsedSchema: ParsedSchema = new AvroSchema(schema)
+    val schemaId = schemaRegistryClient.register("my-topic-value", parsedSchema)
 
     val properties = new Properties()
     properties.put("bootstrap.servers", getKafkaAddress)
@@ -64,11 +77,17 @@ class SchemaRegistrySpec extends AnyFlatSpec with ForAllTestContainer with Match
     properties.put("key.deserializer", classOf[StringDeserializer])
     properties.put("value.deserializer", classOf[StringDeserializer])
 
+    // List topics
     val kafkaConsumer = new KafkaConsumer[String, String](properties)
     val topics = kafkaConsumer.listTopics()
 
+    // Check the topic we created + the one storing schemas exist
     assert(topics.containsKey(topicName))
     assert(topics.containsKey("_schemas"))
+
+    // Check the schema exists 
+    assert(schemaRegistryClient.getSchemaById(schemaId) != null)
+
   }
 
 }
