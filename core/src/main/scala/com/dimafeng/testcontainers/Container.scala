@@ -7,12 +7,12 @@ import java.util.function.Consumer
 import com.dimafeng.testcontainers.lifecycle.Stoppable
 import com.github.dockerjava.api.DockerClient
 import com.github.dockerjava.api.command.InspectContainerResponse
-import com.github.dockerjava.api.model.{Bind, Info, VolumesFrom}
+import com.github.dockerjava.api.model.{Bind, VolumesFrom}
 import org.junit.runner.Description
 import org.testcontainers.containers.output.OutputFrame
 import org.testcontainers.containers.startupcheck.StartupCheckStrategy
 import org.testcontainers.containers.traits.LinkableContainer
-import org.testcontainers.containers.{FailureDetectingExternalResource, Network, TestContainerAccessor}
+import org.testcontainers.containers.{Network}
 import org.testcontainers.containers.{GenericContainer => JavaGenericContainer, Container => JavaContainer}
 import org.testcontainers.core.CreateContainerCmdModifier
 import org.testcontainers.images.builder.Transferable
@@ -23,22 +23,10 @@ import scala.collection.JavaConverters._
 import scala.concurrent.{Future, blocking}
 
 @deprecated("For internal usage only. Will be deleted.", "v0.34.0")
-trait TestContainerProxy[T <: FailureDetectingExternalResource] extends Container {
+trait TestContainerProxy[T] extends Container {
 
   @deprecated("Please use reflective methods from the wrapper and `configure` method for creation", "v0.17.0")
   implicit def container: T
-
-  @deprecated("Use `stop` instead", "v0.27.0")
-  override def finished()(implicit description: Description): Unit = TestContainerAccessor.finished(description)
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def succeeded()(implicit description: Description): Unit = TestContainerAccessor.succeeded(description)
-
-  @deprecated("Use `start` instead", "v0.27.0")
-  override def starting()(implicit description: Description): Unit = TestContainerAccessor.starting(description)
-
-  @deprecated("Use `stop` and/or `TestLifecycleAware.afterTest` instead", "v0.27.0")
-  override def failed(e: Throwable)(implicit description: Description): Unit = TestContainerAccessor.failed(e, description)
 }
 
 abstract class SingleContainer[T <: JavaGenericContainer[?]] extends TestContainerProxy[T] {

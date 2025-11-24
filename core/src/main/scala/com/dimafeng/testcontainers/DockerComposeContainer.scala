@@ -67,7 +67,6 @@ object DockerComposeContainer {
             identifier: String = DockerComposeContainer.randomIdentifier,
             scaledServices: Seq[ScaledService] = Seq.empty,
             pull: Boolean = true,
-            localCompose: Boolean = true,
             env: Map[String, String] = Map.empty,
             tailChildContainers: Boolean = false,
             logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
@@ -78,7 +77,6 @@ object DockerComposeContainer {
       identifier,
       scaledServices,
       pull,
-      localCompose,
       env,
       tailChildContainers,
       logConsumers,
@@ -108,7 +106,6 @@ object DockerComposeContainer {
         identifier,
         scaledServices,
         pull,
-        localCompose,
         env,
         tailChildContainers,
         logConsumers,
@@ -125,7 +122,6 @@ class DockerComposeContainer(composeFiles: ComposeFile,
                              identifier: String = DockerComposeContainer.randomIdentifier,
                              scaledServices: Seq[ScaledService] = Seq.empty,
                              pull: Boolean = true,
-                             localCompose: Boolean = true,
                              env: Map[String, String] = Map.empty,
                              tailChildContainers: Boolean = false,
                              logConsumers: Seq[ServiceLogConsumer] = Seq.empty,
@@ -161,7 +157,6 @@ class DockerComposeContainer(composeFiles: ComposeFile,
     )
 
     container.withPull(pull)
-    container.withLocalCompose(localCompose)
     container.withEnv(env.asJava)
     container.withTailChildContainers(tailChildContainers)
 

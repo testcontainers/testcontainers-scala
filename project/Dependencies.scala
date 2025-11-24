@@ -12,7 +12,7 @@ object Dependencies {
     scope.map(s => modules.map(_ % s)).getOrElse(modules)
   }
 
-  private val testcontainersVersion = "1.21.1"
+  private val testcontainersVersion = "2.0.2"
   private val seleniumVersion = "2.53.1"
   private val slf4jVersion = "2.0.17"
   private val scalaTestVersion = "3.2.9"
@@ -60,18 +60,18 @@ object Dependencies {
 
   val core = Def.setting(
     COMPILE(
-      "org.testcontainers" % "testcontainers" % testcontainersVersion
+      "org.testcontainers" % "testcontainers" % testcontainersVersion,
+      "junit" % "junit" % junitVersion
     ) ++ PROVIDED(
-      "org.slf4j" % "slf4j-simple" % slf4jVersion
+      "org.slf4j" % "slf4j-simple" % slf4jVersion,
     ) ++ TEST(
-      "junit" % "junit" % junitVersion,
       "org.scalatest" %% "scalatest" % scalaTestVersion,
       "org.scalatestplus" %% "mockito-3-4" % scalaTestMockitoVersion,
       "org.scalatestplus" %% "selenium-3-141" % (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, _)) => scalaTestSeleniumVersion_scala2
         case _ => scalaTestSeleniumVersion_scala3
       }),
-      "org.testcontainers" % "selenium" % testcontainersVersion,
+      "org.testcontainers" % "testcontainers-selenium" % testcontainersVersion,
       "org.postgresql" % "postgresql" % postgresqlDriverVersion,
       "org.mockito" % "mockito-core" % mockitoVersion
     )
@@ -99,20 +99,20 @@ object Dependencies {
 
   val scalatestSelenium = Def.setting(
     COMPILE(
-      "org.testcontainers" % "selenium" % testcontainersVersion,
+      "org.testcontainers" % "testcontainers-selenium" % testcontainersVersion,
       "org.seleniumhq.selenium" % "selenium-java" % seleniumVersion
     )
   )
 
   val jdbc = Def.setting(
     COMPILE(
-      "org.testcontainers" % "jdbc" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-jdbc" % testcontainersVersion
     )
   )
 
   val moduleMysql = Def.setting(
     COMPILE(
-      "org.testcontainers" % "mysql" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-mysql" % testcontainersVersion
     ) ++ TEST(
       "mysql" % "mysql-connector-java" % mysqlConnectorVersion
     )
@@ -120,14 +120,14 @@ object Dependencies {
 
   val moduleNeo4j = Def.setting(
     COMPILE(
-      "org.testcontainers" % "neo4j" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-neo4j" % testcontainersVersion
     ) ++ TEST(
       "org.neo4j.driver" % "neo4j-java-driver" % neo4jConnectorVersion
     )
   )
   val modulePostgres = Def.setting(
     COMPILE(
-      "org.testcontainers" % "postgresql" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-postgresql" % testcontainersVersion
     ) ++ TEST(
       "org.postgresql" % "postgresql" % postgresqlDriverVersion
     )
@@ -135,7 +135,7 @@ object Dependencies {
 
   val moduleOracle = Def.setting(
     COMPILE(
-      "org.testcontainers" % "oracle-xe" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-oracle-xe" % testcontainersVersion
     ) ++ TEST(
       "com.oracle.database.jdbc" % "ojdbc8" % oracleDriverVersion
     )
@@ -143,7 +143,7 @@ object Dependencies {
 
   val moduleCassandra = Def.setting(
     COMPILE(
-      "org.testcontainers" % "cassandra" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-cassandra" % testcontainersVersion
     ) ++ TEST(
       "com.datastax.oss" % "java-driver-core" % cassandraDriverVersion
     )
@@ -151,7 +151,7 @@ object Dependencies {
 
   val moduleKafka = Def.setting(
     COMPILE(
-      "org.testcontainers" % "kafka" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-kafka" % testcontainersVersion
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion
     )
@@ -159,7 +159,7 @@ object Dependencies {
 
   val moduleVault = Def.setting(
     COMPILE(
-      "org.testcontainers" % "vault" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-vault" % testcontainersVersion
     ) ++ TEST(
       ("io.rest-assured" % "scala-support" % restAssuredVersion)
         .exclude("org.codehaus.groovy", "groovy"),
@@ -169,13 +169,13 @@ object Dependencies {
 
   val moduleMssqlserver = Def.setting(
     COMPILE(
-      "org.testcontainers" % "mssqlserver" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-mssqlserver" % testcontainersVersion
     )
   )
 
   val moduleClickhouse = Def.setting(
     COMPILE(
-      "org.testcontainers" % "clickhouse" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-clickhouse" % testcontainersVersion
     ) ++ TEST(
       "ru.yandex.clickhouse" % "clickhouse-jdbc" % "0.3.2",
     )
@@ -183,39 +183,31 @@ object Dependencies {
 
   val moduleCockroachdb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "cockroachdb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-cockroachdb" % testcontainersVersion
     )
   )
 
   val moduleCouchbase = Def.setting(
     COMPILE(
-      "org.testcontainers" % "couchbase" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-couchbase" % testcontainersVersion
     )
   )
 
   val moduleDb2 = Def.setting(
     COMPILE(
-      "org.testcontainers" % "db2" % testcontainersVersion
-    )
-  )
-
-  val moduleDynalite = Def.setting(
-    COMPILE(
-      "org.testcontainers" % "dynalite" % testcontainersVersion
-    ) ++ PROVIDED(
-      "com.amazonaws" % "aws-java-sdk-dynamodb" % awsV1Version
+      "org.testcontainers" % "testcontainers-db2" % testcontainersVersion
     )
   )
 
   val moduleElasticsearch = Def.setting(
     COMPILE(
-      "org.testcontainers" % "elasticsearch" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-elasticsearch" % testcontainersVersion
     )
   )
 
   val moduleInfluxdb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "influxdb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-influxdb" % testcontainersVersion
     ) ++ PROVIDED(
       "org.influxdb" % "influxdb-java" % "2.24"
     )
@@ -223,7 +215,7 @@ object Dependencies {
 
   val moduleLocalstack = Def.setting(
     COMPILE(
-      "org.testcontainers" % "localstack" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-localstack" % testcontainersVersion
     ) ++ PROVIDED(
       "com.amazonaws" % "aws-java-sdk-s3" % awsV1Version,
       "com.amazonaws" % "aws-java-sdk-sqs" % awsV1Version
@@ -232,7 +224,7 @@ object Dependencies {
 
   val moduleLocalstackV2 = Def.setting(
     COMPILE(
-      "org.testcontainers" % "localstack" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-localstack" % testcontainersVersion
     ) ++ PROVIDED(
       "software.amazon.awssdk" % "s3" % awsV2Version,
       "software.amazon.awssdk" % "sqs" % awsV2Version
@@ -241,13 +233,13 @@ object Dependencies {
 
   val moduleMariadb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "mariadb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-mariadb" % testcontainersVersion
     )
   )
 
   val moduleMilvus = Def.setting(
     COMPILE(
-      "org.testcontainers" % "milvus" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-milvus" % testcontainersVersion
     ) ++ TEST(
       "io.milvus" % "milvus-sdk-java" % milvusSdkVersion
     )
@@ -255,7 +247,7 @@ object Dependencies {
 
   val moduleMockserver = Def.setting(
     COMPILE(
-      "org.testcontainers" % "mockserver" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-mockserver" % testcontainersVersion
     ) ++ TEST(
       "com.softwaremill.sttp.client3" %% "core" % sttpVersion,
       "org.mock-server" % "mockserver-client-java" % "5.13.2"
@@ -264,19 +256,19 @@ object Dependencies {
 
   val moduleNginx = Def.setting(
     COMPILE(
-      "org.testcontainers" % "nginx" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-nginx" % testcontainersVersion
     )
   )
 
   val modulePulsar = Def.setting(
     COMPILE(
-      "org.testcontainers" % "pulsar" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-pulsar" % testcontainersVersion
     )
   )
 
   val moduleQuadrant = Def.setting(
     COMPILE(
-      "org.testcontainers" % "qdrant" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-qdrant" % testcontainersVersion
     ) ++ TEST(
       "io.qdrant" % "client" % quadrantClientVersion
     )
@@ -284,7 +276,7 @@ object Dependencies {
 
   val moduleRabbitmq = Def.setting(
     COMPILE(
-      "org.testcontainers" % "rabbitmq" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-rabbitmq" % testcontainersVersion
     ) ++ TEST(
       "org.scalatest" %% "scalatest" % scalaTestVersion
     ) ++ PROVIDED(
@@ -303,43 +295,43 @@ object Dependencies {
 
   val moduleToxiproxy = Def.setting(
     COMPILE(
-      "org.testcontainers" % "toxiproxy" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-toxiproxy" % testcontainersVersion
     )
   )
 
   val moduleOrientdb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "orientdb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-orientdb" % testcontainersVersion
     )
   )
 
   val modulePresto = Def.setting(
     COMPILE(
-      "org.testcontainers" % "presto" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-presto" % testcontainersVersion
     )
   )
 
   val moduleTrino = Def.setting(
     COMPILE(
-      "org.testcontainers" % "trino" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-trino" % testcontainersVersion
     )
   )
 
   val moduleMongodb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "mongodb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-mongodb" % testcontainersVersion
     )
   )
 
   val moduleSolr = Def.setting(
     COMPILE(
-      "org.testcontainers" % "solr" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-solr" % testcontainersVersion
     )
   )
 
   val moduleGcloud = Def.setting(
     COMPILE(
-      "org.testcontainers" % "gcloud" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-gcloud" % testcontainersVersion
     ) ++
       PROVIDED(
         "com.google.cloud" % "google-cloud-firestore" % firestoreConnectorVersion,
@@ -350,7 +342,7 @@ object Dependencies {
 
   val moduleRedpanda = Def.setting(
     COMPILE(
-      "org.testcontainers" % "redpanda" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-redpanda" % testcontainersVersion
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion
     )
@@ -358,7 +350,7 @@ object Dependencies {
 
   val moduleMinIO = Def.setting(
     COMPILE(
-      "org.testcontainers" % "minio" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-minio" % testcontainersVersion
     )
   )
 
@@ -372,7 +364,7 @@ object Dependencies {
 
   val moduleYugabytedb = Def.setting(
     COMPILE(
-      "org.testcontainers" % "yugabytedb" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-yugabytedb" % testcontainersVersion
     ) ++ TEST(
       "com.yugabyte" % "jdbc-yugabytedb" % yugabyteJdbcVersion,
       "com.yugabyte" % "java-driver-core" % yugabyteJavaDriverVersion
@@ -390,7 +382,7 @@ object Dependencies {
 
   val moduleK3s = Def.setting(
     COMPILE(
-      "org.testcontainers" % "k3s" % testcontainersVersion
+      "org.testcontainers" % "testcontainers-k3s" % testcontainersVersion
     )
   )
 }
