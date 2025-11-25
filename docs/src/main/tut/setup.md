@@ -74,7 +74,6 @@ Here is the full list of the [currently available modules](https://github.com/te
 * `testcontainers-scala-cockroachdb` — module with the CockroachDB container.
 * `testcontainers-scala-couchbase` — module with the Couchbase container.
 * `testcontainers-scala-db2` — module with the DB2 container.
-* `testcontainers-scala-dynalite` — module with the Dynalite container.
 * `testcontainers-scala-elasticsearch` — module with the Elastic search container.
 * `testcontainers-scala-influxdb` — module with the InfluxDB container.
 * `testcontainers-scala-localstack` — module with the Localstack container.

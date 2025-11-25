@@ -20,6 +20,7 @@ allows using docker containers for functional/integration/~~unit~~ testing.
 
 * [Setup and modules choice](docs/src/main/tut/setup.md)
 * [Usage](docs/src/main/tut/usage.md)
+* [Upgrade guide](docs/src/main/tut/upgrade_guide.md)
 * [testcontainers-scala in action (blog post)](http://dimafeng.com/2016/08/01/testcontainers-selenium)
 
 The following test frameworks are supported: 
