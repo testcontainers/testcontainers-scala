@@ -29,7 +29,7 @@ object Dependencies {
   }
   private val mysqlConnectorVersion = "5.1.42"
   private val neo4jConnectorVersion = "4.0.0"
-  private val oracleDriverVersion = "21.18.0.0"
+  private val oracleDriverVersion = "23.9.0.25.07"
   private val cassandraDriverVersion = "4.0.1"
   private val postgresqlDriverVersion = "42.7.7"
   private val kafkaDriverVersion = "4.1.0"
