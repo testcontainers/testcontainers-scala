@@ -43,7 +43,7 @@ object Dependencies {
   private val bigtableVersion = "2.45.0"
   private val pubsubVersion = "1.139.4"
   private val redisTestcontainersVersion = "2.2.4"
-  private val jedisVersion = "6.0.0"
+  private val jedisVersion = "6.2.0"
   private val wireMockTestcontainersVersion = "1.0-alpha-13"
   private val milvusSdkVersion = "2.4.1"
   private val quadrantClientVersion = "1.14.0"
