@@ -216,7 +216,7 @@ class PgSpec extends AnyFlatSpec with TestContainerForAll {
   )
 
   "PostgreSQL container" should "be started" in {
-    withContainers { pgContainer =>
+    withContainers { case pgContainer: PostgreSQLContainer =>
       Class.forName(pgContainer.driverClassName)
       val connection = DriverManager.getConnection(pgContainer.jdbcUrl, pgContainer.username, pgContainer.password)
       assert(!connection.isClosed())
