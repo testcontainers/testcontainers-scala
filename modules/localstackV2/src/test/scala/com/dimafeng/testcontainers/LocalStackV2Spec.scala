@@ -2,7 +2,6 @@ package com.dimafeng.testcontainers
 
 import com.dimafeng.testcontainers.scalatest.TestContainersForAll
 import org.scalatest.flatspec.AnyFlatSpec
-import org.testcontainers.containers.localstack.LocalStackContainer.Service.S3
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest
 
@@ -11,14 +10,14 @@ class LocalStackV2Spec extends AnyFlatSpec with TestContainersForAll {
 
   override def startContainers(): LocalStackV2Container =
     LocalStackV2Container
-      .Def(services = Seq(S3))
+      .Def(services = Seq("s3"))
       .start()
 
   "LocalStackV2 container" should "be started" in withContainers {
     localStackContainer =>
       val s3: S3Client = S3Client
         .builder()
-        .endpointOverride(localStackContainer.endpointOverride(S3))
+        .endpointOverride(localStackContainer.endpoint)
         .credentialsProvider(localStackContainer.staticCredentialsProvider)
         .region(localStackContainer.region)
         .build()

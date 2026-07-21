@@ -1,14 +1,14 @@
 package com.dimafeng.testcontainers
 
 import java.net.URI
-import org.testcontainers.containers.localstack.{LocalStackContainer => JavaLocalStackContainer}
+import org.testcontainers.localstack.{LocalStackContainer => JavaLocalStackContainer}
 import org.testcontainers.utility.DockerImageName
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.regions.Region
 
 case class LocalStackV2Container(
     tag: String = LocalStackV2Container.defaultTag,
-    services: Seq[LocalStackV2Container.Service] = Seq.empty
+    services: Seq[String] = Seq.empty
 ) extends SingleContainer[JavaLocalStackContainer] {
 
   override val container: JavaLocalStackContainer = {
@@ -17,8 +17,8 @@ case class LocalStackV2Container(
     c
   }
 
-  def endpointOverride(service: LocalStackV2Container.Service): URI =
-    container.getEndpointOverride(service)
+  def endpoint: URI =
+    container.getEndpoint
 
   def staticCredentialsProvider: StaticCredentialsProvider =
     StaticCredentialsProvider.create(
@@ -32,11 +32,9 @@ object LocalStackV2Container {
   val defaultImage: String = "localstack/localstack"
   val defaultTag: String = "4.0.3"
 
-  type Service = JavaLocalStackContainer.EnabledService
-
   case class Def(
       tag: String = LocalStackV2Container.defaultTag,
-      services: Seq[LocalStackV2Container.Service] = Seq.empty
+      services: Seq[String] = Seq.empty
   ) extends ContainerDef {
 
     override type Container = LocalStackV2Container
