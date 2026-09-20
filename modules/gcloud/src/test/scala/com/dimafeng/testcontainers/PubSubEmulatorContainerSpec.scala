@@ -14,7 +14,7 @@ import scala.concurrent.TimeoutException
 class PubSubEmulatorContainerSpec extends AnyWordSpecLike with Matchers with ForAllTestContainer {
 
   override val container: PubSubEmulatorContainer = PubSubEmulatorContainer(
-    DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:382.0.0"))
+    DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:emulators"))
 
   "PubSub emulator container" should {
 
