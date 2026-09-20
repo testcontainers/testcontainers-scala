@@ -18,6 +18,6 @@ class FixedHostPortContainerSpec extends AnyFlatSpec with ForAllTestContainer {
     assert(container.mappedPort(80) == 8090)
     assert(Source.fromInputStream(
       new URL(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").openConnection().getInputStream
-    ).mkString.contains("If you see this page, the nginx web server is successfully installed"))
+    ).mkString.contains("If you see this page, nginx is successfully installed"))
   }
 }

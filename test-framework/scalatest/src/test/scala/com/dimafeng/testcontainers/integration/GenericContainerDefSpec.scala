@@ -24,7 +24,7 @@ class GenericContainerDefSpec extends AnyFlatSpec with TestContainersForAll {
 
   "GenericContainer.Def" should "be able to work through compatible and not compatible constructors" in withContainers {
     case compatible and notCompatible =>
-      val expectedText = "If you see this page, the nginx web server is successfully installed"
+      val expectedText = "If you see this page, nginx is successfully installed"
       assert(
         compatible.rootPage.contains(expectedText) &&
         notCompatible.rootPage.contains(expectedText)

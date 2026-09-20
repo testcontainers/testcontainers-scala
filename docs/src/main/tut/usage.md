@@ -63,7 +63,7 @@ class GenericContainerSpec extends AnyFlatSpec with TestContainerForAll {
           )
           .mkString
           .contains(
-            "If you see this page, the nginx web server is successfully installed"
+            "If you see this page, nginx is successfully installed"
           )
       )
     }
@@ -102,7 +102,7 @@ class GenericContainerSpec extends FunSuite with TestContainerForAll {
           )
           .mkString
           .contains(
-            "If you see this page, the nginx web server is successfully installed"
+            "If you see this page, nginx is successfully installed"
           )
       )
     }
