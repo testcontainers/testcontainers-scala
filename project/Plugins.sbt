@@ -1,7 +1,7 @@
 //addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.12.2")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
-addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.11.0")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.11.2")
 
 // Publishing.
 addSbtPlugin("com.github.sbt" % "sbt-pgp" % "2.3.1")
