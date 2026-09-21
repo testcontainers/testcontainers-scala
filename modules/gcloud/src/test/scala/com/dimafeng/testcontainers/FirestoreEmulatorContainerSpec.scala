@@ -13,7 +13,7 @@ class FirestoreEmulatorContainerSpec
 
   override val container: FirestoreEmulatorContainer =
     FirestoreEmulatorContainer(
-      DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:382.0.0")
+      DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:emulators")
     )
 
   "Firestore emulator container" should {

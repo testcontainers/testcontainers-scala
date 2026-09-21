@@ -18,7 +18,7 @@ class GenericContainerSpec extends AnyFlatSpec with ForAllTestContainer {
   "GenericContainer" should "start nginx and expose 80 port" in {
     assert(Source.fromInputStream(
       new URL(s"http://${container.containerIpAddress}:${container.mappedPort(80)}/").openConnection().getInputStream
-    ).mkString.contains("If you see this page, the nginx web server is successfully installed"))
+    ).mkString.contains("If you see this page, nginx is successfully installed"))
   }
 }
 ```
