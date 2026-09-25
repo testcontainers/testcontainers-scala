@@ -152,7 +152,7 @@ object Dependencies {
       "org.testcontainers" % "testcontainers-kafka" % testcontainersVersion
     ) ++ TEST(
       "org.apache.kafka" % "kafka-clients" % kafkaDriverVersion,
-      "io.confluent" % "kafka-schema-registry-client" % "8.0.8"
+      "io.confluent" % "kafka-schema-registry-client" % "8.3.2"
     )
   )
 
