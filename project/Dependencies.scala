@@ -50,6 +50,7 @@ object Dependencies {
   private val yugabyteJdbcVersion = "42.3.5-yb-6"
   private val yugabyteJavaDriverVersion = "4.15.0-yb-2-TESTFIX.0"
   private val opensearchTestcontainersVersion = "1.0.0"
+  private val s3MockVersion = "4.11.0"
 
   val allOld = Def.setting(
     PROVIDED(
@@ -382,6 +383,12 @@ object Dependencies {
   val moduleK3s = Def.setting(
     COMPILE(
       "org.testcontainers" % "testcontainers-k3s" % testcontainersVersion
+    )
+  )
+
+  val moduleS3Mock = Def.setting(
+    COMPILE(
+      "com.adobe.testing" % "s3mock-testcontainers" % s3MockVersion
     )
   )
 }

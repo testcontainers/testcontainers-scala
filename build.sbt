@@ -111,6 +111,7 @@ lazy val root = (project in file("."))
     moduleYugabytedb,
     moduleOpensearch,
     moduleK3s,
+    moduleS3Mock,
     allOld
   )
   .settings(noPublishSettings)
@@ -575,4 +576,12 @@ lazy val moduleK3s = project.in(file("modules/k3s"))
     commonSettings,
     name := "testcontainers-scala-k3s",
     libraryDependencies ++= Dependencies.moduleK3s.value
+  )
+
+lazy val moduleS3Mock = (project in file("modules/s3mock"))
+  .dependsOn(core % "compile->compile;test->test;provided->provided", scalatest % "test->test")
+  .settings(commonSettings)
+  .settings(
+    name := "testcontainers-scala-s3mock",
+    libraryDependencies ++= Dependencies.moduleS3Mock.value
   )
